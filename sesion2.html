@@ -130,6 +130,7 @@
             <li>Problema (1–2 frases)</li>
             <li>Valor/beneficio</li>
             <li>Tipo de POC</li>
+            <li>¿Automatizable? (Sí / No / Parcial)</li>
             <li>Entradas / Salidas</li>
             <li>Métrica de éxito</li>
           </ul>
@@ -227,6 +228,91 @@
             </tbody>
           </table>
         </div>
+    <!-- CHECKLIST DINÁMICO DE AUTOMATIZACIÓN (copiado de Sesión 1) -->
+    <div class="visual-aid" style="background:#fefce8;border-color:#facc15" id="checklist-container">
+      <strong>✅ Checklist Interactivo: ¿Es automatizable?</strong>
+      <p style="margin:8px 0 12px;font-size:13px;color:#666">Haz clic en cada respuesta para evaluar tu idea:</p>
+            
+      <table style="width:100%;font-size:13px;border-collapse:collapse" id="checklist-table">
+        <tr class="checklist-row" data-question="repetitivo" data-positive="yes">
+          <td style="padding:10px;border-bottom:1px solid #e5e5e5">📋 ¿Es <b>repetitivo</b>? (se hace igual o muy similar cada vez)</td>
+          <td style="width:140px;text-align:center;border-bottom:1px solid #e5e5e5">
+            <button onclick="setAnswer('repetitivo','yes')" class="check-btn" id="repetitivo-yes">✓ Sí</button>
+            <button onclick="setAnswer('repetitivo','no')" class="check-btn" id="repetitivo-no">✗ No</button>
+          </td>
+        </tr>
+        <tr class="checklist-row" data-question="datos" data-positive="yes">
+          <td style="padding:10px;border-bottom:1px solid #e5e5e5">📊 ¿Los datos están <b>digitalizados</b>? (Excel, CSV, sistema, BD)</td>
+          <td style="text-align:center;border-bottom:1px solid #e5e5e5">
+            <button onclick="setAnswer('datos','yes')" class="check-btn" id="datos-yes">✓ Sí</button>
+            <button onclick="setAnswer('datos','no')" class="check-btn" id="datos-no">✗ No</button>
+          </td>
+        </tr>
+        <tr class="checklist-row" data-question="pasos" data-positive="yes">
+          <td style="padding:10px;border-bottom:1px solid #e5e5e5">📝 ¿Puedes describir <b>reglas claras</b>? (pasos o condiciones exactas)</td>
+          <td style="text-align:center;border-bottom:1px solid #e5e5e5">
+            <button onclick="setAnswer('pasos','yes')" class="check-btn" id="pasos-yes">✓ Sí</button>
+            <button onclick="setAnswer('pasos','no')" class="check-btn" id="pasos-no">✗ No</button>
+          </td>
+        </tr>
+        <tr class="checklist-row" data-question="frecuencia" data-positive="yes">
+          <td style="padding:10px;border-bottom:1px solid #e5e5e5">🔄 ¿Se hace <b>frecuentemente</b>? (diario, semanal, o muchas veces al mes)</td>
+          <td style="text-align:center;border-bottom:1px solid #e5e5e5">
+            <button onclick="setAnswer('frecuencia','yes')" class="check-btn" id="frecuencia-yes">✓ Sí</button>
+            <button onclick="setAnswer('frecuencia','no')" class="check-btn" id="frecuencia-no">✗ No</button>
+          </td>
+        </tr>
+        <tr class="checklist-row" data-question="juicio" data-positive="no">
+          <td style="padding:10px">🧠 ¿Requiere <b>juicio subjetivo</b>? (intuición, negociación, "depende")</td>
+          <td style="text-align:center">
+            <button onclick="setAnswer('juicio','yes')" class="check-btn" id="juicio-yes">✓ Sí</button>
+            <button onclick="setAnswer('juicio','no')" class="check-btn" id="juicio-no">✗ No</button>
+          </td>
+        </tr>
+      </table>
+            
+      <!-- RESULTADO DINÁMICO -->
+      <div id="checklist-result" style="margin-top:16px;padding:16px;border-radius:8px;text-align:center;display:none;transition:all 0.3s">
+        <div id="result-icon" style="font-size:40px;margin-bottom:8px"></div>
+        <div id="result-title" style="font-size:18px;font-weight:bold;margin-bottom:4px"></div>
+        <div id="result-desc" style="font-size:13px"></div>
+        <div id="result-score" style="margin-top:8px;font-size:12px;opacity:0.7"></div>
+      </div>
+            
+      <button onclick="resetChecklist()" style="margin-top:12px;padding:6px 12px;font-size:12px;background:#fff;border:1px solid #ccc;border-radius:4px;cursor:pointer">� Reiniciar</button>
+    </div>
+
+    <style>
+      .check-btn {
+        padding: 4px 10px;
+        margin: 2px;
+        border: 2px solid #ddd;
+        background: #fff;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 12px;
+        transition: all 0.2s;
+      }
+      .check-btn:hover {
+        border-color: #999;
+        background: #f5f5f5;
+      }
+      .check-btn.selected-good {
+        background: #22c55e;
+        color: white;
+        border-color: #16a34a;
+      }
+      .check-btn.selected-bad {
+        background: #ef4444;
+        color: white;
+        border-color: #dc2626;
+      }
+      .check-btn.selected-neutral {
+        background: #6b7280;
+        color: white;
+        border-color: #4b5563;
+      }
+    </style>
       </section>
 
           <div style="display:flex;gap:12px;align-items:center;margin-bottom:12px;flex-wrap:wrap">
@@ -236,6 +322,10 @@
               <datalist id="ideasList">
                 <!-- options serán pobladas por script -->
               </datalist>
+            </div>
+            <div style="min-width:120px;display:flex;align-items:center;gap:8px">
+              <input type="checkbox" id="autoCheck" style="width:16px;height:16px">
+              <label for="autoCheck" style="margin:0;font-size:14px">¿Es automatizable?</label>
             </div>
             <div style="min-width:180px">
               <label for="ideaType" class="label">Tipo</label>
@@ -257,6 +347,7 @@
               <tr>
                 <th style="text-align:left;padding:8px;border:1px solid #eee">Nombre</th>
                 <th style="text-align:left;padding:8px;border:1px solid #eee">Tipo</th>
+                <th style="text-align:left;padding:8px;border:1px solid #eee">Automatizable</th>
                 <th style="text-align:left;padding:8px;border:1px solid #eee">Descripción</th>
                 <th style="text-align:left;padding:8px;border:1px solid #eee">Acción</th>
               </tr>
@@ -282,7 +373,7 @@
     </footer>
 
   </main>
-  <script>
+    <script>
     // Lista inicial de ideas (nombre -> tipo por defecto)
     const initialIdeas = [
       {name: 'Auto conciliación de facturas', type: 'Técnico / Automatización'},
@@ -294,6 +385,37 @@
     const ideasList = document.getElementById('ideasList');
     const ideaInput = document.getElementById('ideaInput');
     const ideaType = document.getElementById('ideaType');
+    // checkbox para marcar automatizable
+    const autoCheck = document.getElementById('autoCheck');
+    // nuevo selector para automatizable
+    const ideaAuto = (function(){
+      // crear dinámicamente si no existe en el DOM (compatibilidad)
+      let el = document.getElementById('ideaAuto');
+      if(!el){
+        // insert after ideaType select
+        const container = ideaType.parentElement;
+        const sel = document.createElement('select');
+        sel.id = 'ideaAuto';
+        sel.style.width = '100%';
+        sel.style.padding = '8px';
+        sel.style.border = '1px solid #ddd';
+        sel.style.borderRadius = '6px';
+        sel.innerHTML = '<option value="">(auto)</option><option value="Sí">Sí</option><option value="Parcial">Parcial</option><option value="No">No</option>';
+        const wrapper = document.createElement('div');
+        wrapper.style.minWidth = '160px';
+        wrapper.appendChild(document.createElement('label')).textContent = '';
+        container.parentElement.insertBefore(wrapper, container.nextSibling);
+        wrapper.appendChild(sel);
+        el = sel;
+      }
+      return el;
+    })();
+    if(autoCheck){
+      // si se marca/desmarca, habilitar/deshabilitar el selector manual
+      autoCheck.addEventListener('change', () => {
+        if(ideaAuto) ideaAuto.disabled = autoCheck.checked;
+      });
+    }
     const addIdeaBtn = document.getElementById('addIdeaBtn');
     const ideasTableBody = document.querySelector('#ideasTable tbody');
 
@@ -310,11 +432,27 @@
       return found ? found.type : '';
     }
 
-    function addIdeaToTable(name, type, description=''){
+    function defaultAutoByType(t){
+      if(!t) return '';
+      if(t.includes('Técnico')) return 'Sí';
+      if(t.includes('Datos')) return 'Parcial';
+      if(t.includes('Texto') || t.includes('IA')) return 'Parcial';
+      if(t.includes('Experiencia')) return 'No';
+      return '';
+    }
+
+    function addIdeaToTable(name, type, automatable='', description=''){
       const tr = document.createElement('tr');
       tr.innerHTML = `
         <td style="padding:8px;border:1px solid #eee">${escapeHtml(name)}</td>
         <td style="padding:8px;border:1px solid #eee">${escapeHtml(type)}</td>
+        <td style="padding:8px;border:1px solid #eee">
+          <select style="padding:6px;border-radius:6px;border:1px solid #ddd">
+            <option value="Sí" ${automatable==='Sí'?'selected':''}>Sí</option>
+            <option value="Parcial" ${automatable==='Parcial'?'selected':''}>Parcial</option>
+            <option value="No" ${automatable==='No'?'selected':''}>No</option>
+          </select>
+        </td>
         <td style="padding:8px;border:1px solid #eee"><div contenteditable="true" style="min-width:140px;min-height:22px">${escapeHtml(description)}</div></td>
         <td style="padding:8px;border:1px solid #eee"><button class="delBtn" style="padding:6px 8px;border-radius:6px;border:0;background:#e74c3c;color:#fff;cursor:pointer">Eliminar</button></td>
       `;
@@ -334,9 +472,16 @@
       }
       let type = ideaType.value;
       if(!type) type = findTypeByName(name) || '—';
-      addIdeaToTable(name, type);
+      let auto = '';
+      if(autoCheck && autoCheck.checked){
+        auto = 'Sí';
+      } else {
+        auto = ideaAuto && ideaAuto.value ? ideaAuto.value : defaultAutoByType(type);
+      }
+      addIdeaToTable(name, type, auto);
       ideaInput.value = '';
       ideaType.value = '';
+      if(ideaAuto) ideaAuto.value = '';
     });
 
     // soporte Enter en el input
@@ -344,6 +489,134 @@
 
     // inicializar
     populateDatalist();
+
+  // CHECKLIST script (copiado de sesion1)
+      const answers = {};
+      const questions = ['repetitivo', 'datos', 'pasos', 'frecuencia', 'juicio'];
+      // Para las primeras 4, "yes" es bueno. Para "juicio", "no" es bueno (no requiere juicio = automatizable).
+      const positiveAnswer = {
+        'repetitivo': 'yes',   // Sí es repetitivo = bueno
+        'datos': 'yes',        // Sí hay datos digitales = bueno
+        'pasos': 'yes',        // Sí hay reglas claras = bueno
+        'frecuencia': 'yes',   // Sí es frecuente = bueno
+        'juicio': 'no'         // NO requiere juicio = bueno (automatizable)
+      };
+            
+      function setAnswer(question, value) {
+        answers[question] = value;
+                
+        // Limpiar botones de esta pregunta
+        document.getElementById(question + '-yes').className = 'check-btn';
+        document.getElementById(question + '-no').className = 'check-btn';
+                
+        // Marcar botón seleccionado
+        const btn = document.getElementById(question + '-' + value);
+        const isGood = (value === positiveAnswer[question]);
+        btn.className = 'check-btn ' + (isGood ? 'selected-good' : 'selected-bad');
+                
+        updateResult();
+      }
+            
+      function updateResult() {
+        const answered = Object.keys(answers).length;
+        if (answered < 5) return; // Esperar a que respondan todo
+                
+        // Calcular puntos buenos
+        let score = 0;
+        const requiereJuicio = answers['juicio'] === 'yes';
+        const esRepetitivo = answers['repetitivo'] === 'yes';
+        const tieneDatos = answers['datos'] === 'yes';
+        const tieneReglas = answers['pasos'] === 'yes';
+        const esFrecuente = answers['frecuencia'] === 'yes';
+                
+        questions.forEach(q => {
+          if (answers[q] === positiveAnswer[q]) score++;
+        });
+                
+        const resultDiv = document.getElementById('checklist-result');
+        const iconEl = document.getElementById('result-icon');
+        const titleEl = document.getElementById('result-title');
+        const descEl = document.getElementById('result-desc');
+        const scoreEl = document.getElementById('result-score');
+                
+        resultDiv.style.display = 'block';
+                
+        // CASO BLOQUEANTE: Requiere juicio subjetivo
+        if (requiereJuicio) {
+          if (score >= 3) {
+            // Tiene potencial pero el juicio es un problema
+            resultDiv.style.background = '#fef9c3';
+            iconEl.textContent = '🤖';
+            titleEl.textContent = 'Considera IA Generativa';
+            titleEl.style.color = '#854d0e';
+            descEl.textContent = 'El proceso tiene buenos fundamentos, pero el juicio subjetivo dificulta la automatización tradicional. Considera usar IA/LLMs para las partes que requieren criterio.';
+          } else {
+            // Muchos problemas + juicio = no automatizable
+            resultDiv.style.background = '#fef2f2';
+            iconEl.textContent = '🚫';
+            titleEl.textContent = 'No es automatizable';
+            titleEl.style.color = '#991b1b';
+            descEl.textContent = 'Requiere juicio humano y tiene pocos criterios favorables. Busca un subproceso más específico o redefine el problema.';
+          }
+        }
+        // CASO BLOQUEANTE: No hay datos digitales
+        else if (!tieneDatos) {
+          resultDiv.style.background = '#fed7aa';
+          iconEl.textContent = '📄';
+          titleEl.textContent = 'Primero digitaliza los datos';
+          titleEl.style.color = '#9a3412';
+          descEl.textContent = 'Sin datos en formato digital (Excel, CSV, BD), no hay qué automatizar. El primer paso es estructurar la información.';
+        }
+        // CASO BLOQUEANTE: No hay reglas claras
+        else if (!tieneReglas) {
+          resultDiv.style.background = '#fed7aa';
+          iconEl.textContent = '📋';
+          titleEl.textContent = 'Define las reglas primero';
+          titleEl.style.color = '#9a3412';
+          descEl.textContent = 'Si no puedes describir las reglas o pasos exactos, no se puede programar. Documenta la lógica del proceso antes de automatizar.';
+        }
+        // EXCELENTE: 5/5 o 4/5
+        else if (score >= 4) {
+          resultDiv.style.background = '#dcfce7';
+          iconEl.textContent = '🎯';
+          titleEl.textContent = '¡Excelente candidato!';
+          titleEl.style.color = '#166534';
+          descEl.textContent = 'Este proceso cumple todos los criterios clave. Es repetitivo, tiene datos y reglas claras. ¡Adelante con el POC!';
+        }
+        // BUENO: 3/5
+        else if (score >= 3) {
+          resultDiv.style.background = '#dbeafe';
+          iconEl.textContent = '⚡';
+          titleEl.textContent = 'Buen candidato';
+          titleEl.style.color = '#1e40af';
+          if (!esFrecuente) {
+            descEl.textContent = 'Cumple los criterios técnicos. Aunque no es muy frecuente, puede ser un buen ejercicio de práctica o un "Quick Win".';
+          } else if (!esRepetitivo) {
+            descEl.textContent = 'Es frecuente pero varía mucho cada vez. Intenta identificar la parte que SÍ es repetitiva y enfócate en ella.';
+          } else {
+            descEl.textContent = 'Tiene potencial. Revisa los puntos en rojo y considera si puedes ajustar el alcance.';
+          }
+        }
+        // REGULAR: 2/5
+        else {
+          resultDiv.style.background = '#fef2f2';
+          iconEl.textContent = '⚠️';
+          titleEl.textContent = 'Replantea el enfoque';
+          titleEl.style.color = '#991b1b';
+          descEl.textContent = 'Pocos criterios favorables. Intenta: 1) Encontrar un subproceso más específico, 2) Definir mejor las reglas, o 3) Buscar otro problema.';
+        }
+                
+        scoreEl.textContent = `Puntuación: ${score}/5 criterios favorables`;
+      }
+            
+      function resetChecklist() {
+        Object.keys(answers).forEach(k => delete answers[k]);
+        questions.forEach(q => {
+          document.getElementById(q + '-yes').className = 'check-btn';
+          document.getElementById(q + '-no').className = 'check-btn';
+        });
+        document.getElementById('checklist-result').style.display = 'none';
+      }
   </script>
 </body>
 </html>

@@ -2,82 +2,239 @@
 <html lang="es">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Sesión 2 — Curso POC</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sesión 2 — POC Thinking con Python y ChatGPT</title>
   <style>
-    body { font-family: Arial, Helvetica, sans-serif; margin: 24px; line-height: 1.6; }
-    header { border-bottom: 1px solid #ddd; margin-bottom: 16px; }
-    h1 { margin: 0 0 8px 0; }
-    section { margin: 12px 0; }
-    .card { background:#f9f9f9; padding:12px; border:1px solid #eee; border-radius:6px; }
-    ul { margin: 8px 0 8px 20px; }
+    :root{
+      --ey-yellow:#FFCD00;
+      --ey-dark:#242424;
+      --ey-gray:#6B6B6B;
+      --ey-light:#F7F7F7;
+      --ey-accent:#0F62FE;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--ey-dark);background:#fff;line-height:1.55}
+    a{color:var(--ey-accent);text-decoration:none}
+    a:hover{text-decoration:underline}
+    .wrap{max-width:1100px;margin:0 auto;padding:24px}
+    /* HERO */
+    .hero{
+      background: linear-gradient(135deg, var(--ey-yellow) 0%, #ffe77a 60%, #fff3b0 100%);
+      padding:48px 24px 56px;
+      position:relative;overflow:hidden;display:flex;align-items:center;gap:28px;border-radius:8px
+    }
+    .hero img{width:120px;height:auto}
+    .hero .text{max-width:820px}
+    .hero h1{margin:0;font-size:clamp(24px,4.5vw,40px);font-weight:800}
+    .hero p.subtitle{margin:10px 0 0;font-size:16px;color:#222}
+    .badge{display:inline-block;padding:4px 10px;border-radius:999px;background:#fff8d6;border:1px solid #ffe68a;font-size:12px;margin-right:8px}
+
+    .strip{background:#fff;border-bottom:1px solid #eee;margin-top:18px}
+    .strip-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .card-mini{padding:16px;border-left:4px solid var(--ey-yellow);background:var(--ey-light);border-radius:8px}
+    .label{font-size:12px;letter-spacing:.08em;color:var(--ey-gray);text-transform:uppercase}
+    .big{font-size:18px;font-weight:700;margin-top:6px}
+
+    section{padding:36px 0;border-bottom:1px solid #f0f0f0}
+    h2{font-size:24px;margin:0 0 12px}
+    .lead{color:var(--ey-gray);max-width:900px}
+    .grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+    .card{background:#fff;border:1px solid #eee;border-radius:12px;padding:18px;box-shadow:0 1px 2px rgba(0,0,0,0.04)}
+    ul{margin:10px 0 0 18px}
+    footer{padding:36px 0;color:#777}
+    @media (max-width:900px){.strip-grid{grid-template-columns:1fr}.grid-2{grid-template-columns:1fr}.hero{flex-direction:column;align-items:flex-start}}
   </style>
 </head>
 <body>
-  <header>
-    <h1>Sesión 2</h1>
-    <p>Apartado inicial para la Sesión 2 — añade o pide cambios y lo adapto.</p>
+
+  <header class="hero">
+    <img src="https://companieslogo.com/img/orig/ernst-and-young-6c5de5ba.svg?t=1720244494&download=true" alt="EY Logo">
+    <div class="text">
+      <h1>Sesión 2 — Introducción a los POC</h1>
+      <p class="subtitle">Pensar en clave de POC: qué es un POC y ejemplos aplicados a Taxes. (Sesión A — Semana 1)</p>
+      <div style="margin-top:12px">
+        <span class="badge">Sesión A · 15-dic-25 · 15:00–16:00 (México)</span>
+        <span class="badge">Incluye Laboratorio Python semanal</span>
+      </div>
+    </div>
   </header>
 
-  <section>
-    <h2>Objetivos</h2>
-    <div class="card">
-      <ul>
-        <li>Reforzar conceptos vistos en la Sesión 1.</li>
-        <li>Introducir nuevas herramientas/prácticas aplicables al proyecto.</li>
-        <li>Realizar ejercicios prácticos y revisar resultados.</li>
-      </ul>
+  <div class="strip">
+    <div class="wrap strip-grid">
+      <div class="card-mini">
+        <div class="label">Formato</div>
+        <div class="big">Sesión A — Concepto y casos</div>
+      </div>
+      <div class="card-mini">
+        <div class="label">Objetivo</div>
+        <div class="big">Identificar ideas de POC aplicables en Taxes</div>
+      </div>
+      <div class="card-mini">
+        <div class="label">Material</div>
+        <div class="big">Referencia: <a href="intro.html">Brochure del curso</a></div>
+      </div>
     </div>
-  </section>
+  </div>
 
-  <section>
-    <h2>Agenda</h2>
-    <div class="card">
-      <ol>
-        <li>Breve repaso de `sesion1.html` (5–10 min).</li>
-        <li>Presentación de contenidos nuevos (20–30 min).</li>
-        <li>Ejercicios prácticos en parejas o individual (25–30 min).</li>
-        <li>Demostración y cierre (10–15 min).</li>
-      </ol>
-    </div>
-  </section>
+  <main class="wrap">
 
-  <section>
-    <h2>Recursos</h2>
-    <div class="card">
-      <ul>
-        <li>Repositorio del curso: <code>README.md</code></li>
-        <li>Material de la sesión anterior: <a href="./sesion1.html">`sesion1.html`</a></li>
-        <li>Script de ejemplo (si procede): <code>calcular_retenciones.py</code> en la carpeta <code>sesion1/</code></li>
-      </ul>
-    </div>
-  </section>
+    <section>
+      <h2>Objetivos de la sesión</h2>
+      <div class="card">
+        <ul>
+          <li>Entender qué es un POC y para qué sirve en el contexto de Taxes y Data/AI.</li>
+          <li>Ver ejemplos concretos y criterios para priorizar ideas.</li>
+          <li>Generar al menos una propuesta inicial por célula que pueda desarrollarse en entregables posteriores.</li>
+        </ul>
+      </div>
+    </section>
 
-  <section>
-    <h2>Ejercicios propuestos</h2>
-    <div class="card">
-      <ol>
-        <li>Revisar y ejecutar `calcular_retenciones.py`. Identificar puntos de mejora o refactorización.</li>
-        <li>Crear una función que valide filas de `transacciones.csv` y reporte errores simples (falta de campos, formato de fecha).</li>
-        <li>Proponer una visualización simple (tabla o gráfico) para las transacciones por tipo o por impuesto.</li>
-      </ol>
-    </div>
-  </section>
+    <section>
+      <h2>Agenda breve</h2>
+      <div class="card">
+        <ol>
+          <li>Introducción y marco conceptual (10 min)</li>
+          <li>Casos reales y ejemplos aplicados a Taxes (15 min)</li>
+          <li>Dinámica: ideación rápida en células (20 min)</li>
+          <li>Cierre y siguientes pasos (15 min)</li>
+        </ol>
+      </div>
+    </section>
 
-  <section>
-    <h2>Notas</h2>
-    <div class="card">
-      <p>Indícame si quieres que añada:</p>
-      <ul>
-        <li>Ejemplos de código concretos dentro de esta página.</li>
-        <li>Una carpeta `sesion2/` con scripts y datos de ejemplo.</li>
-        <li>Plantilla para entregar ejercicios (formato, criterios, fecha).</li>
-      </ul>
-    </div>
-  </section>
+    <section>
+      <h2>Ejercicios propuestos</h2>
+      <div class="card">
+        <ol>
+          <li>En tu célula, define un problema concreto en 2–3 frases y el beneficio esperado.</li>
+          <li>Clasifica el POC según la tipología del curso (Técnico, De Datos, Texto/IA, Experiencia).</li>
+          <li>Esboza las entradas/salidas necesarias y una métrica simple de éxito.</li>
+        </ol>
+      </div>
+    </section>
 
-  <footer>
-    <p style="font-size:0.9em;color:#666">Archivo generado automáticamente — dime qué quieres cambiar y lo actualizo.</p>
-  </footer>
+    <section>
+      <h2>Recursos y enlaces</h2>
+      <div class="grid-2">
+        <div class="card">
+          <h3>Material del curso</h3>
+          <ul>
+            <li><a href="intro.html">Brochure del curso (intro)</a></li>
+            <li><a href="sesion1.html">Material Sesión 1</a></li>
+            <li>Ejemplo: <code>sesion1/calcular_retenciones.py</code></li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Plantilla rápida</h3>
+          <p class="lead">Usa este esquema para tu propuesta:</p>
+          <ul>
+            <li>Problema (1–2 frases)</li>
+            <li>Valor/beneficio</li>
+            <li>Tipo de POC</li>
+            <li>Entradas / Salidas</li>
+            <li>Métrica de éxito</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+      <section>
+        <h2>Tipología de POCs (resumen)</h2>
+        <div class="card">
+          <p class="lead">Clasificación rápida para ayudar a decidir el enfoque y los criterios de validación.</p>
+          <table>
+            <thead>
+              <tr>
+                <th>Tipo de POC</th>
+                <th>Propósito</th>
+                <th>Qué valida</th>
+                <th>Ejemplo</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><b>Técnico / Automatización</b></td>
+                <td>Validar viabilidad técnica o de proceso</td>
+                <td>Lógica, conectividad, flujo</td>
+                <td>Automatizar conciliación entre dos fuentes</td>
+              </tr>
+              <tr>
+                <td><b>De Datos</b></td>
+                <td>Validar disponibilidad, calidad y valor</td>
+                <td>Estructura, reglas, métricas</td>
+                <td>Reporte/analítica de riesgos con CSV de muestra</td>
+              </tr>
+              <tr>
+                <td><b>De Texto / IA</b></td>
+                <td>Validar generación o análisis semántico</td>
+                <td>Coherencia, calidad del output</td>
+                <td>Resumir y clasificar notas/requerimientos</td>
+              </tr>
+              <tr>
+                <td><b>De Experiencia / Negocio</b></td>
+                <td>Validar valor percibido y usabilidad</td>
+                <td>Storytelling, claridad de la solución</td>
+                <td>Wireframe de un dashboard narrativo</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
+        <h2>Selección de equipos</h2>
+        <div class="card">
+          <p class="lead">Organiza las células (equipos) para trabajar los entregables B. Usa la tabla para asignar roles y notas.</p>
+          <table>
+            <thead>
+              <tr>
+                <th>Equipo / Célula</th>
+                <th>Product Owner</th>
+                <th>Enlace técnico</th>
+                <th>Analistas</th>
+                <th>Notas</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Equipo 1</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>Equipo 2</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>Equipo 3</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+          <p style="margin-top:12px">Sugerencia: cada equipo debe tener al menos 1 Product Owner y 1 enlace técnico. Los analistas pueden ser 1–3 personas según la complejidad del POC.</p>
+        </div>
+      </section>
+
+      <footer>
+      <div class="grid-2">
+        <div>
+          <h3>Contacto</h3>
+          <p><b>Alfredo Castañeda</b><br>Manager — Technology & Data Analytics<br><a href="mailto:luis.a.castaneda@mx.ey.com">luis.a.castaneda@mx.ey.com</a></p>
+        </div>
+        <div style="text-align:right">
+          <a href="sesion1.html" class="badge" style="background:var(--ey-accent);color:#fff;border:0;padding:8px 12px;text-decoration:none">Ir a Sesión 1</a>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:18px;color:#666;font-size:0.95em">Archivo actualizado con el estilo del brochure — dime si quieres ajustes de texto o añadir ejemplos concretos.</div>
+    </footer>
+
+  </main>
 </body>
 </html>

@@ -222,6 +222,50 @@
         </div>
       </section>
 
+      <section>
+        <h2>Ideas de POC — selección rápida</h2>
+        <div class="card">
+          <p class="lead">Selecciona una idea desde el combobox o escribe una nueva. Las ideas añadidas aparecerán en la tabla dinámica abajo, donde puedes editar la descripción o eliminarla.</p>
+
+          <div style="display:flex;gap:12px;align-items:center;margin-bottom:12px;flex-wrap:wrap">
+            <div style="flex:1;min-width:220px">
+              <label for="ideaInput" class="label">Idea / nombre</label>
+              <input id="ideaInput" list="ideasList" placeholder="Selecciona o escribe una idea" style="width:100%;padding:8px;border:1px solid #ddd;border-radius:6px">
+              <datalist id="ideasList">
+                <!-- options serán pobladas por script -->
+              </datalist>
+            </div>
+            <div style="min-width:180px">
+              <label for="ideaType" class="label">Tipo</label>
+              <select id="ideaType" style="width:100%;padding:8px;border:1px solid #ddd;border-radius:6px">
+                <option value="">(automático / opcional)</option>
+                <option value="Técnico / Automatización">Técnico / Automatización</option>
+                <option value="De Datos">De Datos</option>
+                <option value="De Texto / IA">De Texto / IA</option>
+                <option value="De Experiencia / Negocio">De Experiencia / Negocio</option>
+              </select>
+            </div>
+            <div style="min-width:120px">
+              <button id="addIdeaBtn" style="padding:8px 12px;background:var(--ey-accent);color:#fff;border:0;border-radius:6px;cursor:pointer">Añadir idea</button>
+            </div>
+          </div>
+
+          <table id="ideasTable" style="width:100%;border-collapse:collapse">
+            <thead>
+              <tr>
+                <th style="text-align:left;padding:8px;border:1px solid #eee">Nombre</th>
+                <th style="text-align:left;padding:8px;border:1px solid #eee">Tipo</th>
+                <th style="text-align:left;padding:8px;border:1px solid #eee">Descripción</th>
+                <th style="text-align:left;padding:8px;border:1px solid #eee">Acción</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- filas dinámicas -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
       <footer>
       <div class="grid-2">
         <div>
@@ -236,5 +280,68 @@
     </footer>
 
   </main>
+  <script>
+    // Lista inicial de ideas (nombre -> tipo por defecto)
+    const initialIdeas = [
+      {name: 'Auto conciliación de facturas', type: 'Técnico / Automatización'},
+      {name: 'Reporte de riesgo por CSV', type: 'De Datos'},
+      {name: 'Clasificador de notas fiscales', type: 'De Texto / IA'},
+      {name: 'Dashboard de cumplimiento', type: 'De Experiencia / Negocio'}
+    ];
+
+    const ideasList = document.getElementById('ideasList');
+    const ideaInput = document.getElementById('ideaInput');
+    const ideaType = document.getElementById('ideaType');
+    const addIdeaBtn = document.getElementById('addIdeaBtn');
+    const ideasTableBody = document.querySelector('#ideasTable tbody');
+
+    function populateDatalist() {
+      initialIdeas.forEach(i => {
+        const opt = document.createElement('option');
+        opt.value = i.name;
+        ideasList.appendChild(opt);
+      });
+    }
+
+    function findTypeByName(name){
+      const found = initialIdeas.find(i => i.name.toLowerCase() === name.toLowerCase());
+      return found ? found.type : '';
+    }
+
+    function addIdeaToTable(name, type, description=''){
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td style="padding:8px;border:1px solid #eee">${escapeHtml(name)}</td>
+        <td style="padding:8px;border:1px solid #eee">${escapeHtml(type)}</td>
+        <td style="padding:8px;border:1px solid #eee"><div contenteditable="true" style="min-width:140px;min-height:22px">${escapeHtml(description)}</div></td>
+        <td style="padding:8px;border:1px solid #eee"><button class="delBtn" style="padding:6px 8px;border-radius:6px;border:0;background:#e74c3c;color:#fff;cursor:pointer">Eliminar</button></td>
+      `;
+      ideasTableBody.appendChild(tr);
+      tr.querySelector('.delBtn').addEventListener('click', () => tr.remove());
+    }
+
+    function escapeHtml(s){
+      return String(s||'').replace(/[&<>"']/g, function(m){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"}[m]});
+    }
+
+    addIdeaBtn.addEventListener('click', () => {
+      const name = ideaInput.value && ideaInput.value.trim();
+      if(!name){
+        ideaInput.focus();
+        return;
+      }
+      let type = ideaType.value;
+      if(!type) type = findTypeByName(name) || '—';
+      addIdeaToTable(name, type);
+      ideaInput.value = '';
+      ideaType.value = '';
+    });
+
+    // soporte Enter en el input
+    ideaInput.addEventListener('keydown', (e) => { if(e.key === 'Enter'){ e.preventDefault(); addIdeaBtn.click(); } });
+
+    // inicializar
+    populateDatalist();
+  </script>
 </body>
 </html>

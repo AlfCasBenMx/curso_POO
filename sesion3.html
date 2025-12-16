@@ -200,6 +200,19 @@ python -m pip install -r requirements.txt</code></pre>
           <li><a href="ejercicios/soluciones.md">ejercicios/soluciones.md</a></li>
           <li><a href="ejercicios/prompts_cheatsheet.md">ejercicios/prompts_cheatsheet.md</a></li>
         </ul>
+        <h3>Lista de ejercicios (los trabajaremos uno a uno)</h3>
+        <ol>
+          <li><strong>Hola</strong> — lectura rápida de un script simple (sin archivo).</li>
+          <li><strong>Sumar importes</strong> — usa <code>transacciones.csv</code> (columna <code>importe</code>): =SUM(...)</li>
+          <li><strong>Contar operaciones grandes</strong> — usa <code>ventas.csv</code> (columna <code>importe</code>): =COUNTIFS(...)</li>
+          <li><strong>Aplicar IVA</strong> — usa <code>ventas.csv</code> o <code>transacciones.csv</code>: crea <code>importe_con_iva</code> =C2*1.16</li>
+          <li><strong>Sumar por categoría</strong> — usa <code>ventas.csv</code> (columnas <code>categoria</code>, <code>importe</code>): =SUMIFS(...)</li>
+          <li><strong>Agrupar y sumar</strong> — <code>ventas.csv</code>: tabla dinámica o SUMIFS por categoría.</li>
+          <li><strong>Lookup entre hojas</strong> — <code>ventas.csv</code> + <code>clientes.csv</code>: añade <code>cliente_nombre</code> con XLOOKUP/VLOOKUP.</li>
+          <li><strong>Regla escalonada</strong> — <code>ventas.csv</code>: columna <code>impuesto</code> con IFS o IF anidados.</li>
+          <li><strong>Verificación Python vs Excel</strong> — <code>ventas.csv</code> + <code>tarifas.csv</code>: calcula impuesto por categoría y compara con el resultado en Python.</li>
+          <li><strong>Asistente IA para fórmula</strong> — usa <code>ventas.csv</code>: pide al asistente la fórmula SUMIFS por categoría y rango de fechas y pruébala.</li>
+        </ol>
       </div>
     </section>
 

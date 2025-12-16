@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sesión 3 — Laboratorio Python I (instalación y entorno)</title>
+  <style>
+    :root{
+      --ey-yellow:#FFCD00;
+      --ey-dark:#242424;
+      --ey-gray:#6B6B6B;
+      --ey-light:#F7F7F7;
+      --ey-accent:#0F62FE;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--ey-dark);background:#fff;line-height:1.55}
+    a{color:var(--ey-accent);text-decoration:none}
+    a:hover{text-decoration:underline}
+    .wrap{max-width:1100px;margin:0 auto;padding:24px}
+    .hero{background: linear-gradient(135deg, var(--ey-yellow) 0%, #ffe77a 60%, #fff3b0 100%);padding:48px 24px 56px;position:relative;overflow:hidden;display:flex;align-items:center;gap:28px;border-radius:8px}
+    .hero img{width:120px;height:auto}
+    .hero .text{max-width:820px}
+    .hero h1{margin:0;font-size:clamp(24px,4.5vw,40px);font-weight:800}
+    .hero p.subtitle{margin:10px 0 0;font-size:16px;color:#222}
+    .badge{display:inline-block;padding:4px 10px;border-radius:999px;background:#fff8d6;border:1px solid #ffe68a;font-size:12px;margin-right:8px}
+    section{padding:36px 0;border-bottom:1px solid #f0f0f0}
+    h2{font-size:24px;margin:0 0 12px}
+    .lead{color:var(--ey-gray);max-width:900px}
+    .card{background:#fff;border:1px solid #eee;border-radius:12px;padding:18px;box-shadow:0 1px 2px rgba(0,0,0,0.04)}
+    pre{background:#fbfbfb;border:1px solid #eee;padding:12px;border-radius:8px;overflow:auto}
+    footer{padding:36px 0;color:#777}
+    @media (max-width:900px){.hero{flex-direction:column;align-items:flex-start}}
+  </style>
+</head>
+<body>
+
+  <header class="hero">
+    <img src="https://companieslogo.com/img/orig/ernst-and-young-6c5de5ba.svg?t=1720244494&download=true" alt="EY Logo">
+    <div class="text">
+      <h1>Sesión 3 — Laboratorio Python I</h1>
+      <p class="subtitle">Instalación del entorno y primer script — preparar la máquina para los laboratorios.</p>
+      <div style="margin-top:12px">
+        <span class="badge">Sesión C · Laboratorio</span>
+        <span class="badge">16-dic-25 · 15:00–16:00 (México)</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+
+    <section>
+      <h2>Objetivo del laboratorio</h2>
+      <div class="card">
+        <p class="lead">Dejar listo el entorno de desarrollo en Windows para ejecutar los ejemplos del curso: instalar Python, configurar un entorno virtual, instalar dependencias y ejecutar scripts sencillos.</p>
+        <ul>
+          <li>Verificar o instalar Python 3.</li>
+          <li>Instalar un editor recomendado (VS Code) y extensiones mínimas.</li>
+          <li>Crear y activar un entorno virtual.</li>
+          <li>Instalar dependencias con pip desde <code>requirements.txt</code> si aplica.</li>
+          <li>Ejecutar un primer script de prueba.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2>Agenda rápida (60 min)</h2>
+      <div class="card">
+        <ol>
+          <li>Comprobación previa y preguntas (10 min)</li>
+          <li>Instalación y configuración (25 min)</li>
+          <li>Primer script y pruebas (15 min)</li>
+          <li>Preguntas y cierre (10 min)</li>
+        </ol>
+      </div>
+    </section>
+
+    <section>
+      <h2>Pasos prácticos</h2>
+      <div class="card">
+        <h3>1) Verificar Python</h3>
+        <p>Abre una ventana de <code>cmd.exe</code> y ejecuta:</p>
+        <pre><code>python --version</code></pre>
+
+        <h3>2) Crear y activar un entorno virtual (Windows, cmd.exe)</h3>
+        <pre><code>python -m venv .venv
+.venv\Scripts\activate</code></pre>
+
+        <h3>3) Actualizar pip e instalar dependencias</h3>
+        <pre><code>python -m pip install --upgrade pip
+python -m pip install -r requirements.txt</code></pre>
+
+        <h3>4) Ejecutar un script de prueba</h3>
+        <p>Crea un archivo <code>hola.py</code> con este contenido y ejecútalo:</p>
+        <pre><code>print('Hola desde Python - Sesión 3')</code></pre>
+        <pre><code>python hola.py</code></pre>
+      </div>
+    </section>
+
+    <section>
+      <h2>Checklist rápido de preparación</h2>
+      <div class="card">
+        <ul>
+          <li>Python 3 instalado y accesible desde la línea de comandos.</li>
+          <li>Editor instalado (VS Code recomendado).</li>
+          <li>Entorno virtual creado y activado.</li>
+          <li>Dependencias instaladas sin errores (si existe <code>requirements.txt</code>).</li>
+          <li>Primer script ejecutado correctamente.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2>Resolución de problemas comunes</h2>
+      <div class="card">
+        <ul>
+          <li>Si <code>python</code> no se reconoce: instala Python y marca "Add to PATH" en el instalador.</li>
+          <li>Si la activación del entorno falla en PowerShell, ejecuta: <code>Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned</code> en PowerShell (admin) o usa cmd.exe.</li>
+          <li>Errores al instalar paquetes: revisa la versión de pip y vuelve a intentarlo; revisa conexión a internet y permisos.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2>Recursos</h2>
+      <div class="card">
+        <ul>
+          <li><a href="intro.html">Brochure del curso</a></li>
+          <li><a href="sesion1.html">Material Sesión 1</a></li>
+          <li><a href="sesion2.html">Material Sesión 2</a></li>
+          <li>Python downloads: <a href="https://www.python.org/downloads/">python.org</a></li>
+        </ul>
+      </div>
+    </section>
+
+    <footer>
+      <div style="text-align:center;margin-top:18px;color:#666;font-size:0.95em">Laboratorio práctico — sin entregable. Si quieres que prepare un script de bootstrap (.bat) para automatizar la creación del entorno, dímelo.</div>
+    </footer>
+
+  </main>
+</body>
+</html>

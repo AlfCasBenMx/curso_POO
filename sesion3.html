@@ -213,6 +213,82 @@ python -m pip install -r requirements.txt</code></pre>
           <li><strong>Verificación Python vs Excel</strong> — <code>ventas.csv</code> + <code>tarifas.csv</code>: calcula impuesto por categoría y compara con el resultado en Python.</li>
           <li><strong>Asistente IA para fórmula</strong> — usa <code>ventas.csv</code>: pide al asistente la fórmula SUMIFS por categoría y rango de fechas y pruébala.</li>
         </ol>
+        <h3>Tabla de prompts recomendados para Copilot / ChatGPT</h3>
+        <div style="overflow:auto">
+          <table style="width:100%;border-collapse:collapse">
+            <thead>
+              <tr>
+                <th style="text-align:left;padding:8px;border-bottom:1px solid #e6e6e6">Ejercicio</th>
+                <th style="text-align:left;padding:8px;border-bottom:1px solid #e6e6e6">Prompt recomendado (Copilot / ChatGPT)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="padding:8px;border-bottom:1px solid #f4f4f4">1 — Hola (lectura)</td>
+                <td style="padding:8px;border-bottom:1px solid #f4f4f4">"Explica en una frase qué imprime este script: &lt;pega el snippet de hola.py&gt;"</td>
+              </tr>
+              <tr>
+                <td style="padding:8px;border-bottom:1px solid #f4f4f4">2 — Sumar importes (transacciones)</td>
+                <td style="padding:8px;border-bottom:1px solid #f4f4f4">"Dame la fórmula de Excel que suma todos los valores de la columna 'importe' en la hoja 'transacciones'"</td>
+              </tr>
+              <tr>
+                <td style="padding:8px;border-bottom:1px solid #f4f4f4">3 — Contar operaciones grandes (ventas)</td>
+                <td style="padding:8px;border-bottom:1px solid #f4f4f4">"Escribe una fórmula Excel que cuente filas en 'ventas' donde 'importe' &gt;= 1000 (usa COUNTIFS) y explica brevemente cada argumento"</td>
+              </tr>
+              <tr>
+                <td style="padding:8px;border-bottom:1px solid #f4f4f4">4 — Aplicar IVA (ventas/transacciones)</td>
+                <td style="padding:8px;border-bottom:1px solid #f4f4f4">"Dame la fórmula para calcular 'importe_con_iva' aplicando 16% sobre la columna 'importe' y una versión que evite errores en celdas vacías"</td>
+              </tr>
+              <tr>
+                <td style="padding:8px;border-bottom:1px solid #f4f4f4">5 — Sumar por categoría (ventas)</td>
+                <td style="padding:8px;border-bottom:1px solid #f4f4f4">"Escribe una fórmula SUMIFS que sume 'importe' en 'ventas' solo para Categoria = 'Servicios'"</td>
+              </tr>
+              <tr>
+                <td style="padding:8px;border-bottom:1px solid #f4f4f4">6 — Agrupar y sumar (ventas)</td>
+                <td style="padding:8px;border-bottom:1px solid #f4f4f4">"Indícame los pasos para crear una tabla dinámica que muestre la suma de 'importe' por 'categoria' en Excel; da además la alternativa con SUMIFS"</td>
+              </tr>
+              <tr>
+                <td style="padding:8px;border-bottom:1px solid #f4f4f4">7 — Lookup entre hojas (ventas + clientes)</td>
+                <td style="padding:8px;border-bottom:1px solid #f4f4f4">"Dame la fórmula XLOOKUP para traer el nombre del cliente a partir de 'id_cliente' desde la hoja 'clientes' y una alternativa con VLOOKUP"</td>
+              </tr>
+              <tr>
+                <td style="padding:8px;border-bottom:1px solid #f4f4f4">8 — Regla escalonada (ventas)</td>
+                <td style="padding:8px;border-bottom:1px solid #f4f4f4">"Escribe una fórmula que calcule impuesto: si importe&lt;=1000 → 5%, si importe&lt;=5000 → 8%, si importe&gt;5000 → 12%. Dame versión IFS y versión IF anidado"</td>
+              </tr>
+              <tr>
+                <td style="padding:8px;border-bottom:1px solid #f4f4f4">9 — Verificación Python vs Excel</td>
+                <td style="padding:8px;border-bottom:1px solid #f4f4f4">"Explica cómo verificar que la suma de impuestos calculada en Python coincide con la suma en Excel usando ejemplos y checks básicos (subconjunto manual, tipos de dato)"</td>
+              </tr>
+              <tr>
+                <td style="padding:8px;border-bottom:1px solid #f4f4f4">10 — Asistente IA para fórmula</td>
+                <td style="padding:8px;border-bottom:1px solid #f4f4f4">"Tengo columnas Fecha (A), Categoria (B) e Importe (C). Dame una fórmula SUMIFS que sume Importe para Categoria='Servicios' entre 2025-01-01 y 2025-12-31. Explica cada criterio."</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+      <div class="card" style="margin-top:16px">
+        <h3>Cómo redactar prompts efectivos (recomendaciones rápidas)</h3>
+        <ol>
+          <li><strong>Sé específico y breve:</strong> indica la tarea concreta (p. ej. "Escribe la fórmula SUMIFS...") y pega una fila o un snippet pequeño si es necesario.</li>
+          <li><strong>Proporciona contexto mínimo:</strong> menciona nombres de columnas y hoja (por ejemplo: "Hoja 'ventas' con columnas Fecha, Categoria e Importe").</li>
+          <li><strong>Pide la salida en el formato que necesitas:</strong> fórmula lista para copiar, pasos numerados, o explicación en lenguaje de negocio.
+            <br>Ejemplo: "Devuélveme solo la fórmula lista para pegar en Excel y una breve explicación de 1 línea."</li>
+          <li><strong>Controla la seguridad y supuestos:</strong> pide que indique supuestos (p. ej. manejo de celdas vacías, formatos de fecha) y que sugiera validaciones rápidas.</li>
+          <li><strong>Pide alternativas y explicaciones:</strong> solicita 2 variantes (una compacta, otra robusta) y una breve comparación de pros/cons.</li>
+          <li><strong>Valida la respuesta:</strong> pide un ejemplo numérico pequeño (3 filas) y que muestre el resultado esperado para esas filas.</li>
+          <li><strong>Itera con prompts de revisión:</strong> si la primera respuesta no ajusta, responde al asistente con "Corrige para soportar fechas dd/mm/yyyy" o "Hazlo tolerante a celdas vacías".</li>
+        </ol>
+
+        <h4>Plantilla rápida de prompt</h4>
+        <pre><code>Contexto: Hoja 'ventas' con columnas Fecha (A), Categoria (B), Importe (C).
+Tarea: Dame la fórmula de Excel que sume Importe para Categoria='Servicios' entre 2025-01-01 y 2025-12-31.
+Formato de salida: Solo la fórmula lista para pegar y luego una línea con el porqué.
+Validación: Muestra el resultado esperado para estas 3 filas de ejemplo: [2025-01-05,Servicios,1500],[2025-02-10,Software,3200.5],[2025-03-20,Servicios,450]
+</code></pre>
+
+        <p class="lead">Usa esta plantilla como base y cámbiala por el caso: pega snippets de Python para pedir traducción a Excel, o pega una fórmula y pide que la revise.</p>
       </div>
     </section>
 

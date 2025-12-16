@@ -1,0 +1,5 @@
+id_cliente,fecha,importe,categoria
+1,2025-01-05,1500.00,Servicios
+2,2025-02-10,3200.50,Software
+3,2025-03-12,200.00,Retenciones
+1,2025-03-20,450.00,Servicios

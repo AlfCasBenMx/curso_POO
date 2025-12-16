@@ -132,8 +132,63 @@ python -m pip install -r requirements.txt</code></pre>
       </div>
     </section>
 
+    <section>
+      <h2>Prompts de asistentes de IA (ejemplos prácticos)</h2>
+      <div class="card">
+        <p class="lead">Colección de prompts listos para usar con ChatGPT, Copilot o Copilot en Excel. Úsalos tal cual y ajústalos con datos de tu hoja.</p>
+        <h3>Fórmulas de Excel</h3>
+        <ul>
+          <li><strong>SUMIFS por categoría y rango de fechas</strong><br>
+            "Tengo una hoja con columna Fecha (A), Categoria (B) e Importe (C). Dame la fórmula de Excel que sume Importe solo para Categoria='Honorarios' entre 2025-01-01 y 2025-12-31. Explica cada condición."</li>
+          <li><strong>Buscar y devolver nombre</strong><br>
+            "En la hoja 'Ventas' tengo ID cliente en A y en 'Clientes' tengo ID en A y Nombre en B. Dame la fórmula XLOOKUP que devuelva el nombre del cliente en la misma fila de Ventas. Indica también alternativas con VLOOKUP."</li>
+          <li><strong>IFS para reglas escalonadas</strong><br>
+            "Tengo una columna Monto. Si Monto<=1000 aplicar 5%, si Monto<=5000 aplicar 8%, si es mayor aplicar 12%. Dame la fórmula Excel compacta usando IFS y una versión con IF anidados."</li>
+        </ul>
+
+        <h3>Traducir Python a Excel (útil para contadores)</h3>
+        <ul>
+          <li>"Este snippet en Python hace X (pega el snippet). Explícalo en lenguaje de negocio para un contador y di qué columnas y fórmulas necesitaría en Excel para replicarlo."</li>
+          <li>"Convierte este fragmento de Python que agrupa ventas por categoría en una lista de pasos y fórmulas de Excel (o instrucciones para Power Query)."</li>
+        </ul>
+
+        <h3>Verificación de resultados y control de calidad</h3>
+        <ul>
+          <li>"Genera una lista de pruebas rápidas para validar un total calculado por un script: 1) comparar con suma manual sobre un subconjunto; 2) validar filas nulas; 3) chequear tipos de dato; 4) detectar duplicados."</li>
+          <li>"Explícame cómo construir casos de prueba simples en Python para validar que una función de cálculo de impuesto devuelva los valores esperados."</li>
+        </ul>
+
+        <h3>Prompts para revisar y mejorar la salida del asistente</h3>
+        <ul>
+          <li>"La fórmula propuesta no considera fechas en formato dd/mm/yyyy — reescríbela para que funcione con ese formato y explica por qué cambiaste los criterios."</li>
+          <li>"Dame 3 variantes más cortas y 2 variantes más robustas de la fórmula; indica ventajas y riesgos de cada una."</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2>Revisiones y checklist de validación (para el laboratorio)</h2>
+      <div class="card">
+        <p class="lead">Antes de aceptar resultados (scripts o fórmulas), pide a los participantes que sigan esta lista rápida de validación.</p>
+        <ol>
+          <li>Prueba con un subconjunto pequeño (3–5 filas) y calcula manualmente para verificar el total.</li>
+          <li>Comprueba tipos de dato: fechas como fechas, importes como números (sin comas ni símbolos).</li>
+          <li>Verifica que los valores nulos o vacíos no rompen el cálculo (usa IFERROR o condiciones explicitas).</li>
+          <li>Haz una comparación entre la versión en Python y la versión en Excel: sumar totales y comparar diferencias porcentuales (deben ser 0 o muy pequeñas por redondeo).</li>
+          <li>Revisa los casos límite: montos 0, fechas limítrofes (inicio/fin de periodos), categorías desconocidas.</li>
+          <li>Documenta brevemente (1–2 líneas) la lógica usada y los supuestos (por ejemplo: "Se ignoran importes negativos").</li>
+        </ol>
+        <p class="lead">Prompts de ejemplo para pedir revisiones al asistente de IA:</p>
+        <ul>
+          <li>"Haz una revisión de la fórmula y enumera posibles errores de entrada que la harían fallar."</li>
+          <li>"Explica en lenguaje de negocio por qué el resultado difiere en 0.2% entre Python y Excel y sugiere acciones para corregirlo."</li>
+          <li>"Genera pasos concretos para convertir este cálculo en una tabla dinámica reproducible en Excel."</li>
+        </ul>
+      </div>
+    </section>
+
     <footer>
-      <div style="text-align:center;margin-top:18px;color:#666;font-size:0.95em">Laboratorio práctico — sin entregable. Si quieres que prepare un script de bootstrap (.bat) para automatizar la creación del entorno, dímelo.</div>
+      <div style="text-align:center;margin-top:18px;color:#666;font-size:0.95em">Laboratorio práctico — sin entregable. Si quieres que prepare un script de bootstrap (.bat) para automatizar la creación del entorno, o que añada la carpeta <code>ejercicios/</code> con los CSV y scripts de ejemplo, dímelo y lo creo ahora.</div>
     </footer>
 
   </main>

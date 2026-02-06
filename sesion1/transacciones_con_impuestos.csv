@@ -1,0 +1,21 @@
+monto,concepto,giro,region_geografica,iva,isr_retencion,iva_retencion,impuesto_local,monto_iva,monto_isr_ret,monto_iva_ret,monto_imp_local,total_retenciones,pct_retencion_total
+15000.0,Venta de mercancía,Comercio,Norte,16,0,0.0,2.0,2400.0,0.0,0.0,300.0,0.0,0.0
+8500.5,Servicio de consultoría,Servicios Profesionales,Centro,16,10,10.67,3.0,1360.08,850.05,907.0033500000001,255.015,1757.0533500000001,20.67
+125000.0,Venta de maquinaria,Manufactura,Bajío,16,0,0.0,2.0,20000.0,0.0,0.0,2500.0,0.0,0.0
+3200.0,Comisión por ventas,Comercio,Sur,16,0,0.0,2.0,512.0,0.0,0.0,64.0,0.0,0.0
+45000.0,Honorarios médicos,Servicios de Salud,Centro,0,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+78500.0,Venta de alimentos,Comercio,Norte,16,0,0.0,2.0,12560.0,0.0,0.0,1570.0,0.0,0.0
+12000.0,Renta de oficina,Inmobiliario,Centro,16,0,0.0,4.0,1920.0,0.0,0.0,480.0,0.0,0.0
+95000.0,Exportación de autopartes,Manufactura,Bajío,16,0,0.0,2.0,15200.0,0.0,0.0,1900.0,0.0,0.0
+5600.0,Servicio de transporte,Transporte y Logística,Norte,16,0,0.0,1.5,896.0,0.0,0.0,84.0,0.0,0.0
+22000.0,Venta de software,Tecnología,Centro,16,0,0.0,2.0,3520.0,0.0,0.0,440.0,0.0,0.0
+180000.0,Construcción de nave industrial,Construcción,Bajío,16,0,0.0,2.5,28800.0,0.0,0.0,4500.0,0.0,0.0
+4500.0,Servicio de limpieza,Servicios Generales,Sur,16,0,0.0,2.0,720.0,0.0,0.0,90.0,0.0,0.0
+67000.0,Venta de electrodomésticos,Comercio,Norte,16,0,0.0,2.0,10720.0,0.0,0.0,1340.0,0.0,0.0
+9800.0,Asesoría legal,Servicios Profesionales,Centro,16,10,10.67,3.0,1568.0,980.0,1045.66,294.0,2025.66,20.67
+35000.0,Producción de textiles,Manufactura,Sur,16,0,0.0,2.0,5600.0,0.0,0.0,700.0,0.0,0.0
+15500.0,Servicio de hospedaje,Turismo y Hospitalidad,Sur,16,0,0.0,1.5,2480.0,0.0,0.0,232.5,0.0,0.0
+42000.0,Venta de medicamentos,Servicios de Salud,Centro,0,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+28000.0,Desarrollo de app móvil,Tecnología,Centro,16,0,0.0,2.0,4480.0,0.0,0.0,560.0,0.0,0.0
+55000.0,Renta de bodega,Inmobiliario,Bajío,16,0,0.0,2.5,8800.0,0.0,0.0,1375.0,0.0,0.0
+8900.0,Servicio de mensajería,Transporte y Logística,Norte,16,0,0.0,1.5,1424.0,0.0,0.0,133.5,0.0,0.0

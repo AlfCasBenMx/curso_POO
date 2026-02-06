@@ -1,0 +1,261 @@
+================================================================================
+        CUESTIONARIO POC: DEDUCCIÓN DE INVERSIONES
+================================================================================
+Equipo: Moises, Montserrat, Natalia
+Instructor: Luis
+Curso: Python + Copilot
+Fecha de entrega: _______________
+================================================================================
+
+Hola equipo, para poder ayudarles a construir su herramienta con Python y 
+Copilot, necesito que respondan las siguientes preguntas.
+
+RECUERDEN: Copilot puede generar el código, pero NO puede inventar las 
+reglas fiscales ni las fórmulas. Esa información solo ustedes la tienen.
+
+NOTA: Este POC es el más ambicioso porque incluye:
+- Herramienta WEB (Streamlit)
+- Cuestionario interactivo para mapear columnas
+- Cálculos fiscales (depreciación, factor de actualización)
+- API del INEGI para INPC
+- Comparativo vs compañía
+
+¡Excelente alcance! Pero necesito información muy detallada.
+
+================================================================================
+PARTE 1: SOBRE LA DEDUCCIÓN DE INVERSIONES
+================================================================================
+
+1. ¿Qué artículos de LISR aplican?
+   [ ] Art. 31 - Deducción de inversiones
+   [ ] Art. 32 - Porcentajes máximos
+   [ ] Art. 33 - Porcentajes por tipo de bien
+   [ ] Art. 34 - Maquinaria y equipo
+   [ ] Art. 35 - Reglas para deducción
+   [ ] Otros: _______________________________________________________________
+
+2. ¿Qué tipos de activos revisarán?
+   [ ] Maquinaria y equipo
+   [ ] Mobiliario de oficina
+   [ ] Equipo de cómputo
+   [ ] Equipo de transporte
+   [ ] Edificios
+   [ ] Todos los anteriores
+   [ ] Otros: _______________________________________________________________
+
+================================================================================
+PARTE 2: EL EXCEL QUE PROPORCIONA LA COMPAÑÍA
+================================================================================
+
+1. ¿Qué columnas típicamente contiene?
+
+   | # | Columna | ¿Obligatoria? | Ejemplo |
+   |---|---------|---------------|---------|
+   | 1 | ID/Número del activo | [ ] Sí [ ] No | ACT-001 |
+   | 2 | Descripción | [ ] Sí [ ] No | Computadora Dell |
+   | 3 | Tipo de activo | [ ] Sí [ ] No | Equipo de cómputo |
+   | 4 | Fecha de adquisición | [ ] Sí [ ] No | 15/03/2023 |
+   | 5 | MOI (Monto Original Inversión) | [ ] Sí [ ] No | $25,000 |
+   | 6 | Tasa de depreciación | [ ] Sí [ ] No | 30% |
+   | 7 | Depreciación acumulada | [ ] Sí [ ] No | $15,000 |
+   | 8 | Depreciación del ejercicio | [ ] Sí [ ] No | $7,500 |
+   | 9 | Saldo por depreciar | [ ] Sí [ ] No | $10,000 |
+   | 10 | | [ ] Sí [ ] No | |
+   | 11 | | [ ] Sí [ ] No | |
+   (Agreguen más si es necesario)
+
+2. ¿El formato del Excel es siempre igual?
+   [ ] Sí, siempre las mismas columnas en el mismo orden
+   [ ] No, varía por compañía → Por eso necesitan el cuestionario de mapeo
+
+3. ¿PUEDEN COMPARTIR UN EXCEL DE EJEMPLO?
+   [ ] Sí → Por favor envíenlo (pueden anonimizar datos)
+   [ ] No
+
+================================================================================
+PARTE 3: TASAS DE DEPRECIACIÓN FISCAL
+================================================================================
+
+Confirmen las tasas según LISR (Art. 33-34):
+
+| Tipo de Activo | Tasa LISR | ¿Aplica? |
+|----------------|-----------|----------|
+| Construcciones | 5% | [ ] Sí [ ] No |
+| Mobiliario y equipo de oficina | 10% | [ ] Sí [ ] No |
+| Automóviles | 25% | [ ] Sí [ ] No |
+| Equipo de cómputo | 30% | [ ] Sí [ ] No |
+| Equipo de transporte | 25% | [ ] Sí [ ] No |
+| Maquinaria en general | 10% | [ ] Sí [ ] No |
+| Otro: _______________ | ___% | [ ] Sí [ ] No |
+| Otro: _______________ | ___% | [ ] Sí [ ] No |
+
+¿Hay tasas especiales por industria que deban considerar?
+[ ] No, solo las generales
+[ ] Sí → ¿Cuáles? ____________________________________________________________
+
+================================================================================
+PARTE 4: FACTOR DE ACTUALIZACIÓN (INPC)
+================================================================================
+
+1. ¿Cuál es la fórmula del factor de actualización?
+
+   Factor = INPC del último mes de la 1era mitad del período de uso
+            ─────────────────────────────────────────────────────────
+            INPC del mes de adquisición
+
+   ¿Es correcta? [ ] Sí [ ] No → Fórmula correcta: __________________________
+
+2. Ejemplo de cálculo del factor:
+   
+   - Activo adquirido en: Marzo 2023
+   - Ejercicio fiscal: 2025
+   - Meses de uso en 2025: Enero a Diciembre (12 meses)
+   - Primera mitad: Enero a Junio
+   - Último mes de 1era mitad: Junio 2025
+   
+   Factor = INPC Junio 2025 / INPC Marzo 2023
+   
+   ¿Este cálculo es correcto? [ ] Sí [ ] No
+   Si es diferente, expliquen: _______________________________________________
+
+3. ¿De dónde obtienen los valores del INPC?
+   [ ] API del INEGI
+   [ ] El usuario los captura manualmente
+   [ ] Tabla precargada
+   [ ] Otro: ________________________________________________________________
+
+================================================================================
+PARTE 5: TODOS LOS CÁLCULOS QUE HACE LA HERRAMIENTA
+================================================================================
+
+Listen todos los cálculos y sus fórmulas:
+
+| # | Cálculo | Fórmula | ¿Usuario selecciona? |
+|---|---------|---------|----------------------|
+| 1 | Depreciación anual fiscal | MOI × Tasa | [ ] Sí [ ] No |
+| 2 | Factor de actualización | INPC final / INPC inicial | [ ] Sí [ ] No |
+| 3 | Depreciación actualizada | Dep anual × Factor | [ ] Sí [ ] No |
+| 4 | Depreciación acumulada | Suma deps anteriores | [ ] Sí [ ] No |
+| 5 | Saldo pendiente por depreciar | MOI - Dep acumulada | [ ] Sí [ ] No |
+| 6 | Saldo pendiente actualizado | Saldo × Factor | [ ] Sí [ ] No |
+| 7 | | | [ ] Sí [ ] No |
+| 8 | | | [ ] Sí [ ] No |
+
+¿Hay cálculos especiales que no mencioné?
+___________________________________________________________________________
+
+================================================================================
+PARTE 6: EL CUESTIONARIO INTERACTIVO (WEB)
+================================================================================
+
+La herramienta mostrará un cuestionario para mapear columnas. 
+¿Qué preguntas debe hacer?
+
+MAPEO DE COLUMNAS:
+1. "¿Cuál columna contiene el Monto Original de Inversión (MOI)?"
+2. "¿Cuál columna contiene la fecha de adquisición?"
+3. "¿Cuál columna contiene el tipo de activo?"
+4. "¿Cuál columna contiene la depreciación de la compañía?"
+5. ___________________________________________________________________________
+6. ___________________________________________________________________________
+7. ___________________________________________________________________________
+
+SELECCIÓN DE CÁLCULOS:
+1. "¿Desea recalcular el factor de actualización?" [ ] Sí [ ] No
+2. "¿Desea validar las tasas de depreciación?" [ ] Sí [ ] No
+3. "¿Desea calcular la depreciación fiscal actualizada?" [ ] Sí [ ] No
+4. ___________________________________________________________________________
+5. ___________________________________________________________________________
+
+PARÁMETROS:
+1. "¿Cuál es el ejercicio fiscal a revisar?" [2025]
+2. "¿Fecha de cierre del ejercicio?" [31/12/2025]
+3. ___________________________________________________________________________
+
+================================================================================
+PARTE 7: VALIDACIONES Y DIFERENCIAS
+================================================================================
+
+1. ¿Qué validaciones debe hacer la herramienta?
+
+   | # | Validación | ¿Qué compara? |
+   |---|------------|---------------|
+   | 1 | Tasa correcta | Tasa de compañía vs Tasa LISR |
+   | 2 | Factor correcto | Factor de compañía vs Factor calculado |
+   | 3 | Depreciación correcta | Dep de compañía vs Dep calculada |
+   | 4 | | |
+   | 5 | | |
+
+2. ¿Qué tolerancia de diferencia es aceptable?
+   [ ] $0 exacto
+   [ ] ±$1 (redondeo)
+   [ ] ±X% → ¿Cuánto? _____%
+   [ ] Otro: ________________________________________________________________
+
+3. ¿Cómo mostrar las diferencias?
+   [ ] Columna adicional con la diferencia
+   [ ] Resaltado en color (rojo = diferencia)
+   [ ] Reporte separado de diferencias
+   [ ] Todos los anteriores
+
+================================================================================
+PARTE 8: EJEMPLO NUMÉRICO COMPLETO
+================================================================================
+
+Proporcionen un ejemplo con números:
+
+DATOS DEL ACTIVO:
+- Descripción: Computadora Dell
+- Tipo: Equipo de cómputo
+- Fecha adquisición: 15/03/2023
+- MOI: $25,000
+- Tasa aplicada por compañía: 30%
+- Tasa correcta LISR: 30%
+
+CÁLCULO DEL FACTOR (para ejercicio 2025):
+- Meses de uso en 2025: 12 (todo el año)
+- Primera mitad: Enero - Junio
+- INPC Marzo 2023: _______________
+- INPC Junio 2025: _______________
+- Factor: _______________
+
+CÁLCULO DE DEPRECIACIÓN:
+- Depreciación anual: $25,000 × 30% = $7,500
+- Depreciación actualizada: $7,500 × Factor = $_______________
+- Depreciación según compañía: $_______________
+- Diferencia: $_______________
+
+================================================================================
+PARTE 9: SOBRE EL EQUIPO
+================================================================================
+
+1. ¿Quién entiende mejor los Art. 31-35 LISR?
+   Respuesta: _______________
+
+2. ¿Alguien tiene experiencia con desarrollo web?
+   [ ] Sí - ¿Quién? _______________
+   [ ] No
+
+3. ¿Cuántos activos tiene típicamente un archivo de cliente?
+   [ ] Menos de 100
+   [ ] 100 - 500
+   [ ] 500 - 1,000
+   [ ] Más de 1,000
+
+================================================================================
+ARCHIVOS QUE NECESITO:
+================================================================================
+
+Para poder construir la herramienta correctamente, es muy útil que compartan:
+
+1. [ ] Un Excel de ejemplo de cálculo de depreciación
+2. [ ] El catálogo de tipos de activo que manejan
+
+================================================================================
+NOTAS ADICIONALES:
+================================================================================
+
+_____________________________________________________________________________
+_____________________________________________________________________________
+
+================================================================================

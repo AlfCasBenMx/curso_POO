@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>POC Thinking con Python y ChatGPT — Brochure</title>
+  <style>
+    :root{
+      --ey-yellow:#FFCD00;
+      --ey-dark:#242424;
+      --ey-gray:#6B6B6B;
+      --ey-light:#F7F7F7;
+      --ey-accent:#0F62FE;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--ey-dark);background:#fff;line-height:1.55}
+    a{color:var(--ey-accent);text-decoration:none}
+    a:hover{text-decoration:underline}
+    .wrap{max-width:1100px;margin:0 auto;padding:24px}
+    /* HERO */
+    .hero{
+      background: linear-gradient(135deg, var(--ey-yellow) 0%, #ffe77a 60%, #fff3b0 100%);
+      padding:64px 24px 72px;
+      position:relative;
+      overflow:hidden;
+      display:flex;align-items:center;gap:40px
+    }
+    .hero img{width:150px;height:auto}
+    .hero .text{max-width:800px}
+    .hero h1{margin:0;font-size:clamp(28px,5vw,48px);font-weight:800;letter-spacing:-0.02em;}
+    .hero p.subtitle{margin:12px 0 0;font-size:clamp(16px,2.5vw,20px);color:#2c2c2c;}
+    .badge{display:inline-block;padding:4px 10px;border-radius:999px;background:#fff8d6;border:1px solid #ffe68a;font-size:12px;margin-right:8px}
+    /* INFO STRIP */
+    .strip{background:#fff;border-bottom:1px solid #eee;}
+    .strip-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+    .card-mini{padding:18px;border-left:4px solid var(--ey-yellow);background:var(--ey-light);border-radius:8px;}
+    .label{font-size:12px;letter-spacing:.08em;color:var(--ey-gray);text-transform:uppercase}
+    .big{font-size:18px;font-weight:700;margin-top:6px}
+    /* SECTIONS */
+    section{padding:40px 0;border-bottom:1px solid #f0f0f0}
+    h2{font-size:26px;margin:0 0 12px;letter-spacing:-.01em}
+    .lead{color:var(--ey-gray);max-width:900px}
+    .grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+    .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+    .box{background:#fff;border:1px solid #eee;border-radius:12px;padding:20px;box-shadow:0 1px 2px rgba(0,0,0,0.04)}
+    ul{margin:10px 0 0 18px}
+    /* TIMELINE */
+    .timeline{position:relative;margin-top:12px}
+    .tl-item{display:grid;grid-template-columns:120px 1fr;gap:18px;padding:16px 0;border-top:1px dashed #e6e6e6}
+    .tl-item:first-child{border-top:none}
+    .week{font-weight:700}
+    .deliverable{background:#f9fafb;border:1px solid #eee;padding:10px;border-radius:8px;margin-top:8px}
+    /* TABLE */
+    table{width:100%;border-collapse:collapse;margin-top:10px}
+    th, td{border:1px solid #eee;padding:10px;text-align:left;vertical-align:top}
+    th{background:#fffaf0}
+    footer{padding:36px 0;color:#777}
+    @media (max-width:900px){
+      .strip-grid{grid-template-columns:1fr}
+      .grid-2, .grid-3{grid-template-columns:1fr}
+      .tl-item{grid-template-columns:1fr}
+      .hero{flex-direction:column;align-items:flex-start}
+    }
+  </style>
+</head>
+<body>
+
+  <header class="hero">
+  <!-- Logo EY (SVG remoto) -->
+  <img src="https://companieslogo.com/img/orig/ernst-and-young-6c5de5ba.svg?t=1720244494&download=true" alt="EY Logo" style="width:150px;height:auto">
+    <div class="text">
+      <h1>POC Thinking con Python y ChatGPT</h1>
+      <p class="subtitle">Brochure del programa — Colaboración entre <b>Taxes</b> y <b>Data &amp; AI</b>: de la idea al caso viable, sin necesidad de programar solos.</p>
+      <div style="margin-top:10px">
+        <span class="badge">4 semanas · 12 sesiones (3/sem)</span>
+        <span class="badge">Incluye Laboratorio Python semanal</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="strip">
+    <div class="wrap strip-grid">
+      <div class="card-mini">
+        <div class="label">Duración</div>
+        <div class="big">4 semanas · 12 sesiones</div>
+      </div>
+      <div class="card-mini">
+        <div class="label">Formato</div>
+        <div class="big">Sesión A (aprendizaje) · Sesión B (entregable) · Sesión C (Lab Python)</div>
+      </div>
+      <div class="card-mini">
+        <div class="label">Trabajo</div>
+        <div class="big">En células (Product Owner, enlace técnico, analistas)</div>
+      </div>
+    </div>
+  </div>
+
+  <main class="wrap">
+
+    <section>
+      <h2>Objetivo del programa</h2>
+      <p class="lead">Fortalecer la colaboración entre <b>Taxes</b> y <b>Data/AI</b> desarrollando un lenguaje común para crear <b>POCs</b>. Usamos <b>ChatGPT</b> como copiloto para idear, explicar y documentar; y una <b>Sesión C</b> semanal de <b>Laboratorio Python</b> para instalar herramientas y practicar sintaxis básica (sin entregables).</p>
+    </section>
+
+    <section>
+      <h2>Método de trabajo</h2>
+      <div class="grid-3">
+        <div class="box">
+          <h3>Ritmo semanal</h3>
+          <ul>
+            <li><b>Sesión A:</b> explicación + ejemplo + prompts con ChatGPT</li>
+            <li><b>Sesión B:</b> trabajo en célula + revisión de entregable</li>
+            <li><b>Sesión C:</b> <u>Laboratorio Python</u> (instalación y práctica) — sin entregable</li>
+          </ul>
+        </div>
+        <div class="box">
+          <h3>Estructura de células</h3>
+          <ul>
+            <li>1–2 Product Owners (negocio)</li>
+            <li>1 enlace técnico (Data/AI)</li>
+            <li>Resto: analistas e ideadores</li>
+          </ul>
+        </div>
+        <div class="box">
+          <h3>Resultados esperados</h3>
+          <ul>
+            <li>Business case breve</li>
+            <li>Documento de Estructura del POC</li>
+            <li>Wireframe + narrativa del POC</li>
+            <li>Demo o pitch final</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Plan de 4 semanas (A, B y C)</h2>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="week">Semana 1</div>
+          <div>
+            <b>Sesión A:</b> Pensar en clave de POC — qué es un POC y casos en Taxes.<br>
+            <b>Sesión B:</b> Presentación de propuesta y feedback.<br>
+            <b>Sesión C (Laboratorio Python):</b> Instalación de Python, VSCode, <code>pip</code> y <code>venv</code>; uso de terminal; primer script.
+            <div class="deliverable"><b>Entregable B:</b> Propuesta de POC (problema, valor, usuarios, impacto).</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="week">Semana 2</div>
+          <div>
+            <b>Sesión A:</b> Python básico sin programar — cómo maneja CSV, texto y reglas; ejemplos con apoyo de ChatGPT.<br>
+            <b>Sesión B:</b> Clasificación académica del POC + roles + explicación estructurada.<br>
+            <b>Sesión C (Laboratorio Python):</b> Estructuras básicas, lectura/escritura de CSV con <code>pandas</code>.
+            <div class="deliverable">
+              <b>Entregable B:</b> <i>Documento de Estructura del POC</i> con:
+              <ul>
+                <li><b>Identificación del tipo de POC</b> (Técnico/Automatización, De Datos, De Texto/IA o De Experiencia).</li>
+                <li><b>Designación de roles</b> (Product Owner, enlace técnico, analistas).</li>
+                <li><b>Explicación estructurada</b>: propósito y validación; entradas y salidas; métricas de éxito; riesgos/dependencias.</li>
+                <li><b>Opcional</b>: ejemplo ilustrativo (mini dataset, texto o esquema visual).</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="week">Semana 3</div>
+          <div>
+            <b>Sesión A:</b> Aplicaciones web y ChatGPT — cómo una lógica se convierte en app (Flask/FastAPI).<br>
+            <b>Sesión B:</b> Wireframe + definición de la parte con IA.<br>
+            <b>Sesión C (Laboratorio Python):</b> Flask básico: rutas, plantillas Jinja, formularios; <code>requests</code> a una API pública.
+            <div class="deliverable"><b>Entregable B:</b> Wireframe + diagrama de flujo IA.</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="week">Semana 4</div>
+          <div>
+            <b>Sesión A:</b> Aplicaciones, storytelling y pitch — narrativa de valor.<br>
+            <b>Sesión B:</b> Demo Day y próximos pasos.<br>
+            <b>Sesión C (Laboratorio Python):</b> Visualización con <code>matplotlib</code>; estructura de proyecto; tips de despliegue y variables de entorno.
+            <div class="deliverable"><b>Entregable B:</b> Demo / mock narrativo del POC.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Tipología de POCs (marco académico)</h2>
+      <p class="lead">Clasificación inspirada en marcos reconocidos (IEEE SWEBOK, MIT Sloan, Harvard Business Review, IDEO/d.school).</p>
+      <div class="box">
+        <table>
+          <thead>
+            <tr>
+              <th>Tipo de POC</th>
+              <th>Propósito</th>
+              <th>Qué valida</th>
+              <th>Ejemplo</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><b>Técnico / Automatización</b></td>
+              <td>Validar viabilidad técnica o de proceso</td>
+              <td>Lógica, conectividad, flujo</td>
+              <td>Automatizar conciliación entre dos fuentes</td>
+            </tr>
+            <tr>
+              <td><b>De Datos</b></td>
+              <td>Validar disponibilidad, calidad y valor</td>
+              <td>Estructura, reglas, métricas</td>
+              <td>Reporte/analítica de riesgos con CSV de muestra</td>
+            </tr>
+            <tr>
+              <td><b>De Texto / IA</b></td>
+              <td>Validar generación o análisis semántico</td>
+              <td>Coherencia, calidad del output</td>
+              <td>Resumir y clasificar notas/requerimientos</td>
+            </tr>
+            <tr>
+              <td><b>De Experiencia / Negocio</b></td>
+              <td>Validar valor percibido y usabilidad</td>
+              <td>Storytelling, claridad de la solución</td>
+              <td>Wireframe de un dashboard narrativo</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <h2>Rol de ChatGPT durante el curso</h2>
+      <div class="grid-2">
+        <div class="box">
+          <ul>
+            <li><b>Mentor conceptual:</b> explica código, conceptos y flujos.</li>
+            <li><b>Redactor creativo:</b> genera textos, títulos y pitch.</li>
+            <li><b>Asistente técnico:</b> crea pseudocódigo y diagramas explicativos.</li>
+            <li><b>Evaluador virtual:</b> ayuda a autoevaluar claridad/impacto.</li>
+          </ul>
+        </div>
+        <div class="box">
+          <h3>Criterios de evaluación</h3>
+          <ul>
+            <li>Claridad y relevancia del problema (25%)</li>
+            <li>Estructura del flujo del POC (25%)</li>
+            <li>Creatividad y uso de ChatGPT (25%)</li>
+            <li>Storytelling y aplicabilidad (25%)</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Calendario de sesiones</h2>
+      <div class="box">
+        <table>
+          <thead>
+            <tr>
+              <th>Nombre de la sesión / tema</th>
+              <th>Fecha inicial</th>
+              <th>Fecha final</th>
+              <th>Zona horaria</th>
+              <th>Hora inicio</th>
+              <th>Hora final</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Bienvenida y visión del curso
+                <a href="sesion1.html" class="badge" style="background:var(--ey-accent);color:#fff;border:0;display:inline-block;padding:6px 10px;margin-left:10px;text-decoration:none;font-size:12px">Ir a sesión 1</a>
+              </td>
+              <td>04-dic-25</td>
+              <td>04-dic-25</td>
+              <td>México</td>
+              <td>15:00</td>
+              <td>16:00</td>
+            </tr>
+            <tr>
+              <td>Introducción a los POC y colaboración Taxes–Data &amp; AI</td>
+              <td>15-dic-25</td>
+              <td>15-dic-25</td>
+              <td>México</td>
+              <td>15:00</td>
+              <td>16:00</td>
+            </tr>
+            <tr>
+              <td>Laboratorio Python I (instalación y entorno)</td>
+              <td>16-dic-25</td>
+              <td>16-dic-25</td>
+              <td>México</td>
+              <td>15:00</td>
+              <td>16:00</td>
+            </tr>
+            <tr>
+              <td>
+                Python para pensar en datos y texto
+                <a href="sesion4/sesion4.html" class="badge" style="background:var(--ey-accent);color:#fff;border:0;display:inline-block;padding:6px 10px;margin-left:10px;text-decoration:none;font-size:12px">Ir a sesión 4</a>
+              </td>
+              <td>17-dic-25</td>
+              <td>17-dic-25</td>
+              <td>México</td>
+              <td>15:00</td>
+              <td>16:00</td>
+            </tr>
+            <tr>
+              <td>Clasificación académica de POCs y roles</td>
+              <td>18-dic-25</td>
+              <td>18-dic-25</td>
+              <td>México</td>
+              <td>15:00</td>
+              <td>16:00</td>
+            </tr>
+            <tr>
+              <td>Laboratorio Python II (listas, CSV, pandas)</td>
+              <td>19-dic-25</td>
+              <td>19-dic-25</td>
+              <td>México</td>
+              <td>15:00</td>
+              <td>16:00</td>
+            </tr>
+            <tr>
+              <td>Aplicaciones web con Flask / FastAPI</td>
+              <td>22-dic-25</td>
+              <td>22-dic-25</td>
+              <td>México</td>
+              <td>15:00</td>
+              <td>16:00</td>
+            </tr>
+            <tr>
+              <td>Integración con ChatGPT y diseño de flujo IA</td>
+              <td>26-dic-25</td>
+              <td>26-dic-25</td>
+              <td>México</td>
+              <td>15:00</td>
+              <td>16:00</td>
+            </tr>
+            <tr>
+              <td>Laboratorio Python III (Flask + API demo)</td>
+              <td>12-ene-25</td>
+              <td>12-ene-26</td>
+              <td>México</td>
+              <td>15:00</td>
+              <td>16:00</td>
+            </tr>
+            <tr>
+              <td>Storytelling y narrativa del POC</td>
+              <td>13-ene-25</td>
+              <td>13-ene-26</td>
+              <td>México</td>
+              <td>15:00</td>
+              <td>16:00</td>
+            </tr>
+            <tr>
+              <td>Demo prep y presentación final</td>
+              <td>14-ene-25</td>
+              <td>14-ene-26</td>
+              <td>México</td>
+              <td>15:00</td>
+              <td>16:00</td>
+            </tr>
+            <tr>
+              <td>Demo Day y cierre del curso</td>
+              <td>15-ene-25</td>
+              <td>15-ene-26</td>
+              <td>México</td>
+              <td>15:00</td>
+              <td>16:00</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <footer>
+      <div class="grid-2">
+        <div>
+          <h3>Contacto</h3>
+          <p><b>Alfredo Castañeda</b><br>Manager — Technology & Data Analytics<br><a href="mailto:luis.a.castaneda@mx.ey.com">luis.a.castaneda@mx.ey.com</a></p>
+        </div>
+      </div>
+      <div style="text-align:center;margin:28px 0">
+        <a href="sesion1.html" class="badge" style="background:var(--ey-accent);color:#fff;border:0;display:inline-block;padding:10px 16px;text-decoration:none">Ir a Sesión 1</a>
+      </div>
+    </footer>
+
+  </main>
+</body>
+</html>

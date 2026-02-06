@@ -1,0 +1,179 @@
+================================================================================
+        CUESTIONARIO POC: EFECTOS FISCALES DE UPFRONT FEES
+================================================================================
+Equipo: Aurora, Eli, Armando y Mirzax
+Instructor: Luis
+Curso: Python + Copilot
+Fecha de entrega: _______________
+================================================================================
+
+Hola equipo, para poder ayudarles a construir su herramienta con Python y 
+Copilot, necesito que respondan las siguientes preguntas.
+
+RECUERDEN: Copilot puede generar el código, pero NO puede inventar las 
+reglas fiscales ni las fórmulas. Esa información solo ustedes la tienen.
+
+================================================================================
+PARTE 1: ACLARACIÓN IMPORTANTE
+================================================================================
+
+El objetivo dice "efectos contables Y fiscales", pero mencionaron que la 
+normativa contable "no aplica". Necesito que aclaren:
+
+1. ¿La herramienta calcula efectos fiscales solamente?
+   [ ] Sí, solo fiscales (Art. 20 LISR)
+   [ ] No, también contables → ¿Qué normativa? ______________________________
+
+2. ¿Qué son los Upfront Fees en su contexto?
+   [ ] Comisiones iniciales por otorgamiento de crédito
+   [ ] Comisiones por apertura de línea de crédito
+   [ ] Otro: ________________________________________________________________
+
+================================================================================
+PARTE 2: LOS CAMPOS DE ENTRADA
+================================================================================
+
+Ya mencionaron 5 campos. Confirmen y completen:
+
+| # | Campo | ¿Qué significa? | Ejemplo |
+|---|-------|-----------------|---------|
+| 1 | id_operacion | | OP-2025-001 |
+| 2 | fecha_pago | ¿Fecha en que se cobró/pagó? | 15/01/2025 |
+| 3 | fecha_vencimiento | ¿Del crédito? | 15/01/2028 |
+| 4 | monto_cobrado_pagado | | $50,000 |
+| 5 | status | | Vigente |
+
+¿Faltan campos adicionales?
+| 6 | | | |
+| 7 | | | |
+
+================================================================================
+PARTE 3: LOS POSIBLES STATUS Y QUÉ PASA EN CADA UNO
+================================================================================
+
+1. ¿Cuáles son todos los status posibles?
+   [ ] Vigente
+   [ ] Vencido
+   [ ] Liquidación anticipada
+   [ ] Otros: _______________________________________________________________
+
+2. ¿Qué cálculo se hace en cada status?
+
+   Si status = VIGENTE:
+   ¿Qué se calcula? _________________________________________________________
+   Fórmula: _________________________________________________________________
+
+   Si status = VENCIDO:
+   ¿Qué se calcula? _________________________________________________________
+   Fórmula: _________________________________________________________________
+
+   Si status = LIQUIDACIÓN ANTICIPADA:
+   ¿Qué se calcula? _________________________________________________________
+   Fórmula: _________________________________________________________________
+
+================================================================================
+PARTE 4: LA LÓGICA DE AMORTIZACIÓN
+================================================================================
+
+1. ¿Cómo se amortizan los Upfront Fees fiscalmente?
+   [ ] Línea recta (mismo monto cada mes)
+   [ ] Por días transcurridos vs días totales
+   [ ] Al vencimiento
+   [ ] Otro: ________________________________________________________________
+
+2. Si es por tiempo, ¿cuál es la fórmula?
+
+   Ejemplo: Amortización mensual = Monto total / Número de meses
+   
+   Su fórmula: ______________________________________________________________
+
+3. ¿Qué dice el Art. 20 LISR que aplica a este cálculo?
+   Resumen: _________________________________________________________________
+   _________________________________________________________________________
+
+================================================================================
+PARTE 5: EL FLUJO MENSUAL
+================================================================================
+
+Mencionaron un "cuestionario mensual". ¿Qué debe preguntar?
+
+1. ¿Hay operaciones nuevas este mes?      [ ] Sí → Capturar datos
+2. ¿Alguna operación cambió de status?    [ ] Sí → Actualizar
+3. ¿___________________________________?  [ ] Sí → _______________
+
+¿El status se actualiza manual o automático?
+[ ] Manual - el usuario lo cambia
+[ ] Automático - si fecha_vencimiento < fecha_actual → status = "Vencido"
+
+================================================================================
+PARTE 6: ¿QUÉ RESULTADO DEBE MOSTRAR LA HERRAMIENTA?
+================================================================================
+
+Cada mes, ¿qué datos necesitan ver?
+
+| # | Resultado | Descripción |
+|---|-----------|-------------|
+| 1 | Amortización del mes | Monto a reconocer este mes |
+| 2 | Amortización acumulada | Total reconocido a la fecha |
+| 3 | Saldo por amortizar | Lo que falta por reconocer |
+| 4 | | |
+| 5 | | |
+
+================================================================================
+PARTE 7: EJEMPLO NUMÉRICO COMPLETO
+================================================================================
+
+DATOS DE LA OPERACIÓN:
+- id_operacion: OP-2025-001
+- fecha_pago: _______________
+- fecha_vencimiento: _______________
+- monto_cobrado_pagado: $_______________
+- status: Vigente
+
+CÁLCULO MES 1 (Enero):
+- Días del período: _______________
+- Amortización: $_______________
+- Fórmula usada: _______________
+
+CÁLCULO MES 2 (Febrero):
+- Días del período: _______________
+- Amortización: $_______________
+- Acumulado: $_______________
+
+CÁLCULO SI CAMBIA A "LIQUIDACIÓN ANTICIPADA" en Mes 3:
+- ¿Qué pasa con el saldo pendiente? ________________________________________
+- Monto a reconocer: $_______________
+
+================================================================================
+PARTE 8: SOBRE EL EQUIPO
+================================================================================
+
+1. ¿Quién del equipo entiende mejor el Art. 20 LISR y los Upfront Fees?
+   Respuesta: _______________
+
+2. ¿Tienen un Excel donde ya hagan este cálculo manualmente?
+   [ ] Sí → Por favor compártanlo
+   [ ] No
+
+3. ¿Cuántas operaciones manejan típicamente por mes?
+   Respuesta: _______________
+
+================================================================================
+NOTA SOBRE ARQUITECTURA:
+================================================================================
+
+Mencionaron que NO quieren interfaz web, solo Excel. Sin embargo, para el 
+curso de Python sería ideal usar Streamlit (es muy simple y visual).
+
+¿Estarían dispuestos a usar una interfaz web básica con Streamlit?
+[ ] Sí, podemos intentarlo
+[ ] No, preferimos solo Excel → Entonces usaremos script Python + Excel
+
+================================================================================
+NOTAS ADICIONALES:
+================================================================================
+
+_____________________________________________________________________________
+_____________________________________________________________________________
+
+================================================================================

@@ -1,0 +1,5 @@
+id_cliente,fecha,importe,categoria,impuesto_tasa,impuesto
+1,2025-01-05,1500.00,Servicios,0.08,120.00
+2,2025-02-10,3200.50,Software,0.08,256.04
+3,2025-03-12,200.00,Retenciones,0.05,10.00
+1,2025-03-20,450.00,Servicios,0.05,22.50

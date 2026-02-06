@@ -1,0 +1,217 @@
+================================================================================
+        CUESTIONARIO POC: GENERACIÓN DE LAYOUT DE RETENCIONES
+================================================================================
+Equipo: Alfonso, Rogelio, Alejandro Alarconx, Daniela Morenox
+Instructor: Luis
+Curso: Python + Copilot
+Fecha de entrega: _______________
+================================================================================
+
+Hola equipo, para poder ayudarles a construir su herramienta con Python y 
+Copilot, necesito que respondan las siguientes preguntas.
+
+RECUERDEN: Copilot puede generar el código, pero NO puede inventar las 
+reglas fiscales ni las fórmulas. Esa información solo ustedes la tienen.
+
+⚠️ NOTA IMPORTANTE: Este POC tiene la complejidad técnica más alta porque 
+requiere extraer datos de PDFs. Necesito información muy específica.
+
+================================================================================
+PARTE 1: RESUMEN DE LAS 3 FASES
+================================================================================
+
+Confirmen que entendí bien:
+
+FASE 1: Extraer intereses pagados de 12 estados de cuenta (PDF)
+        [ ] Correcto [ ] Necesita ajuste: _________________________________
+
+FASE 2: Calcular interés real = Interés nominal - Inflación del período
+        (Usando API INEGI para INPC)
+        [ ] Correcto [ ] Necesita ajuste: _________________________________
+
+FASE 3: Leer CFDI de retenciones (PDF) y comparar vs cálculo de Fase 2
+        [ ] Correcto [ ] Necesita ajuste: _________________________________
+
+================================================================================
+PARTE 2: FASE 1 - LOS ESTADOS DE CUENTA (PDFs)
+================================================================================
+
+1. ¿De qué banco son los estados de cuenta?
+   [ ] Un solo banco: _______________________________________________________
+   [ ] Varios bancos: _______________________________________________________
+
+2. ¿Los PDFs son texto seleccionable o imágenes escaneadas?
+   [ ] Texto seleccionable (puedo copiar/pegar texto del PDF)
+   [ ] Imágenes escaneadas (necesitaría OCR - más complejo)
+   [ ] No estoy seguro
+
+3. ¿Los estados de cuenta tienen contraseña?
+   [ ] Sí → ¿Es siempre la misma? ___________________________________________
+   [ ] No
+
+4. ¿Qué datos necesitan extraer de cada estado de cuenta?
+
+   | # | Dato | ¿Dónde aparece en el PDF? | Ejemplo |
+   |---|------|---------------------------|---------|
+   | 1 | Interés pagado del mes | | $1,234.56 |
+   | 2 | Período (fecha inicio) | | 01/01/2025 |
+   | 3 | Período (fecha fin) | | 31/01/2025 |
+   | 4 | Saldo promedio | | $100,000.00 |
+   | 5 | ISR retenido | | $XXX.XX |
+   | 6 | | | |
+   | 7 | | | |
+
+5. ¿PUEDEN COMPARTIR UN ESTADO DE CUENTA DE EJEMPLO?
+   (Esto es CRÍTICO para poder programar la extracción)
+   [ ] Sí → Por favor envíenlo
+   [ ] No → Entonces describan exactamente cómo se ve:
+   
+   ¿El interés aparece en una tabla? [ ] Sí [ ] No
+   ¿Con qué texto/etiqueta aparece? Ejemplo: "Intereses Ganados: $XXX"
+   Texto exacto: ____________________________________________________________
+
+================================================================================
+PARTE 3: FASE 2 - CÁLCULO DE INTERÉS REAL
+================================================================================
+
+1. ¿Cuál es la fórmula del interés real?
+
+   Opción A: Interés Real = Interés Nominal - (Saldo × Inflación del período)
+   Opción B: Interés Real = Interés Nominal × (1 - Factor de Inflación)
+   Opción C: Otra fórmula: __________________________________________________
+
+   ¿Cuál usan ustedes? [ ] A [ ] B [ ] C
+
+2. ¿Cómo se calcula el componente inflacionario?
+
+   Paso 1: ___________________________________________________________________
+   Paso 2: ___________________________________________________________________
+   Paso 3: ___________________________________________________________________
+
+3. ¿Qué datos del INPC necesitan de la API del INEGI?
+   [ ] INPC del primer día del período
+   [ ] INPC del último día del período
+   [ ] INPC del mes
+   [ ] Factor de inflación ya calculado
+   [ ] Otros: ________________________________________________________________
+
+4. ¿Conocen la API del INEGI?
+   [ ] Sí
+   [ ] No → No se preocupen, les ayudo a configurarla
+
+================================================================================
+PARTE 4: FASE 3 - EL CFDI DE RETENCIONES
+================================================================================
+
+1. ¿El CFDI viene en formato PDF, XML, o ambos?
+   [ ] PDF
+   [ ] XML
+   [ ] Ambos → ¿Cuál prefieren usar? ________________________________________
+
+2. ¿Qué datos necesitan extraer del CFDI?
+
+   | # | Dato del CFDI | ¿Se compara contra qué? |
+   |---|---------------|-------------------------|
+   | 1 | Interés nominal anual | Suma de intereses de los 12 estados |
+   | 2 | Interés real | Cálculo de Fase 2 |
+   | 3 | ISR retenido | |
+   | 4 | | |
+   | 5 | | |
+
+3. ¿PUEDEN COMPARTIR UN CFDI DE EJEMPLO?
+   [ ] Sí → Por favor envíenlo
+   [ ] No → Describan qué campos tiene:
+   ___________________________________________________________________________
+
+================================================================================
+PARTE 5: EL COMPARATIVO FINAL
+================================================================================
+
+1. ¿Qué debe mostrar el Excel comparativo?
+
+   DETALLE MENSUAL:
+   | Mes | Interés Estado Cta | INPC Inicio | INPC Fin | Factor | Interés Real |
+   |-----|-------------------|-------------|----------|--------|--------------|
+   | Ene |                   |             |          |        |              |
+   | Feb |                   |             |          |        |              |
+   | ... |                   |             |          |        |              |
+
+   COMPARATIVO ANUAL:
+   | Concepto | Según CFDI | Según Cálculo | Diferencia |
+   |----------|------------|---------------|------------|
+   | Interés nominal | | | |
+   | Interés real | | | |
+   | ISR retenido | | | |
+
+2. ¿Qué tolerancia de diferencia es aceptable?
+   [ ] $0 (debe ser exacto)
+   [ ] ±$1 (diferencia por redondeo)
+   [ ] Otro: ________________________________________________________________
+
+3. ¿Qué debe hacer la herramienta si hay diferencia?
+   [ ] Solo marcarla en rojo
+   [ ] Generar alerta
+   [ ] Otro: ________________________________________________________________
+
+================================================================================
+PARTE 6: EJEMPLO NUMÉRICO COMPLETO
+================================================================================
+
+Por favor proporcionen un ejemplo con números reales o ficticios:
+
+ENERO 2025:
+- Interés del estado de cuenta: $_______________
+- Saldo promedio: $_______________
+- INPC 31 dic 2024: _______________
+- INPC 31 ene 2025: _______________
+- Factor de inflación: _______________
+- Componente inflacionario: $_______________
+- Interés real: $_______________
+
+TOTAL ANUAL:
+- Suma intereses nominales (12 meses): $_______________
+- Suma intereses reales (12 meses): $_______________
+
+CFDI DICE:
+- Interés nominal: $_______________
+- Interés real: $_______________
+
+DIFERENCIA:
+- En nominal: $_______________
+- En interés real: $_______________
+
+================================================================================
+PARTE 7: SOBRE EL EQUIPO
+================================================================================
+
+1. ¿Quién entiende mejor el cálculo de interés real?
+   Respuesta: _______________
+
+2. ¿Alguien ha trabajado con extracción de PDFs antes?
+   [ ] Sí - ¿Quién? _______________
+   [ ] No
+
+3. ¿Para cuántos clientes usarían esta herramienta?
+   [ ] Un solo cliente
+   [ ] Varios clientes → ¿Aproximadamente cuántos? _______________
+
+================================================================================
+⚠️ ARCHIVOS QUE NECESITO QUE COMPARTAN:
+================================================================================
+
+Para poder programar la extracción de PDFs, es INDISPENSABLE que me 
+compartan ejemplos de:
+
+1. [ ] Un estado de cuenta (PDF) - pueden tachar datos sensibles
+2. [ ] Un CFDI de retenciones (PDF o XML)
+
+Sin estos archivos, será muy difícil programar la extracción correctamente.
+
+================================================================================
+NOTAS ADICIONALES:
+================================================================================
+
+_____________________________________________________________________________
+_____________________________________________________________________________
+
+================================================================================

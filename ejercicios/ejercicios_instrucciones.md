@@ -33,6 +33,12 @@ Ejercicio 6 — Agrupar y sumar (archivo: `ventas`)
 Ejercicio 7 — Lookup entre hojas (archivo: `ventas` y `clientes`)
 - Archivo/Hoja: `ventas` y `clientes` (clientes tiene `id` y `nombre`)
 - Tarea: en la hoja `ventas` añade una columna `cliente_nombre` que traiga el nombre desde `clientes` con XLOOKUP o VLOOKUP: =XLOOKUP(A2, clientes!A:A, clientes!B:B)
+  
+Nota sobre columnas: en `ventas.csv` la columna con el id de cliente se llama `id_cliente`, por lo que la fórmula XLOOKUP en una hoja Excel cargada desde ese CSV sería por ejemplo:
+
+  =XLOOKUP(B2, clientes!A:A, clientes!B:B)  
+
+ajustando la referencia de búsqueda a la columna donde esté el id en la hoja `ventas`.
 
 Ejercicio 8 — Regla escalonada (archivo: `ventas`)
 - Archivo/Hoja: `ventas` (columna `importe`)

@@ -1,0 +1,220 @@
+================================================================================
+        CUESTIONARIO POC: AJUSTE ANUAL POR INFLACIÓN
+================================================================================
+Equipo: Jorgex, Franciscox, Gustavo, Emmanuel
+Instructor: Luis
+Curso: Python + Copilot
+Fecha de entrega: _______________
+================================================================================
+
+Hola equipo, para poder ayudarles a construir su herramienta con Python y 
+Copilot, necesito que respondan las siguientes preguntas.
+
+RECUERDEN: Copilot puede generar el código, pero NO puede inventar las 
+reglas fiscales ni las fórmulas. Esa información solo ustedes la tienen.
+
+NOTA: Este POC usa la API del INEGI para obtener INPC - ¡Muy buen alcance!
+
+================================================================================
+PARTE 1: SOBRE EL AJUSTE POR INFLACIÓN
+================================================================================
+
+1. ¿Qué artículos de LISR aplican?
+   [ ] Art. 44 - Concepto de ajuste anual por inflación
+   [ ] Art. 45 - Definición de créditos
+   [ ] Art. 46 - Definición de deudas
+   [ ] Otros: _______________
+
+2. ¿El cálculo es mensual acumulado o solo anual al cierre?
+   [ ] Mensual (voy calculando cada mes)
+   [ ] Anual (solo al cierre del ejercicio)
+   [ ] Ambos - Expliquen: ___________________________________________________
+
+================================================================================
+PARTE 2: LA BALANZA DE COMPROBACIÓN
+================================================================================
+
+1. ¿Qué columnas tiene la balanza que reciben?
+
+   | # | Columna | Descripción | Ejemplo |
+   |---|---------|-------------|---------|
+   | 1 | Cuenta  | Número de cuenta | 1101-001 |
+   | 2 | Nombre  | Descripción | Caja |
+   | 3 |         |             |      |
+   | 4 |         |             |      |
+   | 5 |         |             |      |
+   | 6 |         |             |      |
+
+2. ¿Reciben 12 archivos (uno por mes) o 1 archivo con 12 hojas/columnas?
+   [ ] 12 archivos separados
+   [ ] 1 archivo con múltiples hojas
+   [ ] 1 archivo con columnas por mes
+   [ ] Otro: ________________________________________________________________
+
+3. ¿El formato es siempre igual o varía?
+   [ ] Siempre igual (mismo cliente)
+   [ ] Puede variar
+
+================================================================================
+PARTE 3: CLASIFICACIÓN DE CUENTAS (CRÉDITOS VS DEUDAS)
+================================================================================
+
+ESTO ES CRÍTICO. ¿Cómo sabe la herramienta si una cuenta es CRÉDITO o DEUDA?
+
+1. ¿Tienen un catálogo predefinido?
+   [ ] Sí → Por favor compártanlo o listen las cuentas principales
+   [ ] No → El usuario debe indicar cada cuenta
+
+2. Si tienen catálogo, listen las cuentas principales:
+
+   CRÉDITOS (Art. 45 LISR):
+   | Cuenta | Nombre | ¿Por qué es crédito? |
+   |--------|--------|----------------------|
+   |        |        |                      |
+   |        |        |                      |
+   |        |        |                      |
+   |        |        |                      |
+
+   DEUDAS (Art. 46 LISR):
+   | Cuenta | Nombre | ¿Por qué es deuda? |
+   |--------|--------|---------------------|
+   |        |        |                     |
+   |        |        |                     |
+   |        |        |                     |
+   |        |        |                     |
+
+3. ¿Hay cuentas que NO se consideran ni crédito ni deuda?
+   [ ] Sí - ¿Cuáles? _________________________________________________________
+   [ ] No, todas entran en alguna categoría
+
+4. ¿Qué pasa si aparece una cuenta nueva que no está en el catálogo?
+   ___________________________________________________________________________
+
+================================================================================
+PARTE 4: LA FÓRMULA DEL AJUSTE (LO MÁS IMPORTANTE)
+================================================================================
+
+1. Fórmula del Ajuste Anual por Inflación:
+
+   Paso 1 - Calcular promedio anual de CRÉDITOS:
+   Fórmula: __________________________________________________________________
+   
+   Paso 2 - Calcular promedio anual de DEUDAS:
+   Fórmula: __________________________________________________________________
+   
+   Paso 3 - Obtener la diferencia:
+   [ ] Si créditos > deudas → Ajuste Acumulable (ingreso)
+   [ ] Si deudas > créditos → Ajuste Deducible (deducción)
+   
+   Paso 4 - Calcular factor de ajuste:
+   Fórmula: __________________________________________________________________
+   Ejemplo: (INPC dic 2025 / INPC dic 2024) - 1
+   
+   Paso 5 - Calcular el ajuste:
+   Fórmula: __________________________________________________________________
+   Ejemplo: Diferencia × Factor
+
+2. ¿El promedio es aritmético simple o ponderado?
+   [ ] Aritmético simple: (Suma de saldos mensuales) / 12
+   [ ] Ponderado por días
+   [ ] Otro: ________________________________________________________________
+
+================================================================================
+PARTE 5: API DEL INEGI PARA INPC
+================================================================================
+
+1. ¿Ya conocen la API del INEGI?
+   [ ] Sí
+   [ ] No → No se preocupen, les ayudo a configurarla
+
+2. ¿Qué valores de INPC necesitan exactamente?
+   [ ] INPC del último día de cada mes
+   [ ] INPC de diciembre del año anterior
+   [ ] INPC de diciembre del año actual
+   [ ] Todos los anteriores
+
+3. ¿Qué hacemos si la API falla o no está disponible?
+   [ ] El usuario captura los INPC manualmente
+   [ ] Usamos valores precargados
+   [ ] Otro: ________________________________________________________________
+
+================================================================================
+PARTE 6: ¿QUÉ RESULTADO DEBE MOSTRAR LA HERRAMIENTA?
+================================================================================
+
+| # | Resultado | Descripción |
+|---|-----------|-------------|
+| 1 | Promedio anual de créditos | |
+| 2 | Promedio anual de deudas | |
+| 3 | Diferencia | |
+| 4 | Factor de ajuste | |
+| 5 | Ajuste anual por inflación | |
+| 6 | Tipo (Acumulable/Deducible) | |
+| 7 | | |
+
+¿Necesitan ver el detalle mensual?
+[ ] Sí, mes a mes
+[ ] No, solo el resultado anual
+
+================================================================================
+PARTE 7: EJEMPLO NUMÉRICO COMPLETO
+================================================================================
+
+Proporcionen un ejemplo con números (pueden ser ficticios):
+
+SALDOS MENSUALES DE CRÉDITOS:
+| Mes | Saldo Créditos |
+|-----|----------------|
+| Ene | $              |
+| Feb | $              |
+| Mar | $              |
+| Abr | $              |
+| May | $              |
+| Jun | $              |
+| Jul | $              |
+| Ago | $              |
+| Sep | $              |
+| Oct | $              |
+| Nov | $              |
+| Dic | $              |
+
+SALDOS MENSUALES DE DEUDAS:
+| Mes | Saldo Deudas |
+|-----|--------------|
+| Ene | $            |
+| Feb | $            |
+| ... | ...          |
+
+CÁLCULO:
+- Promedio créditos: $_______________
+- Promedio deudas: $_______________
+- Diferencia: $_______________
+- INPC dic año anterior: _______________
+- INPC dic año actual: _______________
+- Factor: _______________
+- Ajuste anual por inflación: $_______________
+- Tipo: [ ] Acumulable [ ] Deducible
+
+================================================================================
+PARTE 8: SOBRE EL EQUIPO
+================================================================================
+
+1. ¿Quién entiende mejor los Art. 44-46 LISR?
+   Respuesta: _______________
+
+2. ¿Tienen un Excel donde ya hagan este cálculo?
+   [ ] Sí → Por favor compártanlo
+   [ ] No
+
+3. ¿Tienen el catálogo de cuentas del cliente?
+   [ ] Sí → Por favor compártanlo
+   [ ] No
+
+================================================================================
+NOTAS ADICIONALES:
+================================================================================
+
+_____________________________________________________________________________
+_____________________________________________________________________________
+
+================================================================================

@@ -1,0 +1,139 @@
+================================================================================
+        CUESTIONARIO POC: VALUACIÓN FISCAL DE OFDs
+================================================================================
+Equipo: Rod, Cesar Roman, Cesar x y Jesus
+Instructor: Luis
+Curso: Python + Copilot
+Fecha de entrega: _______________
+================================================================================
+
+Hola equipo, para poder ayudarles a construir su herramienta con Python y 
+Copilot, necesito que respondan las siguientes preguntas. 
+
+RECUERDEN: Copilot puede generar el código, pero NO puede inventar las 
+reglas fiscales ni las fórmulas. Esa información solo ustedes la tienen.
+
+================================================================================
+PARTE 1: SOBRE LOS OFDs
+================================================================================
+
+1. ¿Qué tipos de OFDs van a valuar? (pueden ser varios)
+   [ ] Forwards de tipo de cambio
+   [ ] Forwards de tasas de interés
+   [ ] Swaps de tasas
+   [ ] Swaps de divisas
+   [ ] Opciones
+   [ ] Futuros
+   [ ] Otros: _______________
+
+2. ¿Todos los tipos de OFD se calculan igual o cada uno tiene su fórmula?
+   Respuesta: ________________________________________________________________
+
+3. ¿Qué artículos de LISR aplican para la valuación fiscal de OFDs?
+   Respuesta: ________________________________________________________________
+
+================================================================================
+PARTE 2: LOS 12 CAMPOS DEL TEMPLATE
+================================================================================
+
+Mencionaron que el usuario debe llenar ~12 campos. Por favor listen TODOS:
+
+| #  | Nombre del Campo | ¿Qué representa? | Ejemplo |
+|----|------------------|------------------|---------|
+| 1  |                  |                  |         |
+| 2  |                  |                  |         |
+| 3  |                  |                  |         |
+| 4  |                  |                  |         |
+| 5  |                  |                  |         |
+| 6  |                  |                  |         |
+| 7  |                  |                  |         |
+| 8  |                  |                  |         |
+| 9  |                  |                  |         |
+| 10 |                  |                  |         |
+| 11 |                  |                  |         |
+| 12 |                  |                  |         |
+
+================================================================================
+PARTE 3: LA FÓRMULA DE VALUACIÓN (LO MÁS IMPORTANTE)
+================================================================================
+
+Escriban paso a paso cómo se calcula la valuación fiscal:
+
+Ejemplo de cómo llenar esto:
+"Paso 1: Tomar el monto nocional y multiplicarlo por el tipo de cambio pactado"
+"Paso 2: Restar el valor de mercado actual"
+etc.
+
+Paso 1: ______________________________________________________________________
+
+Paso 2: ______________________________________________________________________
+
+Paso 3: ______________________________________________________________________
+
+Paso 4: ______________________________________________________________________
+
+Paso 5: ______________________________________________________________________
+
+(Agreguen más pasos si es necesario)
+
+¿Pueden escribir la fórmula en formato matemático?
+Ejemplo: Valuación = (Nocional × TC_pactado) - (Nocional × TC_mercado)
+
+Fórmula: _____________________________________________________________________
+
+================================================================================
+PARTE 4: ¿QUÉ RESULTADO DEBE MOSTRAR LA HERRAMIENTA?
+================================================================================
+
+Cuando la herramienta termine de calcular, ¿qué datos debe devolver?
+
+| # | Resultado | Descripción |
+|---|-----------|-------------|
+| 1 |           |             |
+| 2 |           |             |
+| 3 |           |             |
+
+================================================================================
+PARTE 5: EJEMPLO NUMÉRICO COMPLETO
+================================================================================
+
+ESTO ES CRÍTICO. Necesito un ejemplo real con números para validar que 
+la herramienta calcule correctamente.
+
+DATOS DE ENTRADA (los 12 campos con valores de ejemplo):
+Campo 1 (____________): _______________
+Campo 2 (____________): _______________
+Campo 3 (____________): _______________
+(... completen todos)
+
+CÁLCULO PASO A PASO:
+_____________________________________________________________________________
+_____________________________________________________________________________
+_____________________________________________________________________________
+
+RESULTADO ESPERADO:
+Valuación fiscal = $_______________
+
+================================================================================
+PARTE 6: SOBRE EL EQUIPO
+================================================================================
+
+1. ¿Quién del equipo entiende mejor las reglas fiscales de OFDs?
+   Respuesta: _______________
+
+2. ¿Tienen un Excel donde ya hagan este cálculo manualmente?
+   [ ] Sí → Por favor compártanlo, nos servirá de referencia
+   [ ] No
+
+3. ¿Cuántos OFDs típicamente calculan en un ejercicio?
+   Respuesta: _______________
+
+================================================================================
+NOTAS ADICIONALES:
+================================================================================
+(Cualquier cosa que consideren importante mencionar)
+
+_____________________________________________________________________________
+_____________________________________________________________________________
+
+================================================================================

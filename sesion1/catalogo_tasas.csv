@@ -1,0 +1,41 @@
+giro,region_geografica,iva,isr_retencion,iva_retencion,ieps,impuesto_local,descripcion
+Comercio,Norte,16,0,0,0,2,Zona fronteriza con estímulo fiscal
+Comercio,Centro,16,0,0,0,3,Tasa estándar CDMX y área metropolitana
+Comercio,Bajío,16,0,0,0,2.5,Zona industrial del Bajío
+Comercio,Sur,16,0,0,0,2,Zona sur con incentivos
+Servicios Profesionales,Norte,16,10,10.67,0,2,Retención por servicios independientes
+Servicios Profesionales,Centro,16,10,10.67,0,3,Retención estándar CDMX
+Servicios Profesionales,Bajío,16,10,10.67,0,2.5,Retención zona Bajío
+Servicios Profesionales,Sur,16,10,10.67,0,2,Retención zona sur
+Manufactura,Norte,16,0,0,0,1.5,Incentivo manufactura frontera
+Manufactura,Centro,16,0,0,0,3,Tasa estándar manufactura
+Manufactura,Bajío,16,0,0,0,2,Zona industrial preferente
+Manufactura,Sur,16,0,0,0,2,Incentivo desarrollo sur
+Servicios de Salud,Norte,0,0,0,0,0,Exento servicios médicos
+Servicios de Salud,Centro,0,0,0,0,0,Exento servicios médicos
+Servicios de Salud,Bajío,0,0,0,0,0,Exento servicios médicos
+Servicios de Salud,Sur,0,0,0,0,0,Exento servicios médicos
+Inmobiliario,Norte,16,0,0,0,2,Arrendamiento zona norte
+Inmobiliario,Centro,16,0,0,0,4,Arrendamiento CDMX tasa alta
+Inmobiliario,Bajío,16,0,0,0,2.5,Arrendamiento Bajío
+Inmobiliario,Sur,16,0,0,0,2,Arrendamiento sur
+Transporte y Logística,Norte,16,0,0,0,1.5,Transporte frontera
+Transporte y Logística,Centro,16,0,0,0,3,Transporte zona centro
+Transporte y Logística,Bajío,16,0,0,0,2,Transporte corredor industrial
+Transporte y Logística,Sur,16,0,0,0,2,Transporte zona sur
+Tecnología,Norte,16,0,0,0,1,Incentivo tech frontera
+Tecnología,Centro,16,0,0,0,2,Tech hub CDMX
+Tecnología,Bajío,16,0,0,0,1.5,Incentivo tech Bajío
+Tecnología,Sur,16,0,0,0,1.5,Incentivo tech sur
+Construcción,Norte,16,0,0,0,2,Construcción zona norte
+Construcción,Centro,16,0,0,0,3.5,Construcción CDMX
+Construcción,Bajío,16,0,0,0,2.5,Construcción industrial Bajío
+Construcción,Sur,16,0,0,0,2,Construcción zona sur
+Servicios Generales,Norte,16,0,0,0,2,Servicios varios norte
+Servicios Generales,Centro,16,0,0,0,3,Servicios varios centro
+Servicios Generales,Bajío,16,0,0,0,2.5,Servicios varios Bajío
+Servicios Generales,Sur,16,0,0,0,2,Servicios varios sur
+Turismo y Hospitalidad,Norte,16,0,0,0,2,Turismo frontera
+Turismo y Hospitalidad,Centro,16,0,0,0,3,Turismo CDMX
+Turismo y Hospitalidad,Bajío,16,0,0,0,2,Turismo colonial Bajío
+Turismo y Hospitalidad,Sur,16,0,0,0,1.5,Incentivo turismo Riviera/Sureste

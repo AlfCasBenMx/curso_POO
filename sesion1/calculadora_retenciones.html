@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Retenciones | Thinking with Python</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --brand-yellow: #FFCD00;
+            --brand-dark: #242424;
+            --brand-gray: #6B6B6B;
+            --brand-light: #F7F7F7;
+            --brand-accent: #0F62FE;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+        
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--brand-light);
+            color: var(--brand-dark);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        /* Header */
+        .header {
+            background: var(--brand-dark);
+            color: white;
+            padding: 20px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .header h1 {
+            font-size: 24px;
+            font-weight: 700;
+        }
+        
+        .header h1 span {
+            color: var(--brand-yellow);
+        }
+        
+        .badge {
+            background: var(--brand-yellow);
+            color: var(--brand-dark);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        /* Main Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+        
+        .intro {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            border-left: 4px solid var(--brand-yellow);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .intro h2 {
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+        
+        .intro p {
+            color: var(--brand-gray);
+            font-size: 14px;
+        }
+        
+        /* Grid Layout */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+        
+        @media (max-width: 1000px) {
+            .main-grid { grid-template-columns: 1fr; }
+        }
+        
+        /* Cards */
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+        
+        .card-header {
+            background: var(--brand-dark);
+            color: white;
+            padding: 16px 20px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .card-header.yellow {
+            background: var(--brand-yellow);
+            color: var(--brand-dark);
+        }
+        
+        .card-body {
+            padding: 20px;
+        }
+        
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 16px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--brand-dark);
+        }
+        
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e5e5e5;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: border-color 0.2s;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--brand-accent);
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        
+        /* Buttons */
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+        
+        .btn-primary {
+            background: var(--brand-accent);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #0051d4;
+        }
+        
+        .btn-yellow {
+            background: var(--brand-yellow);
+            color: var(--brand-dark);
+        }
+        
+        .btn-yellow:hover {
+            background: #e5b800;
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #e5e5e5;
+            color: var(--brand-gray);
+        }
+        
+        .btn-outline:hover {
+            border-color: var(--brand-dark);
+            color: var(--brand-dark);
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 16px;
+        }
+        
+        /* Table */
+        .table-container {
+            overflow-x: auto;
+            margin-top: 16px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+        
+        th {
+            background: var(--brand-light);
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 2px solid #e5e5e5;
+        }
+        
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        tr:hover {
+            background: #fafafa;
+        }
+        
+        .text-right { text-align: right; }
+        .text-center { text-align: center; }
+        
+        .tag {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        
+        .tag-green { background: #dcfce7; color: #166534; }
+        .tag-yellow { background: #fef9c3; color: #854d0e; }
+        .tag-red { background: #fee2e2; color: #991b1b; }
+        .tag-blue { background: #dbeafe; color: #1e40af; }
+        
+        /* Results */
+        .result-box {
+            background: var(--brand-light);
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 16px;
+        }
+        
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #e5e5e5;
+        }
+        
+        .result-row:last-child {
+            border-bottom: none;
+            font-weight: 700;
+            font-size: 16px;
+            padding-top: 12px;
+        }
+        
+        .result-row.highlight {
+            background: var(--brand-yellow);
+            margin: 8px -16px -16px;
+            padding: 12px 16px;
+            border-radius: 0 0 8px 8px;
+        }
+        
+        /* Summary Cards */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-top: 24px;
+        }
+        
+        @media (max-width: 800px) {
+            .summary-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        
+        .summary-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .summary-card .icon {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+        
+        .summary-card .value {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--brand-dark);
+        }
+        
+        .summary-card .label {
+            font-size: 12px;
+            color: var(--brand-gray);
+            margin-top: 4px;
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: var(--brand-gray);
+        }
+        
+        .empty-state .icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate-in {
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        /* Delete button */
+        .btn-delete {
+            background: none;
+            border: none;
+            color: var(--danger);
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        
+        .btn-delete:hover {
+            background: #fee2e2;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <h1>📊 Calculadora de <span>Retenciones</span></h1>
+        <span class="badge">SESIÓN 1 • DEMO</span>
+    </div>
+    
+    <div class="container">
+        <!-- Intro -->
+        <div class="intro">
+            <h2>🎯 ¿Qué hace esta herramienta?</h2>
+            <p>Calcula automáticamente los impuestos (IVA, ISR, retenciones) de tus transacciones cruzando con el catálogo fiscal por giro y región geográfica. Este es un ejemplo de lo que puedes construir con Python + IA.</p>
+        </div>
+        
+        <div class="main-grid">
+            <!-- Left: Input Form -->
+            <div class="card">
+                <div class="card-header">
+                    ➕ Agregar Transacción
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label>💰 Monto ($)</label>
+                        <input type="number" id="monto" placeholder="Ej: 15000.00" step="0.01" min="0">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>📝 Concepto</label>
+                        <input type="text" id="concepto" placeholder="Ej: Servicio de consultoría">
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>🏢 Giro</label>
+                            <select id="giro">
+                                <option value="">Seleccionar...</option>
+                                <option value="Comercio">Comercio</option>
+                                <option value="Servicios Profesionales">Servicios Profesionales</option>
+                                <option value="Manufactura">Manufactura</option>
+                                <option value="Servicios de Salud">Servicios de Salud</option>
+                                <option value="Inmobiliario">Inmobiliario</option>
+                                <option value="Transporte y Logística">Transporte y Logística</option>
+                                <option value="Tecnología">Tecnología</option>
+                                <option value="Construcción">Construcción</option>
+                                <option value="Servicios Generales">Servicios Generales</option>
+                                <option value="Turismo y Hospitalidad">Turismo y Hospitalidad</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>📍 Región</label>
+                            <select id="region">
+                                <option value="">Seleccionar...</option>
+                                <option value="Norte">Norte (Frontera)</option>
+                                <option value="Centro">Centro (CDMX)</option>
+                                <option value="Bajío">Bajío (Industrial)</option>
+                                <option value="Sur">Sur (Sureste)</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="btn-group">
+                        <button class="btn btn-primary" onclick="agregarTransaccion()">
+                            ➕ Agregar Transacción
+                        </button>
+                        <button class="btn btn-outline" onclick="cargarEjemplos()">
+                            📋 Cargar Ejemplos
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right: Current Calculation -->
+            <div class="card">
+                <div class="card-header yellow">
+                    🧮 Cálculo en Tiempo Real
+                </div>
+                <div class="card-body">
+                    <div id="calculo-actual">
+                        <div class="empty-state">
+                            <div class="icon">📝</div>
+                            <p>Ingresa los datos de una transacción<br>para ver el cálculo de impuestos</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Summary Cards -->
+        <div class="summary-grid">
+            <div class="summary-card">
+                <div class="icon">📊</div>
+                <div class="value" id="total-transacciones">0</div>
+                <div class="label">Transacciones</div>
+            </div>
+            <div class="summary-card">
+                <div class="icon">💵</div>
+                <div class="value" id="total-monto">$0</div>
+                <div class="label">Monto Total</div>
+            </div>
+            <div class="summary-card">
+                <div class="icon">🏛️</div>
+                <div class="value" id="total-iva">$0</div>
+                <div class="label">IVA Total</div>
+            </div>
+            <div class="summary-card">
+                <div class="icon">🔴</div>
+                <div class="value" id="total-retenciones">$0</div>
+                <div class="label">Retenciones</div>
+            </div>
+        </div>
+        
+        <!-- Transactions Table -->
+        <div class="card" style="margin-top: 24px;">
+            <div class="card-header">
+                📋 Lista de Transacciones
+                <span style="margin-left: auto; font-weight: 400; font-size: 13px;" id="contador-tabla">0 registros</span>
+            </div>
+            <div class="card-body">
+                <div class="table-container">
+                    <table id="tabla-transacciones">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Concepto</th>
+                                <th>Giro</th>
+                                <th>Región</th>
+                                <th class="text-right">Monto</th>
+                                <th class="text-right">IVA</th>
+                                <th class="text-right">Ret. ISR</th>
+                                <th class="text-right">Ret. IVA</th>
+                                <th class="text-center">% Ret.</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody-transacciones">
+                            <tr>
+                                <td colspan="10" class="text-center" style="padding: 40px; color: var(--brand-gray);">
+                                    No hay transacciones. Agrega una o carga los ejemplos.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="btn-group" style="justify-content: flex-end;">
+                    <button class="btn btn-outline" onclick="limpiarTodo()">🗑️ Limpiar Todo</button>
+                    <button class="btn btn-yellow" onclick="exportarCSV()">📥 Exportar CSV</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Catálogo de tasas (simulando el CSV)
+        const catalogoTasas = {
+            "Comercio": { "Norte": {iva:16, isr:0, ivaRet:0, local:2}, "Centro": {iva:16, isr:0, ivaRet:0, local:3}, "Bajío": {iva:16, isr:0, ivaRet:0, local:2.5}, "Sur": {iva:16, isr:0, ivaRet:0, local:2} },
+            "Servicios Profesionales": { "Norte": {iva:16, isr:10, ivaRet:10.67, local:2}, "Centro": {iva:16, isr:10, ivaRet:10.67, local:3}, "Bajío": {iva:16, isr:10, ivaRet:10.67, local:2.5}, "Sur": {iva:16, isr:10, ivaRet:10.67, local:2} },
+            "Manufactura": { "Norte": {iva:16, isr:0, ivaRet:0, local:1.5}, "Centro": {iva:16, isr:0, ivaRet:0, local:3}, "Bajío": {iva:16, isr:0, ivaRet:0, local:2}, "Sur": {iva:16, isr:0, ivaRet:0, local:2} },
+            "Servicios de Salud": { "Norte": {iva:0, isr:0, ivaRet:0, local:0}, "Centro": {iva:0, isr:0, ivaRet:0, local:0}, "Bajío": {iva:0, isr:0, ivaRet:0, local:0}, "Sur": {iva:0, isr:0, ivaRet:0, local:0} },
+            "Inmobiliario": { "Norte": {iva:16, isr:0, ivaRet:0, local:2}, "Centro": {iva:16, isr:0, ivaRet:0, local:4}, "Bajío": {iva:16, isr:0, ivaRet:0, local:2.5}, "Sur": {iva:16, isr:0, ivaRet:0, local:2} },
+            "Transporte y Logística": { "Norte": {iva:16, isr:0, ivaRet:0, local:1.5}, "Centro": {iva:16, isr:0, ivaRet:0, local:3}, "Bajío": {iva:16, isr:0, ivaRet:0, local:2}, "Sur": {iva:16, isr:0, ivaRet:0, local:2} },
+            "Tecnología": { "Norte": {iva:16, isr:0, ivaRet:0, local:1}, "Centro": {iva:16, isr:0, ivaRet:0, local:2}, "Bajío": {iva:16, isr:0, ivaRet:0, local:1.5}, "Sur": {iva:16, isr:0, ivaRet:0, local:1.5} },
+            "Construcción": { "Norte": {iva:16, isr:0, ivaRet:0, local:2}, "Centro": {iva:16, isr:0, ivaRet:0, local:3.5}, "Bajío": {iva:16, isr:0, ivaRet:0, local:2.5}, "Sur": {iva:16, isr:0, ivaRet:0, local:2} },
+            "Servicios Generales": { "Norte": {iva:16, isr:0, ivaRet:0, local:2}, "Centro": {iva:16, isr:0, ivaRet:0, local:3}, "Bajío": {iva:16, isr:0, ivaRet:0, local:2.5}, "Sur": {iva:16, isr:0, ivaRet:0, local:2} },
+            "Turismo y Hospitalidad": { "Norte": {iva:16, isr:0, ivaRet:0, local:2}, "Centro": {iva:16, isr:0, ivaRet:0, local:3}, "Bajío": {iva:16, isr:0, ivaRet:0, local:2}, "Sur": {iva:16, isr:0, ivaRet:0, local:1.5} }
+        };
+        
+        let transacciones = [];
+        
+        // Formatear moneda
+        function formatMoney(num) {
+            return '$' + num.toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+        
+        // Obtener tasas del catálogo
+        function obtenerTasas(giro, region) {
+            if (catalogoTasas[giro] && catalogoTasas[giro][region]) {
+                return catalogoTasas[giro][region];
+            }
+            return { iva: 16, isr: 0, ivaRet: 0, local: 2 };
+        }
+        
+        // Calcular impuestos de una transacción
+        function calcularImpuestos(monto, giro, region) {
+            const tasas = obtenerTasas(giro, region);
+            return {
+                tasas: tasas,
+                montoIVA: monto * tasas.iva / 100,
+                montoISR: monto * tasas.isr / 100,
+                montoIVARet: monto * tasas.ivaRet / 100,
+                montoLocal: monto * tasas.local / 100,
+                totalRetenciones: monto * (tasas.isr + tasas.ivaRet) / 100,
+                pctRetencion: tasas.isr + tasas.ivaRet
+            };
+        }
+        
+        // Actualizar cálculo en tiempo real
+        function actualizarCalculoTiempoReal() {
+            const monto = parseFloat(document.getElementById('monto').value) || 0;
+            const giro = document.getElementById('giro').value;
+            const region = document.getElementById('region').value;
+            const concepto = document.getElementById('concepto').value;
+            
+            const container = document.getElementById('calculo-actual');
+            
+            if (!monto || !giro || !region) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="icon">📝</div>
+                        <p>Completa monto, giro y región<br>para ver el cálculo de impuestos</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            const calc = calcularImpuestos(monto, giro, region);
+            
+            container.innerHTML = `
+                <div class="animate-in">
+                    <div style="margin-bottom: 12px;">
+                        <strong>${concepto || 'Transacción'}</strong>
+                        <div style="font-size: 12px; color: var(--brand-gray);">${giro} • ${region}</div>
+                    </div>
+                    
+                    <div class="result-box">
+                        <div class="result-row">
+                            <span>💵 Monto base</span>
+                            <strong>${formatMoney(monto)}</strong>
+                        </div>
+                        <div class="result-row">
+                            <span>📊 IVA (${calc.tasas.iva}%)</span>
+                            <span>${formatMoney(calc.montoIVA)}</span>
+                        </div>
+                        <div class="result-row">
+                            <span>🏛️ Retención ISR (${calc.tasas.isr}%)</span>
+                            <span style="color: ${calc.montoISR > 0 ? 'var(--danger)' : 'inherit'}">${formatMoney(calc.montoISR)}</span>
+                        </div>
+                        <div class="result-row">
+                            <span>🏛️ Retención IVA (${calc.tasas.ivaRet}%)</span>
+                            <span style="color: ${calc.montoIVARet > 0 ? 'var(--danger)' : 'inherit'}">${formatMoney(calc.montoIVARet)}</span>
+                        </div>
+                        <div class="result-row">
+                            <span>🏠 Impuesto Local (${calc.tasas.local}%)</span>
+                            <span>${formatMoney(calc.montoLocal)}</span>
+                        </div>
+                        <div class="result-row highlight">
+                            <span>🔴 TOTAL RETENCIONES (${calc.pctRetencion}%)</span>
+                            <strong>${formatMoney(calc.totalRetenciones)}</strong>
+                        </div>
+                    </div>
+                    
+                    ${calc.pctRetencion > 0 ? `
+                        <div style="margin-top: 12px; padding: 10px; background: #fee2e2; border-radius: 8px; font-size: 13px;">
+                            ⚠️ Esta transacción tiene retenciones. El pago neto sería: <strong>${formatMoney(monto + calc.montoIVA - calc.totalRetenciones)}</strong>
+                        </div>
+                    ` : `
+                        <div style="margin-top: 12px; padding: 10px; background: #dcfce7; border-radius: 8px; font-size: 13px;">
+                            ✅ Sin retenciones. Total a cobrar: <strong>${formatMoney(monto + calc.montoIVA)}</strong>
+                        </div>
+                    `}
+                </div>
+            `;
+        }
+        
+        // Agregar transacción
+        function agregarTransaccion() {
+            const monto = parseFloat(document.getElementById('monto').value);
+            const concepto = document.getElementById('concepto').value;
+            const giro = document.getElementById('giro').value;
+            const region = document.getElementById('region').value;
+            
+            if (!monto || !concepto || !giro || !region) {
+                alert('Por favor completa todos los campos');
+                return;
+            }
+            
+            const calc = calcularImpuestos(monto, giro, region);
+            
+            transacciones.push({
+                monto, concepto, giro, region,
+                ...calc
+            });
+            
+            // Limpiar formulario
+            document.getElementById('monto').value = '';
+            document.getElementById('concepto').value = '';
+            document.getElementById('giro').value = '';
+            document.getElementById('region').value = '';
+            
+            actualizarTabla();
+            actualizarResumen();
+            actualizarCalculoTiempoReal();
+        }
+        
+        // Eliminar transacción
+        function eliminarTransaccion(index) {
+            transacciones.splice(index, 1);
+            actualizarTabla();
+            actualizarResumen();
+        }
+        
+        // Actualizar tabla
+        function actualizarTabla() {
+            const tbody = document.getElementById('tbody-transacciones');
+            
+            if (transacciones.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="10" class="text-center" style="padding: 40px; color: var(--brand-gray);">
+                            No hay transacciones. Agrega una o carga los ejemplos.
+                        </td>
+                    </tr>
+                `;
+                document.getElementById('contador-tabla').textContent = '0 registros';
+                return;
+            }
+            
+            tbody.innerHTML = transacciones.map((t, i) => `
+                <tr class="animate-in">
+                    <td>${i + 1}</td>
+                    <td><strong>${t.concepto}</strong></td>
+                    <td><span class="tag tag-blue">${t.giro}</span></td>
+                    <td>${t.region}</td>
+                    <td class="text-right">${formatMoney(t.monto)}</td>
+                    <td class="text-right">${formatMoney(t.montoIVA)}</td>
+                    <td class="text-right" style="color: ${t.montoISR > 0 ? 'var(--danger)' : 'inherit'}">${formatMoney(t.montoISR)}</td>
+                    <td class="text-right" style="color: ${t.montoIVARet > 0 ? 'var(--danger)' : 'inherit'}">${formatMoney(t.montoIVARet)}</td>
+                    <td class="text-center">
+                        <span class="tag ${t.pctRetencion > 0 ? 'tag-red' : 'tag-green'}">${t.pctRetencion}%</span>
+                    </td>
+                    <td>
+                        <button class="btn-delete" onclick="eliminarTransaccion(${i})">🗑️</button>
+                    </td>
+                </tr>
+            `).join('');
+            
+            document.getElementById('contador-tabla').textContent = `${transacciones.length} registros`;
+        }
+        
+        // Actualizar resumen
+        function actualizarResumen() {
+            const totales = transacciones.reduce((acc, t) => ({
+                monto: acc.monto + t.monto,
+                iva: acc.iva + t.montoIVA,
+                retenciones: acc.retenciones + t.totalRetenciones
+            }), { monto: 0, iva: 0, retenciones: 0 });
+            
+            document.getElementById('total-transacciones').textContent = transacciones.length;
+            document.getElementById('total-monto').textContent = formatMoney(totales.monto);
+            document.getElementById('total-iva').textContent = formatMoney(totales.iva);
+            document.getElementById('total-retenciones').textContent = formatMoney(totales.retenciones);
+        }
+        
+        // Cargar ejemplos
+        function cargarEjemplos() {
+            const ejemplos = [
+                { monto: 15000, concepto: "Venta de mercancía", giro: "Comercio", region: "Norte" },
+                { monto: 8500.50, concepto: "Servicio de consultoría", giro: "Servicios Profesionales", region: "Centro" },
+                { monto: 125000, concepto: "Venta de maquinaria", giro: "Manufactura", region: "Bajío" },
+                { monto: 45000, concepto: "Honorarios médicos", giro: "Servicios de Salud", region: "Centro" },
+                { monto: 22000, concepto: "Venta de software", giro: "Tecnología", region: "Centro" },
+                { monto: 9800, concepto: "Asesoría legal", giro: "Servicios Profesionales", region: "Centro" },
+                { monto: 55000, concepto: "Renta de bodega", giro: "Inmobiliario", region: "Bajío" },
+                { monto: 15500, concepto: "Servicio de hospedaje", giro: "Turismo y Hospitalidad", region: "Sur" }
+            ];
+            
+            transacciones = [];
+            
+            ejemplos.forEach(e => {
+                const calc = calcularImpuestos(e.monto, e.giro, e.region);
+                transacciones.push({ ...e, ...calc });
+            });
+            
+            actualizarTabla();
+            actualizarResumen();
+        }
+        
+        // Limpiar todo
+        function limpiarTodo() {
+            if (confirm('¿Seguro que deseas eliminar todas las transacciones?')) {
+                transacciones = [];
+                actualizarTabla();
+                actualizarResumen();
+            }
+        }
+        
+        // Exportar CSV
+        function exportarCSV() {
+            if (transacciones.length === 0) {
+                alert('No hay transacciones para exportar');
+                return;
+            }
+            
+            const headers = ['monto', 'concepto', 'giro', 'region', 'iva_%', 'monto_iva', 'isr_%', 'monto_isr', 'iva_ret_%', 'monto_iva_ret', 'total_retenciones', 'pct_retencion'];
+            
+            const rows = transacciones.map(t => [
+                t.monto,
+                `"${t.concepto}"`,
+                `"${t.giro}"`,
+                t.region,
+                t.tasas.iva,
+                t.montoIVA.toFixed(2),
+                t.tasas.isr,
+                t.montoISR.toFixed(2),
+                t.tasas.ivaRet,
+                t.montoIVARet.toFixed(2),
+                t.totalRetenciones.toFixed(2),
+                t.pctRetencion
+            ].join(','));
+            
+            const csv = [headers.join(','), ...rows].join('\n');
+            
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'transacciones_con_impuestos.csv';
+            link.click();
+        }
+        
+        // Event listeners para cálculo en tiempo real
+        document.getElementById('monto').addEventListener('input', actualizarCalculoTiempoReal);
+        document.getElementById('giro').addEventListener('change', actualizarCalculoTiempoReal);
+        document.getElementById('region').addEventListener('change', actualizarCalculoTiempoReal);
+        document.getElementById('concepto').addEventListener('input', actualizarCalculoTiempoReal);
+    </script>
+</body>
+</html>

@@ -1,0 +1,1960 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gantt Editor — POC Thinking</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <!-- Marked.js para renderizar Markdown -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <style>
+    :root {
+      --ey-yellow: #FFCD00;
+      --ey-dark: #242424;
+      --ey-gray: #6B6B6B;
+      --ey-light: #F7F7F7;
+      --ey-accent: #0F62FE;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', system-ui, sans-serif;
+      color: var(--ey-dark);
+      background: #fff;
+      line-height: 1.6;
+    }
+    a { color: var(--ey-accent); text-decoration: none; font-weight: 600; }
+    a:hover { text-decoration: underline; }
+
+    /* Animations */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    .animate { animation: fadeInUp 0.5s ease-out both; }
+    .updating { animation: pulse 0.5s ease-in-out; }
+
+    /* Header */
+    .hero {
+      background: linear-gradient(135deg, var(--ey-yellow) 0%, #ffe77a 60%, #fff3b0 100%);
+      padding: 32px 24px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+    }
+    .hero img { width: 60px; height: auto; background: #fff; padding: 6px; border-radius: 4px; }
+    .hero h1 { margin: 0; font-size: 28px; font-weight: 800; }
+    .hero p { margin: 4px 0 0; color: #333; }
+
+    .wrap { max-width: 1200px; margin: 0 auto; padding: 24px; }
+
+    /* Cards */
+    .card {
+      background: #fff;
+      border: 1px solid #eee;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+      margin-bottom: 24px;
+    }
+    .card h2 { margin: 0 0 12px; font-size: 18px; border-bottom: 2px solid var(--ey-yellow); padding-bottom: 8px; }
+
+    /* Gantt Canvas */
+    #gantt-container {
+      background: #fafafa;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 16px;
+      min-height: 300px;
+      overflow-x: auto;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    
+    /* Logos */
+    .gantt-logo {
+      position: absolute;
+      z-index: 100;
+      max-width: 150px;
+      border-radius: 4px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      transition: all 0.3s ease;
+    }
+    .gantt-logo:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    }
+    
+    /* Espacio para logos en la parte superior */
+    .gantt-content {
+      padding-top: 70px; /* Espacio para logos arriba */
+      padding-bottom: 70px; /* Espacio para logos abajo */
+    }
+    .has-top-logo { padding-top: 70px; }
+    .has-bottom-logo { padding-bottom: 70px; }
+    
+    .gantt-row { display: flex; align-items: center; margin-bottom: 4px; }
+    .gantt-label { width: 200px; font-size: 13px; padding-right: 10px; flex-shrink: 0; }
+    .gantt-label.category { font-weight: 700; font-size: 14px; }
+    .gantt-owner { width: 80px; font-size: 12px; color: #fff; text-align: center; flex-shrink: 0; }
+    .gantt-col { width: 80px; font-size: 12px; color: #fff; text-align: center; flex-shrink: 0; }
+    .gantt-reviewer { color: #fff; }
+    .gantt-bar-area { flex: 1; position: relative; height: 28px; }
+    .gantt-bar {
+      position: absolute;
+      height: 22px;
+      top: 3px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      color: #333;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+    .gantt-grid-line { 
+      position: absolute; 
+      top: 0; 
+      bottom: 0; 
+      width: 1px; 
+      background: repeating-linear-gradient(
+        to bottom,
+        #e0e0e0 0px,
+        #e0e0e0 3px,
+        transparent 3px,
+        transparent 6px
+      );
+      opacity: 0.6;
+    }
+    .gantt-header { display: flex; margin-bottom: 8px; border-bottom: 1px solid #ddd; padding-bottom: 6px; }
+    .gantt-header span { font-size: 11px; font-weight: 700; color: #666; }
+
+    /* Chat - Compact */
+    #chat-messages {
+      max-height: 200px;
+      overflow-y: auto;
+      background: #f9f9f9;
+      border: 1px solid #eee;
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 12px;
+      font-size: 13px;
+    }
+    .msg { margin-bottom: 8px; padding: 8px 12px; border-radius: 8px; }
+    .msg.user { background: var(--ey-accent); color: #fff; display: inline-block; }
+    .msg.assistant { background: #fff; border: 1px solid #ddd; }
+    .msg:last-child { margin-bottom: 0; }
+    
+    /* Markdown styles in chat */
+    .msg.assistant p { margin: 0 0 8px 0; }
+    .msg.assistant p:last-child { margin-bottom: 0; }
+    .msg.assistant strong { color: var(--ey-accent); font-weight: 700; }
+    .msg.assistant em { font-style: italic; }
+    .msg.assistant code { 
+      background: #f0f0f0; 
+      padding: 2px 6px; 
+      border-radius: 4px; 
+      font-family: 'Consolas', monospace;
+      font-size: 12px;
+    }
+    .msg.assistant pre { 
+      background: #2d2d2d; 
+      color: #f8f8f2;
+      padding: 12px; 
+      border-radius: 6px; 
+      overflow-x: auto;
+      margin: 8px 0;
+    }
+    .msg.assistant pre code {
+      background: transparent;
+      padding: 0;
+      color: inherit;
+    }
+    .msg.assistant ul, .msg.assistant ol { 
+      margin: 8px 0; 
+      padding-left: 20px; 
+    }
+    .msg.assistant li { margin-bottom: 4px; }
+    .msg.assistant h1, .msg.assistant h2, .msg.assistant h3 {
+      margin: 12px 0 8px 0;
+      font-weight: 700;
+    }
+    .msg.assistant h1 { font-size: 18px; }
+    .msg.assistant h2 { font-size: 16px; }
+    .msg.assistant h3 { font-size: 14px; }
+    .msg.assistant blockquote {
+      border-left: 3px solid var(--ey-accent);
+      margin: 8px 0;
+      padding-left: 12px;
+      color: #666;
+    }
+    .msg.assistant a { color: var(--ey-accent); }
+    .msg.assistant hr { 
+      border: none; 
+      border-top: 1px solid #ddd; 
+      margin: 12px 0; 
+    }
+    .msg.assistant table {
+      border-collapse: collapse;
+      margin: 8px 0;
+      font-size: 12px;
+    }
+    .msg.assistant th, .msg.assistant td {
+      border: 1px solid #ddd;
+      padding: 6px 10px;
+    }
+    .msg.assistant th { background: #f5f5f5; }
+    
+    /* Streaming cursor animation */
+    .msg.streaming .cursor {
+      display: inline-block;
+      animation: blink 0.7s infinite;
+      color: var(--ey-accent);
+      font-weight: bold;
+    }
+    @keyframes blink {
+      0%, 50% { opacity: 1; }
+      51%, 100% { opacity: 0; }
+    }
+    .msg.streaming {
+      border-left: 3px solid var(--ey-accent);
+    }
+
+    .input-row {
+      display: flex;
+      gap: 12px;
+    }
+
+    #prompt-input {
+      flex: 1;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: inherit;
+      resize: none;
+    }
+    #prompt-input:focus { outline: none; border-color: var(--ey-accent); box-shadow: 0 0 0 3px rgba(15,98,254,0.1); }
+
+    .btn {
+      background: var(--ey-accent);
+      color: #fff;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .btn:hover { background: #0046b5; }
+    .btn:disabled { background: #999; cursor: not-allowed; }
+
+    .btn-secondary {
+      background: var(--ey-yellow);
+      color: var(--ey-dark);
+    }
+    .btn-secondary:hover { background: #e6b800; }
+
+    .status { font-size: 12px; color: #666; margin-top: 8px; }
+    .status.error { color: #dc2626; }
+    .status.success { color: #16a34a; }
+
+    /* Back link */
+    .back-link {
+      display: inline-block;
+      background: var(--ey-accent);
+      color: #fff;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      margin-bottom: 16px;
+    }
+
+    /* Example buttons */
+    .examples {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+    .example-btn {
+      background: #f0f0f0;
+      border: 1px solid #ddd;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .example-btn:hover {
+      background: var(--ey-yellow);
+      border-color: var(--ey-yellow);
+    }
+
+    /* Confirmation buttons */
+    .confirm-box {
+      background: #f0f9ff;
+      border: 2px solid var(--ey-accent);
+      border-radius: 8px;
+      padding: 12px;
+      margin-top: 12px;
+    }
+    .confirm-box p {
+      margin: 0 0 12px;
+      font-size: 14px;
+    }
+    .confirm-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+      font-size: 14px;
+    }
+    .confirm-icon {
+      font-size: 20px;
+    }
+    .confirm-description {
+      background: #fff;
+      border: 1px solid #fcd34d;
+      border-radius: 6px;
+      padding: 12px;
+      margin-bottom: 12px;
+      font-size: 13px;
+      line-height: 1.5;
+      color: #78350f;
+    }
+    .confirm-buttons, .confirm-actions {
+      display: flex;
+      gap: 12px;
+    }
+    .btn-accept {
+      background: #16a34a;
+      color: #fff;
+      flex: 1;
+    }
+    .btn-accept:hover { background: #15803d; }
+    .btn-decline {
+      background: #dc2626;
+      color: #fff;
+      flex: 1;
+    }
+    .btn-decline:hover { background: #b91c1c; }
+
+    /* Message with markdown-like styling */
+    .msg strong { font-weight: 700; }
+    .msg.confirm-msg {
+      background: #fef3c7;
+      border: 1px solid #f59e0b;
+    }
+
+    /* View Toggle */
+    .view-toggle {
+      display: flex;
+      gap: 0;
+      margin-bottom: 16px;
+      background: #f0f0f0;
+      border-radius: 8px;
+      padding: 4px;
+      width: fit-content;
+    }
+    .toggle-btn {
+      background: transparent;
+      border: none;
+      padding: 10px 20px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      border-radius: 6px;
+      transition: all 0.2s;
+      color: #666;
+    }
+    .toggle-btn:hover { background: #e0e0e0; }
+    .toggle-btn.active {
+      background: var(--ey-accent);
+      color: #fff;
+    }
+
+    /* Editable Table */
+    .table-actions {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .edit-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    .edit-table th, .edit-table td {
+      border: 1px solid #ddd;
+      padding: 8px 10px;
+      text-align: left;
+    }
+    .edit-table th {
+      background: #f5f5f5;
+      font-weight: 600;
+      position: sticky;
+      top: 0;
+    }
+    .edit-table tr:hover { background: #f9f9f9; }
+    .edit-table tr.category-row { background: #fff3cd; }
+    .edit-table tr.category-row:hover { background: #ffecb3; }
+    .edit-table input, .edit-table select {
+      width: 100%;
+      padding: 6px 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 13px;
+      font-family: inherit;
+    }
+    .edit-table input:focus, .edit-table select:focus {
+      outline: none;
+      border-color: var(--ey-accent);
+      box-shadow: 0 0 0 2px rgba(15,98,254,0.1);
+    }
+    .edit-table input[type="color"] {
+      width: 50px;
+      height: 30px;
+      padding: 2px;
+      cursor: pointer;
+    }
+    .edit-table input[type="number"] { width: 70px; }
+    .btn-delete {
+      background: #fee2e2;
+      color: #dc2626;
+      border: 1px solid #fecaca;
+      padding: 4px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+    .btn-delete:hover { background: #fecaca; }
+    .btn-move {
+      background: #e0e7ff;
+      color: #4f46e5;
+      border: 1px solid #c7d2fe;
+      padding: 4px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+    .btn-move:hover { background: #c7d2fe; }
+    #table-container {
+      max-height: 400px;
+      overflow-y: auto;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+    }
+    .unsaved-indicator {
+      display: inline-block;
+      background: #fef3c7;
+      color: #92400e;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      margin-left: 12px;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="hero animate">
+    <img src="https://companieslogo.com/img/orig/ernst-and-young-6c5de5ba.svg?t=1720244494&download=true" alt="EY Logo">
+    <div>
+      <h1>📊 Gantt Editor Interactivo</h1>
+      <p>Modifica el cronograma con IA — Los cambios se aplican inmediatamente</p>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <a href="./intro.html" class="back-link" target="_blank">← Volver al Syllabus</a>
+
+    <!-- View Toggle -->
+    <div class="view-toggle">
+      <button class="toggle-btn active" id="btn-gantt-view" onclick="switchView('gantt')">📊 Vista Gantt</button>
+      <button class="toggle-btn" id="btn-table-view" onclick="switchView('table')">📋 Vista Tabla (Editable)</button>
+    </div>
+
+    <!-- Gantt Display -->
+    <div class="card animate" id="gantt-card" style="animation-delay:0.1s">
+      <h2>📅 Cronograma del Proyecto</h2>
+      <div id="gantt-container"></div>
+      <div style="margin-top:12px; display: flex; gap: 12px; flex-wrap: wrap;">
+        <button class="btn btn-secondary" onclick="resetGantt()">🔄 Restaurar Original</button>
+        <button class="btn" onclick="downloadGanttPNG()" style="background: #16a34a;">📥 Descargar PNG</button>
+        <button class="btn" onclick="downloadGanttHTML()" style="background: #0F62FE;">📄 Exportar HTML</button>
+      </div>
+    </div>
+
+    <!-- Editable Table View (hidden by default) -->
+    <div class="card animate" id="table-card" style="display: none;">
+      <h2>📋 Editar Tareas (Tabla)</h2>
+      <div class="table-actions">
+        <button class="btn" onclick="addNewTask()" style="background: #16a34a;">➕ Nueva Tarea</button>
+        <button class="btn" onclick="addNewCategory()" style="background: #8b5cf6;">📁 Nueva Categoría</button>
+        <button class="btn btn-secondary" onclick="saveTableChanges()">💾 Guardar Cambios</button>
+      </div>
+      <div id="table-container"></div>
+      <div style="margin-top:12px; display: flex; gap: 12px; flex-wrap: wrap;">
+        <button class="btn" onclick="downloadGanttPNG()" style="background: #16a34a;">📥 Descargar PNG</button>
+        <button class="btn" onclick="downloadGanttHTML()" style="background: #0F62FE;">📄 Exportar HTML</button>
+        <button class="btn" onclick="exportJSON()" style="background: #f59e0b;">📦 Exportar JSON</button>
+        <button class="btn btn-secondary" onclick="importJSON()">📂 Importar JSON</button>
+      </div>
+      <input type="file" id="json-import" accept=".json" style="display:none" onchange="handleJSONImport(event)">
+    </div>
+
+    <!-- Chat - Below Gantt -->
+    <div class="card animate" style="animation-delay:0.2s">
+      <h2>💬 Modifica el Gantt con lenguaje natural</h2>
+      
+      <div id="chat-messages">
+        <div class="msg assistant">
+          👋 ¡Escribe lo que quieres cambiar y el Gantt se actualizará automáticamente!
+        </div>
+      </div>
+      
+      <div class="input-row">
+        <textarea id="prompt-input" rows="1" placeholder="Ej: Agrega una tarea de 'Revisión QA' en la semana 8..."></textarea>
+        <button class="btn" id="send-btn" onclick="sendPrompt()">🚀 Enviar</button>
+      </div>
+      
+      <div class="examples">
+        <span style="font-size:12px;color:#666;margin-right:8px;">Prueba:</span>
+        <button class="example-btn" onclick="setExample('Agrega una tarea Revisión Legal en semana 5, owner María')">➕ Nueva tarea</button>
+        <button class="example-btn" onclick="setExample('Cambia el color de las tareas de Testing a rojo #FF6B6B')">🎨 Cambiar color</button>
+        <button class="example-btn" onclick="setExample('Extiende la tarea Pruebas con datos reales 2 semanas más')">⏱️ Extender</button>
+        <button class="example-btn" onclick="setExample('Agrega este logo: https://upload.wikimedia.org/wikipedia/commons/3/34/EY_logo_2019.svg arriba a la derecha')">�️ Logo</button>
+      </div>
+      
+      <div id="status" class="status"></div>
+      
+      <!-- Confirmation Box for Changes -->
+      <div id="confirm-box" class="confirm-box" style="display: none;">
+        <div class="confirm-header">
+          <span class="confirm-icon">⚠️</span>
+          <strong>Confirmar cambio en el Gantt</strong>
+        </div>
+        <p id="confirm-description" class="confirm-description"></p>
+        <div class="confirm-actions">
+          <button class="btn btn-accept" onclick="confirmChange()">✅ Aplicar cambio</button>
+          <button class="btn btn-decline" onclick="declineChange()">❌ No, necesito más contexto</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Pending change state
+    let pendingChangeId = null;
+    let pendingGantt = null;
+    let pendingStyles = null;
+    let pendingStructure = null;
+    let pendingLogo = null;
+    let pendingType = null; // 'gantt', 'style', 'structure', or 'logo'
+    
+    // Configuración de columnas visibles
+    let visibleColumns = JSON.parse(localStorage.getItem('ganttColumns') || '["label", "owner"]');
+    let columnNames = JSON.parse(localStorage.getItem('ganttColumnNames') || '{"label": "Tarea", "owner": "Owner", "reviewer": "Revisor"}');
+    
+    // Configuración de logos
+    let ganttLogos = JSON.parse(localStorage.getItem('ganttLogos') || '[]');
+    let logoCounter = parseInt(localStorage.getItem('ganttLogoCounter') || '0');
+    
+    // ============ GANTT DATA ============
+    const INITIAL_TASKS = [
+      { kind: "category", label: "📋 Planning", owner: "", start: 1, duration: 3, color: "#FFD966" },
+      { kind: "task", label: "Definir alcance del POC", owner: "Ana", start: 1, duration: 1, color: "#93C5FD" },
+      { kind: "task", label: "Identificar stakeholders", owner: "Carlos", start: 1, duration: 2, color: "#93C5FD" },
+      { kind: "task", label: "Preparar documento de requisitos", owner: "Ana", start: 2, duration: 2, color: "#93C5FD" },
+      
+      { kind: "category", label: "⚙️ Desarrollo", owner: "", start: 4, duration: 5, color: "#86EFAC" },
+      { kind: "task", label: "Configurar entorno Python", owner: "Luis", start: 4, duration: 1, color: "#A5B4FC" },
+      { kind: "task", label: "Desarrollar script de conciliación", owner: "Luis", start: 4, duration: 3, color: "#A5B4FC" },
+      { kind: "task", label: "Integrar con API del ERP", owner: "María", start: 6, duration: 2, color: "#A5B4FC" },
+      { kind: "task", label: "Crear reporte HTML", owner: "Luis", start: 7, duration: 2, color: "#A5B4FC" },
+      
+      { kind: "category", label: "🧪 Testing", owner: "", start: 9, duration: 2, color: "#FCA5A5" },
+      { kind: "task", label: "Pruebas con datos reales", owner: "Ana", start: 9, duration: 1, color: "#FDA4AF" },
+      { kind: "task", label: "Ajustes y correcciones", owner: "Luis", start: 10, duration: 1, color: "#FDA4AF" },
+      
+      { kind: "category", label: "🎯 Cierre", owner: "", start: 11, duration: 2, color: "#C4B5FD" },
+      { kind: "task", label: "Preparar demo", owner: "Todos", start: 11, duration: 1, color: "#D8B4FE" },
+      { kind: "task", label: "Presentación final", owner: "Ana", start: 12, duration: 1, color: "#D8B4FE" },
+    ];
+
+    let tasks = JSON.parse(JSON.stringify(INITIAL_TASKS));
+    const WEEKS = 12;
+
+    // ============ RENDER GANTT ============
+    function renderGantt(animate = false) {
+      const container = document.getElementById('gantt-container');
+      const weekWidth = 60;
+      const barAreaWidth = WEEKS * weekWidth;
+
+      if (animate) {
+        container.classList.add('updating');
+        setTimeout(() => container.classList.remove('updating'), 500);
+      }
+
+      let html = '';
+      
+      // Header - columnas dinámicas
+      html += '<div class="gantt-header">';
+      html += `<span style="width:200px">${columnNames['label'] || 'Actividad'}</span>`;
+      
+      // Columnas adicionales dinámicas (owner, reviewer, etc.)
+      visibleColumns.forEach(col => {
+        if (col !== 'label') {
+          html += `<span class="gantt-col-header" data-col="${col}" style="width:80px;text-align:center">${columnNames[col] || col}</span>`;
+        }
+      });
+      
+      html += '<div style="flex:1;display:flex;position:relative">';
+      for (let w = 1; w <= WEEKS; w++) {
+        html += `<span style="width:${weekWidth}px;text-align:center">S${w}</span>`;
+      }
+      html += '</div></div>';
+
+      // Rows
+      tasks.forEach((task, i) => {
+        const isCategory = task.kind === 'category';
+        html += '<div class="gantt-row">';
+        html += `<div class="gantt-label ${isCategory ? 'category' : ''}">${task.label}</div>`;
+        
+        // Columnas adicionales dinámicas
+        visibleColumns.forEach(col => {
+          if (col !== 'label') {
+            const cssClass = col === 'owner' ? 'gantt-owner' : `gantt-col gantt-${col}`;
+            html += `<div class="${cssClass}">${task[col] || ''}</div>`;
+          }
+        });
+        
+        html += `<div class="gantt-bar-area" style="width:${barAreaWidth}px">`;
+        
+        for (let w = 1; w <= WEEKS; w++) {
+          html += `<div class="gantt-grid-line" style="left:${w * weekWidth}px"></div>`;
+        }
+        
+        if (task.start != null && task.duration > 0) {
+          const left = (task.start - 1) * weekWidth;
+          const width = task.duration * weekWidth - 4;
+          html += `<div class="gantt-bar" style="left:${left}px;width:${width}px;background:${task.color || '#ccc'}">`;
+          if (!isCategory) html += `S${task.start}-${task.start + task.duration - 1}`;
+          html += '</div>';
+        }
+        
+        html += '</div></div>';
+      });
+
+      // Determinar padding dinámico según logos
+      const hasTopLogo = ganttLogos.some(l => l.position && l.position.startsWith('top'));
+      const hasBottomLogo = ganttLogos.some(l => l.position && l.position.startsWith('bottom'));
+      
+      let contentClass = 'gantt-content';
+      if (hasTopLogo) contentClass += ' has-top-logo';
+      if (hasBottomLogo) contentClass += ' has-bottom-logo';
+
+      // Envolver contenido
+      container.innerHTML = `<div class="${contentClass}">${html}</div>`;
+      
+      // Renderizar logos
+      renderLogos();
+    }
+
+    function resetGantt() {
+      tasks = JSON.parse(JSON.stringify(INITIAL_TASKS));
+      renderGantt(true);
+      renderTable();
+      hasUnsavedChanges = false;
+      addMessage('assistant', '✅ Gantt restaurado.');
+    }
+
+    function setExample(text) {
+      document.getElementById('prompt-input').value = text;
+      document.getElementById('prompt-input').focus();
+    }
+
+    // ============ VIEW TOGGLE ============
+    let currentView = 'gantt';
+    let hasUnsavedChanges = false;
+
+    function switchView(view) {
+      currentView = view;
+      const ganttCard = document.getElementById('gantt-card');
+      const tableCard = document.getElementById('table-card');
+      const btnGantt = document.getElementById('btn-gantt-view');
+      const btnTable = document.getElementById('btn-table-view');
+
+      if (view === 'gantt') {
+        ganttCard.style.display = 'block';
+        tableCard.style.display = 'none';
+        btnGantt.classList.add('active');
+        btnTable.classList.remove('active');
+        renderGantt(true); // Refresh gantt with any table changes
+      } else {
+        ganttCard.style.display = 'none';
+        tableCard.style.display = 'block';
+        btnGantt.classList.remove('active');
+        btnTable.classList.add('active');
+        renderTable();
+      }
+    }
+
+    // ============ EDITABLE TABLE ============
+    function renderTable() {
+      const container = document.getElementById('table-container');
+      
+      // Generar headers dinámicos
+      let headerHtml = `
+        <table class="edit-table">
+          <thead>
+            <tr>
+              <th style="width:40px">#</th>
+              <th style="width:100px">Tipo</th>
+              <th>Nombre</th>`;
+      
+      // Agregar columnas dinámicas
+      visibleColumns.forEach(col => {
+        if (col !== 'label') {
+          const displayName = columnNames[col] || col;
+          headerHtml += `<th style="width:100px">${displayName}</th>`;
+        }
+      });
+      
+      headerHtml += `
+              <th style="width:80px">Inicio</th>
+              <th style="width:80px">Duración</th>
+              <th style="width:70px">Color</th>
+              <th style="width:120px">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+      `;
+
+      let rowsHtml = '';
+      tasks.forEach((task, i) => {
+        const isCategory = task.kind === 'category';
+        rowsHtml += `
+          <tr class="${isCategory ? 'category-row' : ''}" data-index="${i}">
+            <td style="text-align:center;color:#999">${i + 1}</td>
+            <td>
+              <select onchange="updateTask(${i}, 'kind', this.value)">
+                <option value="task" ${task.kind === 'task' ? 'selected' : ''}>📌 Tarea</option>
+                <option value="category" ${task.kind === 'category' ? 'selected' : ''}>📁 Categoría</option>
+              </select>
+            </td>
+            <td><input type="text" value="${escapeHtml(task.label)}" onchange="updateTask(${i}, 'label', this.value)"></td>`;
+        
+        // Agregar inputs para columnas dinámicas
+        visibleColumns.forEach(col => {
+          if (col !== 'label') {
+            rowsHtml += `<td><input type="text" value="${escapeHtml(task[col] || '')}" onchange="updateTask(${i}, '${col}', this.value)" placeholder="—"></td>`;
+          }
+        });
+        
+        rowsHtml += `
+            <td><input type="number" min="1" max="${WEEKS}" value="${task.start}" onchange="updateTask(${i}, 'start', parseInt(this.value))"></td>
+            <td><input type="number" min="1" max="${WEEKS}" value="${task.duration}" onchange="updateTask(${i}, 'duration', parseInt(this.value))"></td>
+            <td><input type="color" value="${task.color}" onchange="updateTask(${i}, 'color', this.value)"></td>
+            <td>
+              <button class="btn-move" onclick="moveTask(${i}, -1)" ${i === 0 ? 'disabled' : ''}>↑</button>
+              <button class="btn-move" onclick="moveTask(${i}, 1)" ${i === tasks.length - 1 ? 'disabled' : ''}>↓</button>
+              <button class="btn-delete" onclick="deleteTask(${i})">🗑️</button>
+            </td>
+          </tr>
+        `;
+      });
+
+      container.innerHTML = headerHtml + rowsHtml + '</tbody></table>';
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    function updateTask(index, field, value) {
+      tasks[index][field] = value;
+      hasUnsavedChanges = true;
+      showUnsavedIndicator();
+      
+      // Re-render row if kind changed
+      if (field === 'kind') {
+        renderTable();
+      }
+    }
+
+    function deleteTask(index) {
+      if (confirm(`¿Eliminar "${tasks[index].label}"?`)) {
+        tasks.splice(index, 1);
+        hasUnsavedChanges = true;
+        renderTable();
+        showUnsavedIndicator();
+      }
+    }
+
+    function moveTask(index, direction) {
+      const newIndex = index + direction;
+      if (newIndex < 0 || newIndex >= tasks.length) return;
+      
+      const temp = tasks[index];
+      tasks[index] = tasks[newIndex];
+      tasks[newIndex] = temp;
+      hasUnsavedChanges = true;
+      renderTable();
+      showUnsavedIndicator();
+    }
+
+    function addNewTask() {
+      const lastTask = tasks[tasks.length - 1];
+      tasks.push({
+        kind: 'task',
+        label: 'Nueva tarea',
+        owner: '',
+        start: lastTask ? lastTask.start : 1,
+        duration: 1,
+        color: '#93C5FD'
+      });
+      hasUnsavedChanges = true;
+      renderTable();
+      showUnsavedIndicator();
+      
+      // Scroll to bottom
+      const container = document.getElementById('table-container');
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function addNewCategory() {
+      tasks.push({
+        kind: 'category',
+        label: '📁 Nueva Categoría',
+        owner: '',
+        start: 1,
+        duration: 2,
+        color: '#FFD966'
+      });
+      hasUnsavedChanges = true;
+      renderTable();
+      showUnsavedIndicator();
+      
+      const container = document.getElementById('table-container');
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function saveTableChanges() {
+      hasUnsavedChanges = false;
+      hideUnsavedIndicator();
+      renderGantt(true);
+      
+      const statusEl = document.getElementById('status');
+      statusEl.textContent = '✅ Cambios guardados';
+      statusEl.className = 'status success';
+      
+      // Save to localStorage
+      localStorage.setItem('gantt_tasks', JSON.stringify(tasks));
+    }
+
+    function showUnsavedIndicator() {
+      const h2 = document.querySelector('#table-card h2');
+      if (!document.getElementById('unsaved-badge')) {
+        const badge = document.createElement('span');
+        badge.id = 'unsaved-badge';
+        badge.className = 'unsaved-indicator';
+        badge.textContent = '⚠️ Sin guardar';
+        h2.appendChild(badge);
+      }
+    }
+
+    function hideUnsavedIndicator() {
+      const badge = document.getElementById('unsaved-badge');
+      if (badge) badge.remove();
+    }
+
+    // ============ IMPORT/EXPORT JSON ============
+    function exportJSON() {
+      const dataStr = JSON.stringify(tasks, null, 2);
+      const blob = new Blob([dataStr], { type: 'application/json' });
+      const link = document.createElement('a');
+      const timestamp = new Date().toISOString().slice(0,10);
+      link.download = `cronograma_${timestamp}.json`;
+      link.href = URL.createObjectURL(blob);
+      link.click();
+      URL.revokeObjectURL(link.href);
+      
+      const statusEl = document.getElementById('status');
+      statusEl.textContent = '✅ JSON exportado';
+      statusEl.className = 'status success';
+    }
+
+    function importJSON() {
+      document.getElementById('json-import').click();
+    }
+
+    function handleJSONImport(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const imported = JSON.parse(e.target.result);
+          if (Array.isArray(imported) && imported.length > 0) {
+            tasks = imported;
+            renderTable();
+            renderGantt(true);
+            
+            const statusEl = document.getElementById('status');
+            statusEl.textContent = `✅ Importadas ${tasks.length} tareas`;
+            statusEl.className = 'status success';
+          } else {
+            throw new Error('Formato inválido');
+          }
+        } catch (err) {
+          alert('Error al importar: ' + err.message);
+        }
+      };
+      reader.readAsText(file);
+      event.target.value = ''; // Reset input
+    }
+
+    // Load saved tasks on startup
+    function loadSavedTasks() {
+      const saved = localStorage.getItem('gantt_tasks');
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            tasks = parsed;
+          }
+        } catch (e) {}
+      }
+    }
+
+    // ============ DOWNLOAD PNG (Réplica exacta de la vista) ============
+    async function downloadGanttPNG() {
+      const statusEl = document.getElementById('status');
+      
+      try {
+        statusEl.textContent = '📸 Generando imagen...';
+        statusEl.className = 'status';
+        
+        // Obtener estilos guardados (los mismos que usa renderGantt)
+        const savedStyles = JSON.parse(localStorage.getItem('ganttStyles') || '{}');
+        const container = document.getElementById('gantt-container');
+        
+        // Obtener colores del DOM actual (más preciso)
+        const computedBg = container.style.backgroundColor || savedStyles.backgroundColor || '#fafafa';
+        const computedText = container.style.color || savedStyles.textColor || '#333333';
+        
+        const bgColor = computedBg;
+        const textColor = computedText;
+        const labelColor = savedStyles.labelColor || textColor;
+        const ownerColor = savedStyles.ownerColor || '#666666';
+        const gridColor = savedStyles.gridColor || '#e0e0e0';
+        const categoryColor = savedStyles.categoryColor || textColor;
+        const barTextColor = savedStyles.barTextColor || '#333333';
+        
+        // Mismas dimensiones que renderGantt()
+        const weekWidth = 60;
+        const rowHeight = 32;
+        const labelWidth = 200;
+        const extraCols = visibleColumns.filter(c => c !== 'label').length;
+        const colWidth = 80;
+        const extraColsWidth = extraCols * colWidth;
+        const padding = 16; // Igual que el CSS
+        const headerHeight = 28;
+        
+        const hasTopLogo = ganttLogos.some(l => l.position && l.position.startsWith('top'));
+        const hasBottomLogo = ganttLogos.some(l => l.position && l.position.startsWith('bottom'));
+        const logoSpace = 70;
+        const topPadding = hasTopLogo ? logoSpace : 0;
+        const bottomPadding = hasBottomLogo ? logoSpace : 0;
+        
+        const barAreaWidth = WEEKS * weekWidth;
+        const canvasWidth = padding + labelWidth + extraColsWidth + barAreaWidth + padding;
+        const canvasHeight = padding + topPadding + headerHeight + 8 + (tasks.length * rowHeight) + bottomPadding + padding;
+        
+        const canvas = document.createElement('canvas');
+        const scale = 2; // Alta resolución
+        canvas.width = canvasWidth * scale;
+        canvas.height = canvasHeight * scale;
+        const ctx = canvas.getContext('2d');
+        ctx.scale(scale, scale);
+        
+        // Background (igual que #gantt-container)
+        ctx.fillStyle = bgColor;
+        ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+        
+        const contentStartY = padding + topPadding;
+        
+        // ===== HEADER (igual que .gantt-header) =====
+        ctx.fillStyle = textColor;
+        ctx.font = 'bold 11px Inter, system-ui, sans-serif';
+        
+        // Columna Actividad
+        ctx.fillText(columnNames['label'] || 'Actividad', padding, contentStartY + 14);
+        
+        // Columnas dinámicas centradas
+        let colX = padding + labelWidth;
+        visibleColumns.forEach(col => {
+          if (col !== 'label') {
+            const text = columnNames[col] || col;
+            const textWidth = ctx.measureText(text).width;
+            ctx.fillText(text, colX + (colWidth - textWidth) / 2, contentStartY + 14);
+            colX += colWidth;
+          }
+        });
+        
+        // Semanas centradas
+        for (let w = 1; w <= WEEKS; w++) {
+          const x = padding + labelWidth + extraColsWidth + ((w - 1) * weekWidth);
+          const text = 'S' + w;
+          const textWidth = ctx.measureText(text).width;
+          ctx.fillText(text, x + (weekWidth - textWidth) / 2, contentStartY + 14);
+        }
+        
+        // Línea separadora del header (igual que border-bottom)
+        ctx.strokeStyle = '#dddddd';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(padding, contentStartY + headerHeight - 4);
+        ctx.lineTo(canvasWidth - padding, contentStartY + headerHeight - 4);
+        ctx.stroke();
+        
+        // ===== ROWS =====
+        const rowsStartY = contentStartY + headerHeight + 8;
+        
+        tasks.forEach((task, i) => {
+          const rowY = rowsStartY + (i * rowHeight);
+          const isCategory = task.kind === 'category';
+          
+          // Label (igual que .gantt-label)
+          ctx.fillStyle = isCategory ? categoryColor : labelColor;
+          ctx.font = isCategory ? 'bold 13px Inter, system-ui, sans-serif' : '13px Inter, system-ui, sans-serif';
+          ctx.fillText(task.label.substring(0, 28), padding, rowY + 18);
+          
+          // Columnas dinámicas centradas (igual que .gantt-owner y .gantt-col)
+          let colX = padding + labelWidth;
+          visibleColumns.forEach(col => {
+            if (col !== 'label') {
+              ctx.font = '12px Inter, system-ui, sans-serif';
+              ctx.fillStyle = ownerColor;
+              const text = task[col] || '';
+              const textWidth = ctx.measureText(text).width;
+              ctx.fillText(text, colX + (colWidth - textWidth) / 2, rowY + 18);
+              colX += colWidth;
+            }
+          });
+          
+          // Grid lines en el área de barras (igual que .gantt-grid-line con gradient discontinuo)
+          const barAreaX = padding + labelWidth + extraColsWidth;
+          
+          ctx.strokeStyle = gridColor;
+          ctx.lineWidth = 1;
+          ctx.globalAlpha = 0.6;
+          
+          // Líneas discontinuas (igual que repeating-linear-gradient con 3px on, 3px off)
+          for (let w = 1; w <= WEEKS; w++) {
+            const lineX = barAreaX + (w * weekWidth);
+            // Dibujar línea discontinua manualmente
+            let dashY = rowY + 2;
+            while (dashY < rowY + rowHeight - 4) {
+              ctx.beginPath();
+              ctx.moveTo(lineX, dashY);
+              ctx.lineTo(lineX, Math.min(dashY + 3, rowY + rowHeight - 4));
+              ctx.stroke();
+              dashY += 6; // 3px línea + 3px espacio
+            }
+          }
+          ctx.globalAlpha = 1.0;
+          
+          // Bar (igual que .gantt-bar)
+          if (task.start != null && task.duration > 0) {
+            const barLeft = barAreaX + ((task.start - 1) * weekWidth);
+            const barWidth = (task.duration * weekWidth) - 4;
+            const barY = rowY + 3;
+            const barHeight = 22;
+            
+            // Fondo de la barra con bordes redondeados
+            ctx.fillStyle = task.color || '#93C5FD';
+            ctx.beginPath();
+            ctx.roundRect(barLeft, barY, barWidth, barHeight, 4);
+            ctx.fill();
+            
+            // Texto dentro de la barra (igual que el contenido del .gantt-bar)
+            if (!isCategory && barWidth > 40) {
+              ctx.fillStyle = barTextColor;
+              ctx.font = 'bold 10px Inter, system-ui, sans-serif';
+              const label = 'S' + task.start + '-' + (task.start + task.duration - 1);
+              const textWidth = ctx.measureText(label).width;
+              ctx.fillText(label, barLeft + (barWidth - textWidth) / 2, barY + 15);
+            }
+          }
+        });
+        
+        // ===== LOGOS (igual que .gantt-logo con posiciones) =====
+        if (ganttLogos.length > 0) {
+          const logoPromises = ganttLogos.map(logo => {
+            return new Promise((resolve) => {
+              const img = new Image();
+              img.crossOrigin = 'anonymous';
+              img.onload = () => {
+                const aspectRatio = img.width / img.height;
+                const height = logo.size || 50;
+                const width = height * aspectRatio;
+                let x, y;
+                
+                // Posiciones igual que el CSS
+                switch(logo.position) {
+                  case 'top-left': 
+                    x = padding; 
+                    y = padding + 10; 
+                    break;
+                  case 'top-center': 
+                    x = (canvasWidth - width) / 2; 
+                    y = padding + 10; 
+                    break;
+                  case 'top-right': 
+                    x = canvasWidth - padding - width; 
+                    y = padding + 10; 
+                    break;
+                  case 'bottom-left': 
+                    x = padding; 
+                    y = canvasHeight - padding - height - 10; 
+                    break;
+                  case 'bottom-center': 
+                    x = (canvasWidth - width) / 2; 
+                    y = canvasHeight - padding - height - 10; 
+                    break;
+                  case 'bottom-right': 
+                    x = canvasWidth - padding - width; 
+                    y = canvasHeight - padding - height - 10; 
+                    break;
+                  default: 
+                    x = canvasWidth - padding - width; 
+                    y = padding + 10;
+                }
+                
+                // Borde redondeado (igual que border-radius: 4px)
+                ctx.save();
+                ctx.beginPath();
+                ctx.roundRect(x, y, width, height, 4);
+                ctx.clip();
+                ctx.drawImage(img, x, y, width, height);
+                ctx.restore();
+                
+                resolve();
+              };
+              img.onerror = () => {
+                console.warn('No se pudo cargar logo:', logo.url);
+                resolve();
+              };
+              img.src = logo.url;
+            });
+          });
+          
+          await Promise.all(logoPromises);
+        }
+        
+        // Descargar
+        const link = document.createElement('a');
+        const timestamp = new Date().toISOString().slice(0,10);
+        link.download = 'cronograma_' + timestamp + '.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+        
+        statusEl.textContent = '✅ PNG descargado';
+        statusEl.className = 'status success';
+        
+      } catch (err) {
+        console.error('Error al generar PNG:', err);
+        statusEl.textContent = '❌ Error: ' + err.message;
+        statusEl.className = 'status error';
+      }
+    }
+
+    // ============ DOWNLOAD HTML ============
+    function downloadGanttHTML() {
+      const statusEl = document.getElementById('status');
+      const container = document.getElementById('gantt-container');
+      
+      try {
+        statusEl.textContent = '📄 Generando HTML...';
+        statusEl.className = 'status';
+        
+        // Get current background color
+        const bgColor = container.style.backgroundColor || '#ffffff';
+        const textColor = container.style.color || '#333333';
+        const dateStr = new Date().toLocaleDateString('es-ES');
+        const dateTimeStr = new Date().toLocaleString('es-ES');
+        
+        // Build task rows
+        let taskRows = '';
+        tasks.forEach(function(task) {
+          const rowClass = task.kind === 'category' ? 'category-row' : '';
+          const typeLabel = task.kind === 'category' ? '📁 Categoría' : '📌 Tarea';
+          taskRows += '<tr class="' + rowClass + '">';
+          taskRows += '<td>' + typeLabel + '</td>';
+          taskRows += '<td contenteditable="true" class="editable">' + task.label + '</td>';
+          taskRows += '<td contenteditable="true" class="editable">' + (task.owner || '-') + '</td>';
+          taskRows += '<td contenteditable="true" class="editable">' + task.start + '</td>';
+          taskRows += '<td contenteditable="true" class="editable">' + task.duration + '</td>';
+          taskRows += '<td><span class="task-bar" style="background:' + task.color + '; width: 60px;">&nbsp;</span> ' + task.color + '</td>';
+          taskRows += '</tr>\n';
+        });
+        
+        // Generate standalone HTML
+        const htmlContent = '<!DOCTYPE html>\n' +
+'<html lang="es">\n' +
+'<head>\n' +
+'  <meta charset="UTF-8">\n' +
+'  <meta name="viewport" content="width=device-width, initial-scale=1.0">\n' +
+'  <title>Cronograma del Proyecto - ' + dateStr + '</title>\n' +
+'  <style>\n' +
+'    * { box-sizing: border-box; margin: 0; padding: 0; }\n' +
+'    body { font-family: "Segoe UI", system-ui, sans-serif; background: ' + bgColor + '; color: ' + textColor + '; padding: 20px; }\n' +
+'    h1 { text-align: center; margin-bottom: 20px; color: ' + textColor + '; }\n' +
+'    .gantt-table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }\n' +
+'    .gantt-table th, .gantt-table td { border: 1px solid #e0e0e0; padding: 8px 12px; text-align: left; }\n' +
+'    .gantt-table th { background: #f5f5f5; font-weight: 600; }\n' +
+'    .gantt-table tr:hover { background: #f9f9f9; }\n' +
+'    .category-row { background: #fff3cd !important; font-weight: 600; }\n' +
+'    .task-bar { height: 24px; border-radius: 4px; display: inline-block; min-width: 20px; }\n' +
+'    .editable:focus { outline: 2px solid #0F62FE; background: #fff; }\n' +
+'    .footer { text-align: center; margin-top: 20px; font-size: 12px; color: #666; }\n' +
+'  </style>\n' +
+'</head>\n' +
+'<body>\n' +
+'  <h1>📅 Cronograma del Proyecto</h1>\n' +
+'  <table class="gantt-table">\n' +
+'    <thead>\n' +
+'      <tr>\n' +
+'        <th>Tipo</th>\n' +
+'        <th>Tarea</th>\n' +
+'        <th>Responsable</th>\n' +
+'        <th>Semana Inicio</th>\n' +
+'        <th>Duración (semanas)</th>\n' +
+'        <th>Color</th>\n' +
+'      </tr>\n' +
+'    </thead>\n' +
+'    <tbody>\n' +
+taskRows +
+'    </tbody>\n' +
+'  </table>\n' +
+'  <p class="footer">Generado el ' + dateTimeStr + ' | Las celdas son editables - haz clic para modificar</p>\n' +
+'  <scr' + 'ipt>\n' +
+'    const ganttData = ' + JSON.stringify(tasks, null, 2) + ';\n' +
+'    console.log("Datos del Gantt:", ganttData);\n' +
+'  </scr' + 'ipt>\n' +
+'</body>\n' +
+'</html>';
+        
+        // Create download
+        const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
+        const link = document.createElement('a');
+        const timestamp = new Date().toISOString().slice(0,10);
+        link.download = 'cronograma_' + timestamp + '.html';
+        link.href = URL.createObjectURL(blob);
+        link.click();
+        URL.revokeObjectURL(link.href);
+        
+        statusEl.textContent = '✅ HTML exportado';
+        statusEl.className = 'status success';
+        
+      } catch (err) {
+        console.error('Error al generar HTML:', err);
+        statusEl.textContent = '❌ Error al generar HTML';
+        statusEl.className = 'status error';
+      }
+    }
+
+    // ============ CHAT ============
+    // Backend URL - Flask server
+    const BACKEND_URL = 'http://localhost:8000';
+
+    // Configurar marked para renderizar Markdown
+    if (typeof marked !== 'undefined') {
+      marked.setOptions({
+        breaks: true,        // Convertir \n en <br>
+        gfm: true,           // GitHub Flavored Markdown
+        headerIds: false,    // No generar IDs en headers
+        mangle: false        // No ofuscar emails
+      });
+    }
+
+    function addMessage(role, content, extraClass = '') {
+      const container = document.getElementById('chat-messages');
+      const div = document.createElement('div');
+      div.className = `msg ${role} ${extraClass}`.trim();
+      
+      // Renderizar Markdown solo para mensajes del asistente
+      if (role === 'assistant' && typeof marked !== 'undefined') {
+        try {
+          div.innerHTML = marked.parse(content);
+        } catch (e) {
+          console.warn('Error parsing markdown:', e);
+          div.innerHTML = content;
+        }
+      } else {
+        // Para mensajes del usuario, escapar HTML y mostrar como texto
+        div.textContent = content;
+      }
+      
+      container.appendChild(div);
+      container.scrollTop = container.scrollHeight;
+      
+      // Keep only last 8 messages
+      while (container.children.length > 8) {
+        container.removeChild(container.children[0]);
+      }
+    }
+
+    async function sendPrompt() {
+      const input = document.getElementById('prompt-input');
+      const btn = document.getElementById('send-btn');
+      const statusEl = document.getElementById('status');
+      const confirmBox = document.getElementById('confirm-box');
+      const prompt = input.value.trim();
+      
+      if (!prompt) return;
+
+      addMessage('user', prompt);
+      input.value = '';
+      btn.disabled = true;
+      statusEl.textContent = '⏳ Clasificando solicitud...';
+      statusEl.className = 'status';
+      confirmBox.style.display = 'none';
+
+      try {
+        // First, try streaming endpoint
+        const streamResponse = await fetch(`${BACKEND_URL}/api/chat/stream`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            message: prompt,
+            currentGantt: tasks
+          })
+        });
+
+        // Check if we got a redirect (non-INFO intent)
+        const contentType = streamResponse.headers.get('content-type');
+        
+        if (contentType && contentType.includes('application/json')) {
+          // Not streaming - handle as regular response or redirect
+          const data = await streamResponse.json();
+          
+          if (data.action_type === 'redirect') {
+            // Use regular endpoint for non-INFO requests
+            await handleRegularChat(prompt);
+          } else if (!data.success) {
+            throw new Error(data.error || 'Error desconocido');
+          }
+        } else {
+          // Streaming response - handle SSE
+          statusEl.textContent = '💬 Respondiendo...';
+          await handleStreamResponse(streamResponse);
+          statusEl.textContent = '✅ Respuesta completa';
+          statusEl.className = 'status success';
+        }
+
+      } catch (err) {
+        console.error('Stream error:', err);
+        // Fallback to regular endpoint
+        try {
+          await handleRegularChat(prompt);
+        } catch (fallbackErr) {
+          addMessage('assistant', '❌ ' + fallbackErr.message);
+          statusEl.textContent = '❌ Error - ¿Está corriendo python app.py?';
+          statusEl.className = 'status error';
+        }
+      }
+
+      btn.disabled = false;
+      input.focus();
+    }
+
+    // Handle streaming response
+    async function handleStreamResponse(response) {
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      
+      // Create message element for streaming content
+      const container = document.getElementById('chat-messages');
+      const div = document.createElement('div');
+      div.className = 'msg assistant streaming';
+      div.innerHTML = '<span class="cursor">▌</span>';
+      container.appendChild(div);
+      container.scrollTop = container.scrollHeight;
+      
+      let fullContent = '';
+      let buffer = '';
+      
+      try {
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          
+          buffer += decoder.decode(value, { stream: true });
+          
+          // Process complete SSE messages
+          const lines = buffer.split('\n');
+          buffer = lines.pop() || ''; // Keep incomplete line in buffer
+          
+          for (const line of lines) {
+            if (line.startsWith('data: ')) {
+              try {
+                const data = JSON.parse(line.slice(6));
+                
+                if (data.content) {
+                  fullContent += data.content;
+                  // Render markdown as we go
+                  if (typeof marked !== 'undefined') {
+                    div.innerHTML = marked.parse(fullContent) + '<span class="cursor">▌</span>';
+                  } else {
+                    div.innerHTML = fullContent + '<span class="cursor">▌</span>';
+                  }
+                  container.scrollTop = container.scrollHeight;
+                }
+                
+                if (data.done) {
+                  // Remove cursor when done
+                  if (typeof marked !== 'undefined') {
+                    div.innerHTML = marked.parse(fullContent);
+                  } else {
+                    div.innerHTML = fullContent;
+                  }
+                  div.classList.remove('streaming');
+                }
+                
+                if (data.error) {
+                  div.innerHTML = '❌ Error: ' + data.error;
+                  div.classList.remove('streaming');
+                }
+              } catch (e) {
+                console.warn('SSE parse error:', e);
+              }
+            }
+          }
+        }
+      } finally {
+        reader.releaseLock();
+      }
+      
+      // Ensure cursor is removed
+      div.classList.remove('streaming');
+      const cursor = div.querySelector('.cursor');
+      if (cursor) cursor.remove();
+      
+      // Limit messages
+      while (container.children.length > 8) {
+        container.removeChild(container.children[0]);
+      }
+    }
+
+    // Handle regular (non-streaming) chat
+    async function handleRegularChat(prompt) {
+      const statusEl = document.getElementById('status');
+      const confirmBox = document.getElementById('confirm-box');
+      
+      const response = await fetch(`${BACKEND_URL}/api/chat`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: prompt,
+          currentGantt: tasks
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error del servidor: ${response.status}`);
+      }
+
+      const data = await response.json();
+      
+      if (!data.success) {
+        throw new Error(data.error || 'Error desconocido');
+      }
+
+      // Handle different action types from orchestrator
+      if (data.action_type === 'confirm') {
+        // CHANGE detected - show confirmation
+        pendingChangeId = data.change_id;
+        pendingGantt = data.gantt;
+        pendingType = 'gantt';
+        
+        document.getElementById('confirm-description').textContent = data.description || 'Se detectó un cambio en el Gantt.';
+        confirmBox.style.display = 'block';
+        
+        addMessage('assistant', `🔍 **Detecté que quieres modificar el Gantt:**\n\n${data.description}\n\n👆 Por favor confirma arriba si quieres aplicar este cambio.`, 'confirm-msg');
+        statusEl.textContent = '⏸️ Esperando confirmación...';
+        statusEl.className = 'status';
+        
+      } else if (data.action_type === 'confirm_style') {
+        // STYLE change detected - show confirmation
+        pendingChangeId = data.change_id;
+        pendingStyles = data.styles;
+        pendingType = 'style';
+        
+        console.log('[DEBUG] Style change pending:', pendingChangeId, pendingStyles);
+        
+        document.getElementById('confirm-description').textContent = data.description || 'Se cambiará el estilo del diagrama.';
+        confirmBox.style.display = 'block';
+        
+        addMessage('assistant', `🎨 **Detecté que quieres cambiar el estilo:**\n\n${data.description}\n\n👆 Por favor confirma arriba si quieres aplicar este cambio.`, 'confirm-msg');
+        statusEl.textContent = '⏸️ Esperando confirmación...';
+        statusEl.className = 'status';
+        
+      } else if (data.action_type === 'confirm_structure') {
+        // STRUCTURE change detected - show confirmation
+        pendingChangeId = data.change_id;
+        pendingStructure = data.structure;
+        pendingType = 'structure';
+        
+        console.log('[DEBUG] Structure change pending:', pendingChangeId, pendingStructure);
+        
+        document.getElementById('confirm-description').textContent = data.description || 'Se modificará la estructura del diagrama.';
+        confirmBox.style.display = 'block';
+        
+        addMessage('assistant', `🏗️ **Detecté que quieres cambiar la estructura:**\n\n${data.description}\n\n👆 Por favor confirma arriba si quieres aplicar este cambio.`, 'confirm-msg');
+        statusEl.textContent = '⏸️ Esperando confirmación...';
+        statusEl.className = 'status';
+        
+      } else if (data.action_type === 'confirm_logo') {
+        // LOGO change detected - show confirmation
+        pendingChangeId = data.change_id;
+        pendingLogo = data.logo;
+        pendingType = 'logo';
+        
+        console.log('[DEBUG] Logo change pending:', pendingChangeId, pendingLogo);
+        
+        document.getElementById('confirm-description').textContent = data.description || 'Se modificará un logo en el diagrama.';
+        confirmBox.style.display = 'block';
+        
+        addMessage('assistant', `🖼️ **Detecté que quieres modificar un logo:**\n\n${data.description}\n\n👆 Por favor confirma arriba si quieres aplicar este cambio.`, 'confirm-msg');
+        statusEl.textContent = '⏸️ Esperando confirmación...';
+        statusEl.className = 'status';
+        
+      } else if (data.action_type === 'info') {
+        // INFO/recommendation - show directly (fallback, normally streamed)
+        addMessage('assistant', data.response || 'No tengo información adicional.');
+        statusEl.textContent = '💡 Información proporcionada';
+        statusEl.className = 'status success';
+        
+      } else {
+        // Legacy flow (backwards compatibility)
+        if (Array.isArray(data.gantt)) {
+          tasks = data.gantt;
+          renderGantt(true);
+          addMessage('assistant', '✅ ¡Listo! Gantt actualizado.');
+          statusEl.textContent = '✅ Cambios aplicados';
+          statusEl.className = 'status success';
+        } else {
+          addMessage('assistant', data.response || 'No pude entender.');
+          statusEl.textContent = '⚠️ Sin cambios';
+          statusEl.className = 'status';
+        }
+      }
+    }
+
+    // Confirm change - apply to Gantt or Style
+    async function confirmChange() {
+      const statusEl = document.getElementById('status');
+      const confirmBox = document.getElementById('confirm-box');
+      
+      console.log('[DEBUG] confirmChange called, pendingChangeId:', pendingChangeId, 'pendingType:', pendingType);
+      
+      if (!pendingChangeId) {
+        addMessage('assistant', '⚠️ No hay cambio pendiente para confirmar.');
+        return;
+      }
+
+      statusEl.textContent = '⏳ Aplicando cambio...';
+      confirmBox.style.display = 'none';
+
+      try {
+        const response = await fetch(`${BACKEND_URL}/api/confirm`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            change_id: pendingChangeId
+          })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          if (data.type === 'style' && data.styles) {
+            // Apply style changes
+            applyStyles(data.styles);
+            addMessage('assistant', '🎨 ¡Estilo aplicado exitosamente!');
+            statusEl.textContent = '✅ Estilo aplicado';
+            statusEl.className = 'status success';
+          } else if (data.type === 'structure' && data.structure) {
+            // Apply structure changes (add/remove columns)
+            applyStructureChange(data.structure);
+            addMessage('assistant', '🏗️ ¡Estructura modificada exitosamente!');
+            statusEl.textContent = '✅ Estructura actualizada';
+            statusEl.className = 'status success';
+          } else if (data.type === 'logo' && data.logo) {
+            // Apply logo changes (add/move/remove logos)
+            applyLogoChange(data.logo);
+            addMessage('assistant', '🖼️ ¡Logo modificado exitosamente!');
+            statusEl.textContent = '✅ Logo actualizado';
+            statusEl.className = 'status success';
+          } else if (data.type === 'gantt' && Array.isArray(data.gantt)) {
+            // Apply gantt changes
+            tasks = data.gantt;
+            renderGantt(true);
+            loadSavedStyles(); // Re-aplicar estilos después de re-renderizar
+            addMessage('assistant', '✅ ¡Cambio aplicado exitosamente!');
+            statusEl.textContent = '✅ Cambios aplicados';
+            statusEl.className = 'status success';
+          } else if (Array.isArray(data.gantt)) {
+            // Legacy support
+            tasks = data.gantt;
+            renderGantt(true);
+            loadSavedStyles(); // Re-aplicar estilos después de re-renderizar
+            addMessage('assistant', '✅ ¡Cambio aplicado exitosamente!');
+            statusEl.textContent = '✅ Cambios aplicados';
+            statusEl.className = 'status success';
+          } else {
+            throw new Error('Respuesta inválida del servidor');
+          }
+        } else {
+          throw new Error(data.error || 'No se pudo aplicar el cambio');
+        }
+
+      } catch (err) {
+        addMessage('assistant', '❌ Error al aplicar: ' + err.message);
+        statusEl.textContent = '❌ Error';
+        statusEl.className = 'status error';
+      }
+
+      // Reset pending state
+      pendingChangeId = null;
+      pendingGantt = null;
+      pendingStyles = null;
+      pendingStructure = null;
+      pendingLogo = null;
+      pendingType = null;
+    }
+    
+    // Apply style changes to the diagram
+    function applyStyles(styles) {
+      const container = document.getElementById('gantt-container');
+      const ganttCard = container.closest('.card'); // Get parent card
+      
+      if (styles.backgroundColor) {
+        container.style.backgroundColor = styles.backgroundColor;
+        if (ganttCard) {
+          ganttCard.style.backgroundColor = styles.backgroundColor;
+        }
+      }
+      if (styles.textColor) {
+        container.style.color = styles.textColor;
+        if (ganttCard) {
+          ganttCard.style.color = styles.textColor;
+          // Update the h2 title
+          const title = ganttCard.querySelector('h2');
+          if (title) title.style.color = styles.textColor;
+        }
+        // Update row labels
+        document.querySelectorAll('.gantt-row').forEach(row => {
+          row.style.color = styles.textColor;
+        });
+      }
+      if (styles.headerColor) {
+        document.querySelectorAll('.week-header').forEach(header => {
+          header.style.backgroundColor = styles.headerColor;
+        });
+      }
+      if (styles.gridColor) {
+        document.querySelectorAll('.week-line').forEach(line => {
+          line.style.borderColor = styles.gridColor;
+        });
+      }
+      
+      // === NUEVOS ESTILOS DE COLUMNA ===
+      
+      // Color de la columna de nombres/tareas (labels)
+      if (styles.labelColor) {
+        document.querySelectorAll('.gantt-label').forEach(label => {
+          label.style.color = styles.labelColor;
+        });
+      }
+      
+      // Color de la columna de owners/responsables
+      if (styles.ownerColor) {
+        document.querySelectorAll('.gantt-owner').forEach(owner => {
+          owner.style.color = styles.ownerColor;
+        });
+      }
+      
+      // Color de las categorías
+      if (styles.categoryColor) {
+        document.querySelectorAll('.gantt-label.category').forEach(cat => {
+          cat.style.color = styles.categoryColor;
+        });
+      }
+      
+      // Color del texto dentro de las barras
+      if (styles.barTextColor) {
+        document.querySelectorAll('.gantt-bar').forEach(bar => {
+          bar.style.color = styles.barTextColor;
+        });
+      }
+      
+      // Guardar estilos para persistencia
+      saveCurrentStyles(styles);
+      
+      console.log('[DEBUG] Styles applied:', styles);
+    }
+    
+    // Guardar estilos aplicados para persistencia
+    function saveCurrentStyles(newStyles) {
+      let savedStyles = JSON.parse(localStorage.getItem('ganttStyles') || '{}');
+      savedStyles = { ...savedStyles, ...newStyles };
+      localStorage.setItem('ganttStyles', JSON.stringify(savedStyles));
+    }
+    
+    // Cargar y aplicar estilos guardados
+    function loadSavedStyles() {
+      const savedStyles = JSON.parse(localStorage.getItem('ganttStyles') || '{}');
+      if (Object.keys(savedStyles).length > 0) {
+        applyStyles(savedStyles);
+      }
+    }
+    
+    // Aplicar cambio estructural (agregar/quitar columnas)
+    function applyStructureChange(structure) {
+      console.log('[DEBUG] Applying structure change:', structure);
+      
+      if (structure.operation === 'addColumn') {
+        const column = structure.column;
+        const displayName = structure.displayName || column;
+        
+        // Agregar columna si no existe
+        if (!visibleColumns.includes(column)) {
+          visibleColumns.push(column);
+          columnNames[column] = displayName;
+          
+          // Agregar el campo a todas las tareas existentes
+          tasks.forEach(task => {
+            if (task[column] === undefined) {
+              task[column] = '';
+            }
+          });
+          
+          // Guardar en localStorage
+          localStorage.setItem('ganttColumns', JSON.stringify(visibleColumns));
+          localStorage.setItem('ganttColumnNames', JSON.stringify(columnNames));
+          
+          // Re-renderizar
+          renderGantt(true);
+          loadSavedStyles();
+        }
+      } else if (structure.operation === 'removeColumn') {
+        const column = structure.column;
+        
+        // No permitir quitar la columna label
+        if (column === 'label') {
+          addMessage('assistant', '⚠️ La columna de tareas no se puede eliminar.');
+          return;
+        }
+        
+        // Quitar columna si existe
+        const index = visibleColumns.indexOf(column);
+        if (index > -1) {
+          visibleColumns.splice(index, 1);
+          
+          // Guardar en localStorage
+          localStorage.setItem('ganttColumns', JSON.stringify(visibleColumns));
+          
+          // Re-renderizar
+          renderGantt(true);
+          loadSavedStyles();
+        }
+      }
+    }
+    
+    // Aplicar cambio de logo (agregar/mover/eliminar logos)
+    function applyLogoChange(logoData) {
+      console.log('[DEBUG] Applying logo change:', logoData);
+      
+      if (logoData.operation === 'add') {
+        // Agregar nuevo logo
+        logoCounter++;
+        const newLogo = {
+          id: `logo-${logoCounter}`,
+          url: logoData.url,
+          position: logoData.position || 'top-right',
+          size: logoData.size || 50
+        };
+        ganttLogos.push(newLogo);
+        
+        // Guardar
+        localStorage.setItem('ganttLogos', JSON.stringify(ganttLogos));
+        localStorage.setItem('ganttLogoCounter', logoCounter.toString());
+        
+      } else if (logoData.operation === 'move') {
+        // Mover logo existente
+        const logoId = logoData.id || (ganttLogos.length > 0 ? ganttLogos[ganttLogos.length - 1].id : null);
+        const logo = ganttLogos.find(l => l.id === logoId);
+        if (logo) {
+          logo.position = logoData.position;
+          localStorage.setItem('ganttLogos', JSON.stringify(ganttLogos));
+        }
+        
+      } else if (logoData.operation === 'resize') {
+        // Cambiar tamaño
+        const logoId = logoData.id || (ganttLogos.length > 0 ? ganttLogos[ganttLogos.length - 1].id : null);
+        const logo = ganttLogos.find(l => l.id === logoId);
+        if (logo) {
+          logo.size = logoData.size || 50;
+          localStorage.setItem('ganttLogos', JSON.stringify(ganttLogos));
+        }
+        
+      } else if (logoData.operation === 'remove') {
+        // Eliminar logo
+        const logoId = logoData.id || (ganttLogos.length > 0 ? ganttLogos[ganttLogos.length - 1].id : null);
+        const index = ganttLogos.findIndex(l => l.id === logoId);
+        if (index > -1) {
+          ganttLogos.splice(index, 1);
+          localStorage.setItem('ganttLogos', JSON.stringify(ganttLogos));
+        }
+      }
+      
+      // Re-renderizar para mostrar los logos
+      renderLogos();
+    }
+    
+    // Renderizar logos en el contenedor
+    function renderLogos() {
+      // Eliminar logos existentes
+      document.querySelectorAll('.gantt-logo').forEach(el => el.remove());
+      
+      const container = document.getElementById('gantt-container');
+      
+      ganttLogos.forEach(logo => {
+        const img = document.createElement('img');
+        img.className = 'gantt-logo';
+        img.src = logo.url;
+        img.id = logo.id;
+        img.style.height = `${logo.size}px`;
+        img.style.width = 'auto';
+        img.style.position = 'absolute';
+        img.style.zIndex = '100';
+        img.style.objectFit = 'contain';
+        img.onerror = () => {
+          img.style.display = 'none';
+          addMessage('assistant', `⚠️ No se pudo cargar la imagen: ${logo.url}`);
+        };
+        
+        // Posicionar según la posición indicada
+        switch(logo.position) {
+          case 'top-left':
+            img.style.top = '10px';
+            img.style.left = '10px';
+            break;
+          case 'top-center':
+            img.style.top = '10px';
+            img.style.left = '50%';
+            img.style.transform = 'translateX(-50%)';
+            break;
+          case 'top-right':
+            img.style.top = '10px';
+            img.style.right = '10px';
+            break;
+          case 'bottom-left':
+            img.style.bottom = '10px';
+            img.style.left = '10px';
+            break;
+          case 'bottom-center':
+            img.style.bottom = '10px';
+            img.style.left = '50%';
+            img.style.transform = 'translateX(-50%)';
+            break;
+          case 'bottom-right':
+            img.style.bottom = '10px';
+            img.style.right = '10px';
+            break;
+          default:
+            img.style.top = '10px';
+            img.style.right = '10px';
+        }
+        
+        container.appendChild(img);
+      });
+    }
+
+    // Decline change - ask for more context
+    async function declineChange() {
+      const statusEl = document.getElementById('status');
+      const confirmBox = document.getElementById('confirm-box');
+      
+      if (!pendingChangeId) {
+        return;
+      }
+
+      statusEl.textContent = '⏳ Solicitando más contexto...';
+      confirmBox.style.display = 'none';
+
+      try {
+        const response = await fetch(`${BACKEND_URL}/api/decline`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            change_id: pendingChangeId
+          })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          addMessage('assistant', data.response || '🤔 Por favor, dame más detalles sobre lo que necesitas.');
+          statusEl.textContent = '💬 Esperando más información';
+          statusEl.className = 'status';
+        } else {
+          addMessage('assistant', '❓ Por favor, explícame mejor qué cambio necesitas.');
+        }
+
+      } catch (err) {
+        addMessage('assistant', '❓ Por favor, explícame con más detalle qué necesitas cambiar.');
+      }
+
+      // Reset pending state
+      pendingChangeId = null;
+      pendingGantt = null;
+      pendingStyles = null;
+      pendingStructure = null;
+      pendingLogo = null;
+      pendingType = null;
+    }
+
+    // Enter to send
+    document.getElementById('prompt-input').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendPrompt();
+      }
+    });
+
+    // Init
+    loadSavedTasks();
+    renderGantt();
+    loadSavedStyles(); // Cargar estilos guardados
+  </script>
+
+</body>
+</html>

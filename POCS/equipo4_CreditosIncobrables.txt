@@ -1,0 +1,207 @@
+================================================================================
+        CUESTIONARIO POC: CLASIFICACIÓN DE CRÉDITOS INCOBRABLES
+================================================================================
+Equipo: Angel, Dianax, Julio, Nicolex
+Instructor: Luis
+Curso: Python + Copilot
+Fecha de entrega: _______________
+================================================================================
+
+Hola equipo, para poder ayudarles a construir su herramienta con Python y 
+Copilot, necesito que respondan las siguientes preguntas.
+
+RECUERDEN: Copilot puede generar el código, pero NO puede inventar las 
+reglas fiscales ni las fórmulas. Esa información solo ustedes la tienen.
+
+================================================================================
+PARTE 1: SOBRE LA CLASIFICACIÓN POR UDIs
+================================================================================
+
+1. El umbral es 30,000 UDIs. ¿Esto es fijo o puede cambiar?
+   [ ] Fijo (siempre 30,000 UDIs)
+   [ ] Puede variar → ¿El usuario lo configura? _____________________________
+
+2. ¿De dónde obtienen el valor de la UDI?
+   [ ] El usuario lo captura manualmente
+   [ ] API de Banxico
+   [ ] Valor fijo precargado
+   Valor actual de referencia: $_______________
+
+3. ¿Qué pasa si el crédito EXCEDE 30,000 UDIs?
+   Clasificación: ____________________________________________________________
+   Implicación fiscal: _______________________________________________________
+
+4. ¿Qué pasa si el crédito es MENOR O IGUAL a 30,000 UDIs?
+   Clasificación: ____________________________________________________________
+   Implicación fiscal: _______________________________________________________
+
+================================================================================
+PARTE 2: LA BASE DE CRÉDITOS QUE RECIBEN
+================================================================================
+
+1. ¿Qué columnas tiene la base de créditos?
+
+   | # | Columna | Descripción | Ejemplo |
+   |---|---------|-------------|---------|
+   | 1 | Número de contrato | | CONT-2024-001 |
+   | 2 | Nombre del cliente | | Juan Pérez |
+   | 3 | Número de crédito | | CRED-001 |
+   | 4 | Número de cliente | | CLI-12345 |
+   | 5 | Saldo del crédito | | $150,000 |
+   | 6 | | | |
+   | 7 | | | |
+   | 8 | | | |
+   (Agreguen todas las columnas que reciben)
+
+2. ¿La base viene en Excel?
+   [ ] Sí, siempre Excel
+   [ ] A veces CSV
+   [ ] Otro: ________________________________________________________________
+
+3. ¿El formato es siempre igual o varía por institución?
+   [ ] Siempre igual
+   [ ] Varía → ¿Cómo se manejaría? __________________________________________
+
+================================================================================
+PARTE 3: CONTROL DE STATUS (MUY IMPORTANTE)
+================================================================================
+
+1. ¿Cuáles son TODOS los status posibles de un crédito?
+
+   | # | Status | ¿Qué significa? | ¿Afecta deducibilidad? |
+   |---|--------|-----------------|------------------------|
+   | 1 |        |                 | [ ] Sí [ ] No          |
+   | 2 |        |                 | [ ] Sí [ ] No          |
+   | 3 |        |                 | [ ] Sí [ ] No          |
+   | 4 |        |                 | [ ] Sí [ ] No          |
+   | 5 |        |                 | [ ] Sí [ ] No          |
+
+2. ¿Quién actualiza el status?
+   [ ] Área de recuperaciones
+   [ ] Área jurídica
+   [ ] Ambas
+   ¿Cómo llega esa información? _____________________________________________
+
+3. ¿Hay reglas automáticas para cambiar status?
+   Ejemplo: "Si pasan 90 días sin pago → pasa a jurídico"
+   
+   Regla 1: _________________________________________________________________
+   Regla 2: _________________________________________________________________
+   Regla 3: _________________________________________________________________
+
+4. ¿Qué requisitos del LISR deben cumplirse para que sea deducible?
+   (Basado en Art. 27 LISR para créditos incobrables)
+   
+   Requisito 1: _____________________________________________________________
+   Requisito 2: _____________________________________________________________
+   Requisito 3: _____________________________________________________________
+
+================================================================================
+PARTE 4: AGRUPACIÓN POR CLIENTE
+================================================================================
+
+1. Un cliente puede tener varios créditos. ¿Cómo se agrupan?
+   [ ] Se suman todos los saldos del cliente
+   [ ] Se evalúa cada crédito por separado
+   [ ] Otro: ________________________________________________________________
+
+2. ¿La clasificación de UDIs es por crédito individual o por cliente?
+   [ ] Por crédito individual
+   [ ] Por total del cliente
+   [ ] Otro: ________________________________________________________________
+
+================================================================================
+PARTE 5: FLUJO MENSUAL
+================================================================================
+
+1. ¿Con qué frecuencia reciben la base actualizada?
+   [ ] Mensual
+   [ ] Semanal
+   [ ] Otro: ________________________________________________________________
+
+2. ¿Qué hace la herramienta cada mes?
+
+   [ ] Compara base nueva vs base anterior
+   [ ] Identifica créditos nuevos
+   [ ] Identifica cambios de status
+   [ ] Identifica créditos que ya no aparecen
+   [ ] Reclasifica por UDIs (si cambió el saldo)
+   [ ] Genera resumen de movimientos
+   [ ] Otros: ________________________________________________________________
+
+3. ¿Necesitan guardar histórico de todos los meses?
+   [ ] Sí
+   [ ] No
+
+================================================================================
+PARTE 6: ¿QUÉ RESULTADO DEBE MOSTRAR LA HERRAMIENTA?
+================================================================================
+
+REPORTE DETALLADO (por crédito):
+| # | Columna | Descripción |
+|---|---------|-------------|
+| 1 | Número de cliente | |
+| 2 | Créditos del cliente | |
+| 3 | Saldo total | |
+| 4 | Saldo en UDIs | |
+| 5 | Clasificación (>30K / ≤30K) | |
+| 6 | Status actual | |
+| 7 | Status anterior | |
+| 8 | ¿Cambió status? | |
+| 9 | | |
+
+RESUMEN EJECUTIVO:
+| # | Concepto | |
+|---|----------|--|
+| 1 | Total de créditos | |
+| 2 | Créditos > 30K UDIs | |
+| 3 | Créditos ≤ 30K UDIs | |
+| 4 | Monto total > 30K | |
+| 5 | Monto total ≤ 30K | |
+| 6 | Por status: En recuperación | |
+| 7 | Por status: En jurídico | |
+| 8 | | |
+
+================================================================================
+PARTE 7: EJEMPLO NUMÉRICO
+================================================================================
+
+EJEMPLO DE CLASIFICACIÓN:
+
+Cliente: CLI-12345
+| Crédito | Saldo | UDI del día | Saldo en UDIs | Clasificación |
+|---------|-------|-------------|---------------|---------------|
+| CRED-001 | $250,000 | $8.20 | 30,488 | > 30K |
+| CRED-002 | $150,000 | $8.20 | 18,293 | ≤ 30K |
+
+EJEMPLO DE CAMBIO DE STATUS:
+
+Mes anterior:
+- CRED-001: Status = "En recuperación"
+
+Mes actual:
+- CRED-001: Status = "En jurídico"
+- Razón: _______________________________________________________________
+
+================================================================================
+PARTE 8: SOBRE EL EQUIPO
+================================================================================
+
+1. ¿Quién entiende mejor los requisitos de deducibilidad (Art. 27 LISR)?
+   Respuesta: _______________
+
+2. ¿Tienen una base de ejemplo que puedan compartir?
+   [ ] Sí → Por favor compártanla (pueden anonimizar datos sensibles)
+   [ ] No
+
+3. ¿Cuántos créditos tiene típicamente una base mensual?
+   Respuesta: _______________
+
+================================================================================
+NOTAS ADICIONALES:
+================================================================================
+
+_____________________________________________________________________________
+_____________________________________________________________________________
+
+================================================================================

@@ -1,0 +1,398 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sesión 4 — Motor de reglas configurable (POC)</title>
+  <style>
+    :root{
+      --ey-yellow:#FFCD00;
+      --ey-dark:#242424;
+      --ey-gray:#6B6B6B;
+      --ey-light:#F7F7F7;
+      --ey-accent:#0F62FE;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--ey-dark);background:#fff;line-height:1.55}
+    a{color:var(--ey-accent);text-decoration:none}
+    a:hover{text-decoration:underline}
+    .wrap{max-width:1100px;margin:0 auto;padding:24px}
+    .hero{background: linear-gradient(135deg, var(--ey-yellow) 0%, #ffe77a 60%, #fff3b0 100%);padding:48px 24px 56px;position:relative;overflow:hidden;display:flex;align-items:center;gap:28px;border-radius:8px}
+    .hero img{width:120px;height:auto}
+    .hero .text{max-width:820px}
+    .hero h1{margin:0;font-size:clamp(24px,4.5vw,40px);font-weight:800}
+    .hero p.subtitle{margin:10px 0 0;font-size:16px;color:#222}
+    .badge{display:inline-block;padding:4px 10px;border-radius:999px;background:#fff8d6;border:1px solid #ffe68a;font-size:12px;margin-right:8px}
+    section{padding:36px 0;border-bottom:1px solid #f0f0f0}
+    h2{font-size:24px;margin:0 0 12px}
+    h3{margin:14px 0 8px}
+    .lead{color:var(--ey-gray);max-width:900px}
+    .grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+    .card{background:#fff;border:1px solid #eee;border-radius:12px;padding:18px;box-shadow:0 1px 2px rgba(0,0,0,0.04)}
+    pre{background:#fbfbfb;border:1px solid #eee;padding:12px;border-radius:8px;overflow:auto}
+    ul{margin:10px 0 0 18px}
+    footer{padding:36px 0;color:#777}
+    @media (max-width:900px){.grid-2{grid-template-columns:1fr}.hero{flex-direction:column;align-items:flex-start}}
+  </style>
+</head>
+<body>
+
+  <header class="hero">
+    <img src="https://companieslogo.com/img/orig/ernst-and-young-6c5de5ba.svg?t=1720244494&download=true" alt="EY Logo">
+    <div class="text">
+      <h1>Sesión 4 — Motor de reglas configurable (POC)</h1>
+      <p class="subtitle">Convertir un problema de negocio en reglas simples sobre datos (CSV) y generar salida + evidencia (excepciones) sin tocar el código.</p>
+      <div style="margin-top:12px">
+        <span class="badge">Sesión A · 17-dic-25 · 15:00–16:00 (México)</span>
+        <span class="badge">Semana 2 · CSV + gobernanza de reglas</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+
+    <section>
+      <h2>Qué buscamos (marco POC)</h2>
+      <div class="card">
+        <p class="lead">En una prueba de concepto (POC) lo más importante no es el “código bonito”, sino tener claro <b>qué se valida</b>. En esta sesión armamos una POC completa con un script <b>muy simple</b> y reglas en CSV.</p>
+        <h3>1) Objetivo</h3>
+        <ul>
+          <li>Validar que podemos calcular un impuesto/regla sobre un dataset y obtener una salida reproducible.</li>
+        </ul>
+        <h3>2) Entradas</h3>
+        <ul>
+          <li>Un CSV de datos: ventas (<code>fecha</code>, <code>importe</code>, <code>categoria</code>).</li>
+          <li>Un CSV de reglas: umbrales/tasas (<code>min_incl</code>, <code>max_incl</code>, <code>tasa</code>).</li>
+        </ul>
+        <h3>3) Salidas</h3>
+        <ul>
+          <li>Un CSV final con columnas nuevas (<code>impuesto_tasa</code>, <code>impuesto</code>) para abrir en Excel.</li>
+          <li>Un CSV de excepciones (filas con vacíos, inválidos o sin regla).</li>
+        </ul>
+        <h3>4) Validaciones mínimas</h3>
+        <ul>
+          <li>Totales: suma de importes y suma de impuestos.</li>
+          <li>Calidad: conteo de vacíos / inválidos y revisión de excepciones.</li>
+          <li>Casos límite: importes exactamente en los umbrales.</li>
+        </ul>
+        <h3>Tipo de POC</h3>
+        <ul>
+          <li><b>POC de Datos + Automatización</b>: toma datos, aplica reglas y genera evidencia/outputs.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2>Canvas de POC (1 página)</h2>
+      <div class="card">
+        <p class="lead">Objetivo de esta sección: salir con <b>esta POC</b> bien definida (10–15 min). La POC de la sesión es: <b>aplicar tasas/umbrales desde un CSV de reglas</b> a un CSV de ventas y generar <b>salida + excepciones</b>.</p>
+
+        <h3>1) Problema y objetivo (en 1 frase)</h3>
+        <ul>
+          <li><b>Problema:</b> hoy el cálculo/aplicación de tasas cambia (año/criterio), se replica en Excel, y se pierden controles (errores, tiempo, riesgo, inconsistencias).</li>
+          <li><b>Objetivo (plantilla):</b> “Validar que podemos <b>calcular impuesto por reglas versionadas</b> con datos de <b>ventas en CSV</b> para usuarios <b>Taxes/Operación</b>”.</li>
+        </ul>
+
+        <h3>2) Alcance (qué sí / qué no)</h3>
+        <ul>
+          <li><b>Incluye:</b> cálculo de impuesto por reglas, salida a CSV, reporte de excepciones, totales de control.</li>
+          <li><b>No incluye:</b> declaración, envío a SAP, integración con sistemas, UI, aprobaciones, manejo de múltiples monedas.</li>
+        </ul>
+
+        <h3>3) Entradas (datos y reglas)</h3>
+        <ul>
+          <li><b>Datos mínimos:</b> un CSV de ventas con este layout:</li>
+        </ul>
+
+        <div class="card" style="margin-top:12px">
+          <h3 style="margin-top:0">Layout — ventas (input)</h3>
+          <pre><code>Archivo: ventas.csv / ventas_large.csv / ventas_sucio.csv
+Columnas:
+  - id_cliente   (texto o número)
+  - fecha        (YYYY-MM-DD)
+  - importe      (número: 1500.00, 1500,00 o 1,500.00)
+  - categoria    (texto: Servicios/Software/Retenciones/Honorarios/Gastos)
+
+Ejemplo:
+id_cliente,fecha,importe,categoria
+41,2025-01-15,5967.78,Servicios</code></pre>
+        </div>
+
+        <ul>
+          <li><b>Reglas:</b> un CSV de tasas/umbrales mantenido por el “dueño de reglas”.</li>
+          <li><b>Supuestos:</b> importe en la misma moneda, redondeo a 2 decimales, vacíos/NaN se registran como excepción.</li>
+        </ul>
+
+        <div class="card" style="margin-top:12px">
+          <h3 style="margin-top:0">Layout — reglas (tasas/umbrales)</h3>
+          <pre><code>Archivo: reglas_impuesto.csv
+Columnas:
+  - categoria    ("*" = aplica a cualquier categoría)
+  - min_incl     (mínimo incluyente)
+  - max_incl     (máximo incluyente; vacío = sin tope)
+  - tasa         (decimal, ej. 0.05)
+
+Ejemplo:
+categoria,min_incl,max_incl,tasa
+*,0,1000,0.05
+*,1000.01,5000,0.08
+*,5000.01,,0.12</code></pre>
+        </div>
+
+        <h3>4) Salidas (lo que el negocio necesita ver)</h3>
+        <ul>
+          <li><b>Salida principal:</b> <code>ventas_con_impuesto.csv</code> con columnas nuevas: <code>impuesto_tasa</code>, <code>impuesto</code>.</li>
+          <li><b>Evidencia:</b> <code>ventas_excepciones.csv</code> con <code>motivo</code> y <code>row_number</code> para rastreo.</li>
+        </ul>
+
+        <h3>5) Validaciones (definen “confiable”)</h3>
+        <ul>
+          <li><b>Checks numéricos:</b> totales, rangos, casos límite (1000/5000), redondeo a 2 decimales.</li>
+          <li><b>Checks de calidad de datos:</b> % vacíos, formatos inválidos, categorías inesperadas.</li>
+          <li><b>Checks cruzados:</b> comparar 3–5 filas a mano o contra Excel.</li>
+        </ul>
+
+        <h3>6) Métrica de éxito y criterio de “no-go”</h3>
+        <ul>
+          <li><b>Éxito:</b> “El 95% de filas procesa sin excepción y los totales cuadran con una muestra manual”.</li>
+          <li><b>No-go:</b> “Más de X% de excepciones” o “reglas ambiguas/no trazables” o “dataset no confiable”.</li>
+        </ul>
+
+        <h3>7) Roles (para que sea operable)</h3>
+        <ul>
+          <li><b>Dueño de reglas:</b> aprueba cambios en <code>reglas_impuesto.csv</code>.</li>
+          <li><b>Operador:</b> corre el script y genera outputs.</li>
+          <li><b>Revisor:</b> valida excepciones y firma la evidencia (para el POC).</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2>Entregables de la sesión (mínimos)</h2>
+      <div class="card">
+        <ul>
+          <li><b>1-pager de POC:</b> objetivo + entradas + salidas + validaciones + métrica de éxito.</li>
+          <li><b>Reglas versionables:</b> un <code>reglas_impuesto.csv</code> revisado por el “dueño de reglas”.</li>
+          <li><b>Outputs:</b> CSV principal + CSV de excepciones (evidencia).</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2>Objetivo de la sesión</h2>
+      <div class="card">
+        <p class="lead">Construir un <b>motor de reglas configurable</b>: separar la lógica fiscal (reglas) del código. El objetivo es que el equipo cambie tasas/umbrales en un CSV y el script solo “ejecute y genere evidencia”.</p>
+        <p class="lead"><b>Ejemplo típico en Taxes:</b> en un proyecto anual recibimos <i>el mismo layout</i> de datos (mismas columnas), pero cada año cambian las tasas o umbrales. Con este enfoque, actualizas <b>solo</b> el CSV de reglas y vuelves a correr.</p>
+        <ul>
+          <li>Definir reglas en un archivo editable: <code>reglas_impuesto.csv</code>.</li>
+          <li>Ejecutar un script que aplique reglas sin tocar código: <code>motor_reglas.py</code>.</li>
+          <li>Generar un CSV de salida para Excel y un CSV de excepciones.</li>
+          <li>Entender gobernanza: “reglas versionables” y trazabilidad.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2>Agenda breve (60 min)</h2>
+      <div class="card">
+        <ol>
+          <li>Canvas de POC (objetivo/IO/validaciones) (15 min)</li>
+          <li>Reglas en CSV (gobernanza) (10 min)</li>
+          <li>Ejecutar motor + revisar salida/excepciones (25 min)</li>
+          <li>Criterio de éxito/no-go + próximos pasos (10 min)</li>
+        </ol>
+      </div>
+    </section>
+
+    <section>
+      <h2>Materiales (todo en esta carpeta)</h2>
+      <div class="card">
+        <p class="lead">Esta sesión está diseñada para correrse completa desde VS Code con archivos CSV locales (sin APIs y sin dependencias extra).</p>
+        <ul>
+          <li><b>Guía:</b> <code>sesion4.html</code> (este archivo)</li>
+          <li><b>Script motor (mega simple, para explicar en vivo):</b> <code>motor_reglas_simple.py</code></li>
+          <li><b>Script motor (versión robusta opcional):</b> <code>motor_reglas.py</code></li>
+          <li><b>Reglas editables:</b> <a href="reglas_impuesto.csv">reglas_impuesto.csv</a></li>
+          <li><b>Dataset base (pequeño):</b> <a href="ventas.csv">ventas.csv</a></li>
+          <li><b>Dataset grande:</b> <a href="ventas_large.csv">ventas_large.csv</a> (200 filas)</li>
+          <li><b>Dataset “sucio”:</b> <a href="ventas_sucio.csv">ventas_sucio.csv</a> (incluye vacíos/NaN y un importe inválido)</li>
+          <li><b>Generador (opcional):</b> <code>generate_sesion4_datasets.py</code></li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2>Dinámica (paso a paso)</h2>
+      <div class="card">
+        <h3>Paso 1 — Definir POC (10–15 min)</h3>
+        <ul>
+          <li>Completen el “Canvas de POC (1 página)”.</li>
+          <li>Alineen: qué se considera “éxito” y qué sería “no-go”.</li>
+        </ul>
+
+        <h3>Paso 2 — Acordar reglas (5–10 min)</h3>
+        <ul>
+          <li>Abrir <code>reglas_impuesto.csv</code> y confirmar umbrales/tasas.</li>
+          <li>Definir quién es el “dueño de reglas” para cambios.</li>
+        </ul>
+
+        <h3>Paso 3 — Ejecutar (10 min)</h3>
+        <ul>
+          <li>Correr el script simple y generar CSV principal + excepciones.</li>
+          <li>Abrir outputs en Excel.</li>
+        </ul>
+
+        <h3>Paso 4 — Validar (15 min)</h3>
+        <ul>
+          <li>Revisar 3–5 filas manuales (calculadora) y casos límite.</li>
+          <li>Revisar el CSV de excepciones y decidir acciones (limpiar, ajustar reglas, excluir filas).</li>
+        </ul>
+
+        <h3>Paso 5 — Cierre (5 min)</h3>
+        <ul>
+          <li>Decidir: ¿POC exitosa? ¿qué falta para llevarlo a piloto?</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2>Conceptos clave (sin tecnicismos)</h2>
+      <div class="grid-2">
+        <div class="card">
+          <h3>1) Datos (CSV)</h3>
+          <ul>
+            <li>Un CSV es como una hoja de Excel guardada como texto.</li>
+            <li>Cada <b>línea</b> es una fila, cada <b>coma</b> separa columnas.</li>
+            <li>Ejemplo típico: <code>fecha</code>, <code>importe</code>, <code>categoria</code>.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>2) Regla (if / else)</h3>
+          <ul>
+            <li>Es la forma de decir: “si pasa A, haz X; si no, haz Y”.</li>
+            <li>Sirve para impuestos, banderas de riesgo, clasificaciones, etc.</li>
+            <li>La salida suele ser una columna nueva: <code>impuesto</code>, <code>riesgo</code>, <code>estatus</code>.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Ejemplo guiado: motor de reglas (reglas en CSV)</h2>
+      <div class="card">
+        <p class="lead">En lugar de “hardcodear” la regla en Python, se pone en un archivo editable. Así, cuando cambie la política, se actualiza <b>el CSV de reglas</b> (no el código).</p>
+
+        <h3>Archivos</h3>
+        <ul>
+          <li>Datos: <a href="ventas.csv">ventas.csv</a></li>
+          <li>Reglas: <a href="reglas_impuesto.csv">reglas_impuesto.csv</a></li>
+          <li>Script: <code>motor_reglas_simple.py</code> / <code>motor_reglas.py</code></li>
+          <li>Salida: <code>ventas_con_impuesto.csv</code></li>
+        </ul>
+
+        <h3>Cómo se usa (Windows / VS Code)</h3>
+        <pre><code># 1) Caso base (dataset grande, por default)
+python sesion4/motor_reglas_simple.py
+
+# 2) Dataset sucio (para practicar controles)
+python sesion4/motor_reglas.py --input sesion4/ventas_sucio.csv
+</code></pre>
+
+        <h3>Qué valida el script (controles rápidos)</h3>
+        <ul>
+          <li>Suma de importes y suma de impuestos.</li>
+          <li>Filas con <code>importe</code> vacío (NaN) y su porcentaje.</li>
+          <li>Filas donde no se encontró una regla aplicable.</li>
+          <li>Importes inválidos (texto, formatos raros): se registran como excepción.</li>
+        </ul>
+
+        <h3>Outputs (lo que debes abrir en Excel)</h3>
+        <ul>
+          <li><b>Salida principal:</b> <code>ventas_con_impuesto.csv</code></li>
+          <li><b>Excepciones:</b> <code>ventas_excepciones.csv</code> (columna <code>motivo</code> + fila)</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2>Checklist de validación (rápido)</h2>
+      <div class="card">
+        <ol>
+          <li><b>Reglas:</b> abre <code>reglas_impuesto.csv</code> y confirma que cubre todos los rangos (sin huecos).</li>
+          <li><b>Revisa 3 filas a mano:</b> calcula el impuesto con calculadora y compara con el CSV de salida.</li>
+          <li><b>Totales:</b> suma importes e impuestos (Excel) y compara con lo que imprime el script.</li>
+          <li><b>Excepciones:</b> abre <code>ventas_excepciones.csv</code> y revisa motivos (vacíos, inválidos, sin regla).</li>
+          <li><b>Casos límite:</b> prueba importes exactamente 1000 y 5000 (agrega una fila y re-ejecuta).</li>
+        </ol>
+      </div>
+    </section>
+
+    <section>
+      <h2>Guion del facilitador (para llevar la sesión)</h2>
+      <div class="card">
+        <h3>Min 0–15: Canvas de POC</h3>
+        <ul>
+          <li>Pídeles escribir el objetivo en 1 frase (sin tecnología).</li>
+          <li>Que definan entradas/salidas/validaciones y el criterio de éxito/no-go.</li>
+        </ul>
+
+        <h3>Min 15–25: por qué un motor de reglas</h3>
+        <ul>
+          <li>En Taxes, las reglas cambian: lo importante es <b>gobernanza</b> (quién cambia qué) y <b>trazabilidad</b> (qué regla se aplicó).</li>
+          <li>Principio: <b>reglas en CSV</b> (editable/traceable) + <b>script estable</b> (reproducible).</li>
+        </ul>
+
+        <h3>Min 25–35: diseña el CSV de reglas</h3>
+        <ul>
+          <li>Explica columnas: <code>categoria</code>, <code>min_incl</code>, <code>max_incl</code>, <code>tasa</code>.</li>
+          <li>Regla general: <code>*</code> significa “aplica a cualquier categoría”.</li>
+          <li>Ejercicio rápido: cambiar 0.08 → 0.085 y volver a correr.</li>
+        </ul>
+
+        <h3>Min 35–55: ejecución + revisión en Excel</h3>
+        <ul>
+          <li>Corre el motor con <code>ventas_large.csv</code> para hacerlo realista.</li>
+          <li>Abre salida y revisa: columnas nuevas, totales y consistencia.</li>
+        </ul>
+
+        <h3>Min 55–60: controles y cierre</h3>
+        <ul>
+          <li>Corre con <code>ventas_sucio.csv</code> y abre el CSV de excepciones.</li>
+          <li>Cierre: “sin excepciones no hay confianza”; el POC debe producir salida + evidencia.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2>Prompts recomendados para Copilot / ChatGPT</h2>
+      <div class="card">
+        <ul>
+          <li>"Tengo un CSV con columnas fecha, importe y categoria. Escribe un script en Python que lea el CSV, aplique reglas desde otro CSV y guarde un CSV con las columnas nuevas."</li>
+          <li>"Mi script falla porque el importe viene como texto con comas. ¿Cómo lo convierto a número de forma segura?"</li>
+          <li>"Dame una lista de validaciones para asegurar que mi columna impuesto es correcta."</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2>Recursos</h2>
+      <div class="card">
+        <ul>
+          <li><a href="../intro.html">Brochure del curso</a></li>
+          <li><a href="../sesion1.html">Material Sesión 1</a></li>
+          <li><a href="../sesion2.html">Material Sesión 2</a></li>
+          <li><a href="../sesion3.html">Material Sesión 3</a></li>
+          <li>Python downloads: <a href="https://www.python.org/downloads/">python.org</a></li>
+        </ul>
+      </div>
+    </section>
+
+    <footer>
+      <div style="text-align:center;margin-top:18px;color:#666;font-size:0.95em">
+        Sesión 4 — datos + reglas + salida reproducible (CSV).
+      </div>
+    </footer>
+
+  </main>
+</body>
+</html>

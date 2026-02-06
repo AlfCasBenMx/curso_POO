@@ -1,0 +1,21 @@
+monto,concepto,giro,region_geografica
+15000.00,Venta de mercancía,Comercio,Norte
+8500.50,Servicio de consultoría,Servicios Profesionales,Centro
+125000.00,Venta de maquinaria,Manufactura,Bajío
+3200.00,Comisión por ventas,Comercio,Sur
+45000.00,Honorarios médicos,Servicios de Salud,Centro
+78500.00,Venta de alimentos,Comercio,Norte
+12000.00,Renta de oficina,Inmobiliario,Centro
+95000.00,Exportación de autopartes,Manufactura,Bajío
+5600.00,Servicio de transporte,Transporte y Logística,Norte
+22000.00,Venta de software,Tecnología,Centro
+180000.00,Construcción de nave industrial,Construcción,Bajío
+4500.00,Servicio de limpieza,Servicios Generales,Sur
+67000.00,Venta de electrodomésticos,Comercio,Norte
+9800.00,Asesoría legal,Servicios Profesionales,Centro
+35000.00,Producción de textiles,Manufactura,Sur
+15500.00,Servicio de hospedaje,Turismo y Hospitalidad,Sur
+42000.00,Venta de medicamentos,Servicios de Salud,Centro
+28000.00,Desarrollo de app móvil,Tecnología,Centro
+55000.00,Renta de bodega,Inmobiliario,Bajío
+8900.00,Servicio de mensajería,Transporte y Logística,Norte

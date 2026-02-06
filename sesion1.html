@@ -1,0 +1,930 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sesión 1: Guía Visual — Thinking with Python</title>
+  <!-- Google Fonts: Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --brand-yellow: #FFCD00;
+      --brand-dark: #242424;
+      --brand-gray: #6B6B6B;
+      --brand-light: #F7F7F7;
+      --brand-accent: #0F62FE;
+    }
+    *{box-sizing:border-box}
+    html,body{
+        margin:0;
+        padding:0;
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        color: var(--brand-dark);
+        background: #fff;
+        line-height: 1.6;
+    }
+    a{color:var(--brand-accent);text-decoration:none;font-weight: 600;}
+    a:hover{text-decoration:underline}
+
+    /* --- ANIMACIONES --- */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    @keyframes slideInLeft {
+      from { opacity: 0; transform: translateX(-40px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+    .animate-fadeInUp { animation: fadeInUp 0.6s ease-out both; }
+    .animate-fadeIn   { animation: fadeIn 0.5s ease-out both; }
+    .animate-slideInLeft { animation: slideInLeft 0.5s ease-out both; }
+    /* Delays escalonados */
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.2s; }
+    .delay-3 { animation-delay: 0.3s; }
+    .delay-4 { animation-delay: 0.4s; }
+    .delay-5 { animation-delay: 0.5s; }
+    .delay-6 { animation-delay: 0.6s; }
+    
+    .wrap{max-width:900px;margin:0 auto;padding:24px}
+    
+    /* --- HEADER UNIFICADO (ESTILO SYLLABUS) --- */
+    .hero{
+      background: linear-gradient(135deg, var(--brand-yellow) 0%, #ffe77a 60%, #fff3b0 100%);
+      padding: 48px 24px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      gap: 30px;
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+    }
+    
+    .logo-placeholder {
+        background: #fff;
+        color: var(--brand-dark);
+        font-weight: 900;
+        padding: 12px 18px;
+        font-size: 24px;
+        letter-spacing: -1px;
+        border-radius: 4px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .hero .text{max-width:800px}
+    
+    .hero h1 { 
+        margin: 0; 
+        font-size: clamp(24px, 4vw, 36px); 
+        font-weight: 800; 
+        letter-spacing: -0.02em; 
+        color: var(--brand-dark); 
+        line-height: 1.2;
+    }
+    
+    .hero p.subtitle { 
+        margin: 8px 0 0; 
+        font-size: 16px; 
+        color: #333; 
+        font-weight: 500;
+        opacity: 0.9;
+    }
+
+    .breadcrumb-link {
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: #444;
+        margin-bottom: 10px;
+        display: inline-block;
+        font-weight: 700;
+        opacity: 0.7;
+    }
+    .breadcrumb-link:hover { opacity: 1; text-decoration: none; color: #000; }
+
+    /* --- ESTILOS DE CONTENIDO --- */
+
+    /* Estilo tipo Guía Visual */
+    .script-block {
+        background: #fff;
+        border-left: 6px solid var(--brand-yellow);
+        padding: 24px;
+        margin-bottom: 24px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        border-radius: 8px;
+    }
+    
+    .time-badge {
+        background: var(--brand-dark);
+        color: #fff;
+        padding: 4px 10px;
+        border-radius: 4px;
+        font-size: 14px;
+        font-weight: bold;
+        text-transform: uppercase;
+        display: inline-block;
+        margin-bottom: 10px;
+    }
+
+    h2 { font-size: 22px; margin-top: 0; color: var(--brand-dark); border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 15px; }
+    
+    .visual-aid {
+        background-color: #f8f9fa;
+        border: 1px solid #ddd;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+    }
+    .visual-aid strong { 
+        color: var(--brand-accent); 
+        text-transform: uppercase; 
+        font-size: 11px; 
+        display: block; 
+        margin-bottom: 12px; 
+        letter-spacing: 0.5px;
+        font-weight: 800;
+    }
+
+    /* --- SLIDE MOCKUPS CSS (Mejorado) --- */
+    .slide-frame {
+        background: white;
+        width: 100%;
+        aspect-ratio: 16/9; 
+        border: 1px solid #ccc;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .slide-bg-img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: 0;
+        opacity: 0.9;
+    }
+    
+    .slide-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.6); /* Oscurecer imagen para leer texto */
+        z-index: 1;
+    }
+
+    .slide-content {
+        position: relative;
+        z-index: 2;
+        padding: 30px;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        color: white;
+    }
+
+    .slide-watermark {
+        position: absolute;
+        bottom: 10px;
+        right: 15px;
+        font-size: 10px;
+        color: rgba(255,255,255,0.7);
+        font-weight: bold;
+        z-index: 10;
+    }
+
+    /* Slide Styles Específicos */
+    .slide-title-large { font-size: 32px; font-weight: 800; line-height: 1.1; margin-bottom: 10px; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+    .slide-subtitle { font-size: 16px; font-weight: 400; opacity: 0.9; max-width: 80%; }
+    
+    /* Charts & Diagrams en blanco sobre imagen */
+    .diagram-box {
+        background: rgba(255,255,255,0.95);
+        border-radius: 8px;
+        padding: 20px;
+        color: #333;
+        margin-top: 15px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+    
+    .badge-icon { display: inline-flex; align-items: center; background: #fff; color: #333; padding: 5px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; margin-right: 10px; }
+
+    /* Estilos Timeline para Slide 4 */
+    .timeline-container { position: relative; width: 100%; height: 60px; margin-top: 10px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .timeline-line { position: absolute; top: 50%; left: 0; width: 100%; height: 4px; background: #e0e0e0; z-index: 0; border-radius: 2px; }
+    .timeline-line-fill { position: absolute; top: 50%; left: 0; width: 15%; height: 4px; background: var(--brand-accent); z-index: 0; border-radius: 2px; }
+    
+    .tl-node { position: relative; z-index: 2; text-align: center; display: flex; flex-direction: column; align-items: center; width: 70px; }
+    .tl-marker { width: 14px; height: 14px; background: white; border: 3px solid #ccc; border-radius: 50%; margin-bottom: 8px; z-index: 2; box-shadow: 0 0 0 2px white; }
+    
+    .tl-node.active .tl-marker { border-color: var(--brand-accent); background: var(--brand-accent); transform: scale(1.2); }
+    .tl-node.future .tl-marker { border-color: #999; }
+    .tl-node.break .tl-marker { border-color: #888; border-style: dashed; background: #eee; }
+    .tl-node.goal .tl-marker { border-color: var(--brand-yellow); background: var(--brand-yellow); width: 20px; height: 20px; margin-bottom: 5px; transform: translateY(3px); }
+    
+    .tl-date-top { position: absolute; top: -25px; font-size: 9px; font-weight: bold; color: #666; width: 80px; text-transform: uppercase; }
+    .tl-label-bottom { position: absolute; top: 25px; font-size: 10px; font-weight: bold; color: #333; line-height: 1.1; width: 90px; }
+
+    /* Estilos para la Tabla dentro del Slide 4 */
+    .slide-table-container {
+        background: #fff;
+        border-radius: 8px;
+        padding: 10px;
+        width: 100%;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        border: 1px solid #eee;
+    }
+    .slide-mini-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 10px;
+        color: #333;
+    }
+    .slide-mini-table th {
+        text-align: left;
+        border-bottom: 2px solid var(--brand-yellow);
+        padding: 4px;
+        color: #555;
+        text-transform: uppercase;
+        font-size: 9px;
+    }
+    .slide-mini-table td {
+        padding: 4px;
+        border-bottom: 1px solid #f0f0f0;
+    }
+    .slide-mini-table tr:last-child td { border-bottom: none; }
+    .row-highlight { background-color: #fcfcfc; }
+    .date-highlight { font-weight: bold; color: var(--brand-accent); }
+    .goal-highlight { font-weight: bold; color: #d97706; background-color: #fffbeb; }
+
+    /* --- END SLIDES CSS --- */
+
+    .points-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    .points-list li {
+        position: relative;
+        padding-left: 25px;
+        margin-bottom: 12px;
+        font-size: 17px;
+        color: #444;
+    }
+    .points-list li::before {
+        content: "•";
+        color: var(--brand-yellow);
+        font-weight: bold;
+        font-size: 24px;
+        position: absolute;
+        left: 0;
+        top: -4px;
+    }
+    
+    .key-message {
+        margin-top: 15px;
+        font-style: italic;
+        color: #666;
+        border-left: 3px solid #ccc;
+        padding-left: 15px;
+    }
+</style>
+</head>
+<body>
+
+  <!-- HEADER UNIFICADO (Estilo Hero) -->
+  <header class="hero">
+    <!-- Enlace de regreso (Breadcrumb) -->
+    <div style="position: absolute; top: 15px; left: 24px;">
+        <a href="./intro.html" class="badge" target="_blank" style="background:var(--brand-accent);color:#fff;border:0;display:inline-block;padding:6px 10px;text-decoration:none;font-size:12px;border-radius:999px">&larr; Volver al Inicio</a>
+    </div>
+
+    <!-- Logo Visual -->
+    <img src="https://companieslogo.com/img/orig/ernst-and-young-6c5de5ba.svg?t=1720244494&download=true" alt="EY Logo" style="width:72px;height:auto;border-radius:4px;box-shadow:0 4px 10px rgba(0,0,0,0.08);background:#fff;padding:6px">
+    
+    <!-- Texto Header -->
+    <div class="text">
+      <h1>Sesión 1: Guía Visual del Facilitador</h1>
+      <p class="subtitle">Puntos Clave & Slides con Referencias Visuales | Duración: 60 min</p>
+    </div>
+  </header>
+
+<div class="wrap">
+    
+    <div style="margin-bottom: 20px;" class="animate-fadeIn">
+        <a href="./intro.html" class="badge" target="_blank" style="background:var(--brand-accent);color:#fff;border:0;display:inline-block;padding:8px 12px;text-decoration:none;font-size:13px;border-radius:999px">&larr; Volver al Syllabus General</a>
+        <a href="./gantt-editor.html" class="badge" target="_blank" style="background:var(--brand-yellow);color:var(--brand-dark);border:0;display:inline-block;padding:8px 12px;text-decoration:none;font-size:13px;border-radius:999px;margin-left:8px">📊 Gantt Editor (IA)</a>
+    </div>
+
+    <!-- BLOQUE 1 -->
+    <div class="script-block animate-fadeInUp delay-1">
+        <span class="time-badge">0:00 - 0:05</span>
+        <h2>1. Apertura e Introducción</h2>
+        
+        <div class="visual-aid">
+            <strong>📺 SLIDE 1</strong>
+            <div class="slide-frame">
+                <!-- Imagen de fondo real -->
+                <img src="https://images.unsplash.com/photo-1544027993-37dbfe43562a?q=80&w=1000&auto=format&fit=crop" class="slide-bg-img" alt="Bridge Background">
+                <div class="slide-overlay"></div>
+                <div class="slide-content">
+                    <div style="width: 60px; height: 6px; background: var(--brand-yellow); margin-bottom: 20px;"></div>
+                    <div class="slide-title-large">Thinking with Python</div>
+                    <div class="slide-subtitle">Programa de Colaboración: Taxes + Data & AI</div>
+                    <div style="margin-top: 30px; font-size: 12px; opacity: 0.8; font-weight: bold;">DIC 2025 - ENE 2026</div>
+                </div>
+                <div class="slide-watermark">CONFIDENCIAL INTERNO</div>
+            </div>
+        </div>
+
+        <ul class="points-list">
+            <li><strong>¿Quiénes somos?</strong> Un equipo diverso: contadores, analistas e ingenieros trabajando juntos.</li>
+            <li><strong>Nuestra ventaja:</strong> La diversidad de perfiles es nuestra fortaleza — cada uno aporta una perspectiva única.</li>
+            <li><strong>Objetivo del curso:</strong> Aprender a pensar con IA y Python para resolver problemas reales de negocio.</li>
+            <li><strong>Cómo participar:</strong> Haz preguntas, experimenta en los labs y comparte tus ideas con el equipo.</li>
+        </ul>
+
+        <!-- TAREA POSTERIOR (destacada) -->
+        <div class="visual-aid" style="margin-top:16px;background:#e0f2fe;border-color:#38bdf8">
+            <strong>📋 TAREA PARA DESPUÉS DE LA SESIÓN</strong>
+            <p style="margin:8px 0">Para la próxima sesión, por favor descarga e instala <b>Visual Studio Code</b> y <b>Python</b> en tu equipo. En el curso lo configuraremos juntos.</p>
+            <ul style="margin:10px 0 0 18px">
+                <li><a href="https://code.visualstudio.com/Download" target="_blank">⬇️ Descargar VS Code (Windows / Mac / Linux)</a></li>
+                <li><a href="https://www.python.org/downloads/" target="_blank">🐍 Descargar Python 3.12+ (si no lo tienes)</a></li>
+            </ul>
+            <p style="margin:10px 0 0;font-size:14px;color:#666">💡 <i>Si tienes problemas de permisos o instalación, avisa al facilitador para buscar alternativas.</i></p>
+        </div>
+    </div>
+
+    <!-- BLOQUE 2: ROADMAP (movido arriba para dar contexto) -->
+    <div class="script-block animate-fadeInUp delay-2">
+        <span class="time-badge">0:05 - 0:10</span>
+        <h2>2. Nuestra Ruta: ¿A dónde vamos?</h2>
+        
+        <div class="visual-aid">
+            <strong>📺 SLIDE 2</strong>
+            <div class="slide-frame">
+                <img src="https://images.unsplash.com/photo-1455849318743-b2233052fcff?q=80&w=1000&auto=format&fit=crop" class="slide-bg-img" alt="Roadmap Journey">
+                <div class="slide-overlay" style="background: rgba(255,255,255,0.95);"></div>
+                
+                <div class="slide-content" style="color: #333; justify-content: flex-start; align-items: center; padding: 20px;">
+                    <h2 style="font-size: 22px; font-weight: 800; color: var(--brand-dark); margin-bottom: 5px;">Nuestra Ruta de Viaje</h2>
+                    
+                    <div class="timeline-container">
+                        <div class="timeline-line"></div>
+                        <div class="timeline-line-fill"></div>
+                        
+                        <div class="tl-node active">
+                            <div class="tl-date-top">HOY</div>
+                            <div class="tl-marker"></div>
+                            <div class="tl-label-bottom">Kickoff</div>
+                        </div>
+                        <div class="tl-node future">
+                            <div class="tl-date-top">DIC 15-26</div>
+                            <div class="tl-marker"></div>
+                            <div class="tl-label-bottom">Fundamentos</div>
+                        </div>
+                        <div class="tl-node break">
+                            <div class="tl-date-top">🎄</div>
+                            <div class="tl-marker"></div>
+                            <div class="tl-label-bottom">Receso</div>
+                        </div>
+                        <div class="tl-node future">
+                            <div class="tl-date-top">ENE 12-14</div>
+                            <div class="tl-marker"></div>
+                            <div class="tl-label-bottom">Construcción</div>
+                        </div>
+                        <div class="tl-node goal">
+                            <div class="tl-date-top" style="color: #000;">ENE 15</div>
+                            <div class="tl-marker"></div>
+                            <div class="tl-label-bottom" style="color: var(--brand-accent);">DEMO DAY</div>
+                        </div>
+                    </div>
+
+                    <div class="slide-table-container">
+                        <table class="slide-mini-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 50%;">Módulo 1: Fundamentos (Dic)</th>
+                                    <th style="width: 50%;">Módulo 2: Construcción (Ene)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="date-highlight">15 Dic</span> - Intro POCs</td>
+                                    <td><span class="date-highlight">12 Ene</span> - Lab Python III</td>
+                                </tr>
+                                <tr class="row-highlight">
+                                    <td><span class="date-highlight">16 Dic</span> - Lab Python I</td>
+                                    <td><span class="date-highlight">13 Ene</span> - Storytelling</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="date-highlight">17 Dic</span> - Datos y Texto</td>
+                                    <td><span class="date-highlight">14 Ene</span> - Demo Prep</td>
+                                </tr>
+                                <tr class="row-highlight">
+                                    <td><span class="date-highlight">18 Dic</span> - Clasificación</td>
+                                    <td class="goal-highlight">🏆 15 Ene - DEMO DAY</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="date-highlight">19 Dic</span> - Lab Python II</td>
+                                    <td></td>
+                                </tr>
+                                <tr class="row-highlight">
+                                    <td><span class="date-highlight">22 Dic</span> - Apps Web</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="date-highlight">26 Dic</span> - IA + ChatGPT</td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+                <div class="slide-watermark" style="color: #aaa;">T&D ROADMAP</div>
+            </div>
+        </div>
+
+        <ul class="points-list">
+            <li><strong>Diciembre:</strong> Entrenamiento — aprendemos las herramientas y el "pensamiento POC".</li>
+            <li><strong>Receso navideño:</strong> Tiempo para descansar y reflexionar sobre ideas.</li>
+            <li><strong>Enero:</strong> Construcción — armamos el prototipo con todo lo aprendido.</li>
+            <li><strong>Demo Day (15 Ene):</strong> Presentamos nuestro POC al equipo.</li>
+        </ul>
+    </div>
+
+    <!-- BLOQUE 3 -->
+    <div class="script-block animate-fadeInUp delay-3">
+        <span class="time-badge">0:10 - 0:15</span>
+        <h2>3. ¿Por qué estamos aquí?</h2>
+        
+        <div class="visual-aid">
+            <strong>📺 SLIDE 3</strong>
+            <div class="slide-frame">
+                <img src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=1000&auto=format&fit=crop" class="slide-bg-img" alt="Brain AI">
+                <div class="slide-overlay" style="background: rgba(0,0,0,0.7);"></div>
+                <div class="slide-content" style="align-items: center; text-align: center;">
+                    <div class="slide-title-large">Thinking with Python</div>
+                    <div class="diagram-box" style="display: flex; gap: 40px; margin-top: 20px; align-items: center;">
+                        <div style="text-align: center; opacity: 0.5;">
+                            <div style="font-size: 24px;">❌</div>
+                            <div style="font-size: 12px; font-weight: bold;">Memorizar Código</div>
+                        </div>
+                        <div style="font-size: 20px; color: #ccc;">➜</div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 24px;">🧠</div>
+                            <div style="font-size: 12px; font-weight: bold; color: var(--brand-accent);">Pensar en Soluciones</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <ul class="points-list">
+            <li><strong>No es un bootcamp de programación:</strong> No van a memorizar código ni hacer exámenes.</li>
+            <li><strong>Es aprender a pensar diferente:</strong> Identificar qué problemas se pueden automatizar.</li>
+            <li><strong>La IA es tu aliada:</strong> ChatGPT y Gemini escriben el código por ti — tú defines QUÉ resolver.</li>
+            <li><strong>Resultado:</strong> Al final podrás decir "yo construí esto" aunque no seas programador.</li>
+        </ul>
+    </div>
+
+    <!-- BLOQUE 4: POC -->
+    <div class="script-block animate-fadeInUp delay-4">
+        <span class="time-badge">0:15 - 0:25</span>
+        <h2>4. ¿Qué es un POC?</h2>
+        
+        <div class="visual-aid">
+            <strong>📺 SLIDE 4</strong>
+            <div class="slide-frame">
+                <img src="https://images.unsplash.com/photo-1517976487492-5750f3195933?q=80&w=1000&auto=format&fit=crop" class="slide-bg-img" alt="Rocket Launch">
+                <div class="slide-overlay" style="background: rgba(0,0,0,0.6);"></div>
+                <div class="slide-content">
+                    <div class="slide-title-large">Proof of Concept (POC)</div>
+                    <div class="slide-subtitle">Rápido. Barato. Funcional.</div>
+                    
+                    <div class="diagram-box" style="width: 100%; margin-top: 20px;">
+                        <div style="display: flex; justify-content: space-around; align-items: flex-end; height: 80px;">
+                            <div style="width: 30%; background: #ddd; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #555; border-radius: 4px;">Proyecto Tradicional<br>(Meses)</div>
+                            <div style="font-size: 20px; align-self: center; color: #555;">vs</div>
+                            <div style="width: 30%; background: var(--brand-yellow); height: 40%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold; color: #000; border-radius: 4px;">POC<br>(Semanas)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <ul class="points-list">
+            <li><strong>Definición:</strong> Demostración rápida (sucio pero funcional).</li>
+            <li><strong>Valor Negocio:</strong> Fallar barato ahorra presupuesto.</li>
+            <li><strong>Regla de Oro:</strong> "No tiene que ser perfecto, tiene que generar conversación".</li>
+            <li><strong>Criterios de éxito:</strong> qué mediremos para decidir si un POC avanza (métrica simple, demo reproducible, feedback de usuarios).</li>
+            <li><strong>Riesgos y límites:</strong> identificar supuestos y posibles dependencias externas (datos, accesos, APIs).</li>
+        </ul>
+    </div>
+
+    <!-- BLOQUE: IDENTIFICAR PROGRAMABILIDAD Y DIFICULTAD -->
+    <div class="script-block animate-fadeInUp delay-4">
+        <span class="time-badge">0:20 - 0:30</span>
+        <h2>Ejemplo: ¿Esto se puede automatizar?</h2>
+        
+        <!-- MATRIZ DE FACTIBILIDAD -->
+        <div class="visual-aid">
+            <strong>📺 SLIDE: MATRIZ FACTIBILIDAD vs DIFICULTAD</strong>
+            <div class="slide-frame">
+                <div class="slide-content" style="background:#fff;color:#333;padding:20px">
+                    <div style="font-size:16px;font-weight:bold;text-align:center;margin-bottom:15px">¿Vale la pena automatizarlo?</div>
+                    <div style="display:grid;grid-template-columns:auto 1fr 1fr;grid-template-rows:auto 1fr 1fr;gap:4px;font-size:11px;max-width:400px;margin:0 auto">
+                        <!-- Header -->
+                        <div></div>
+                        <div style="text-align:center;font-weight:bold;padding:8px">⬅️ Fácil</div>
+                        <div style="text-align:center;font-weight:bold;padding:8px">Difícil ➡️</div>
+                        <!-- Row 1 -->
+                        <div style="writing-mode:vertical-rl;transform:rotate(180deg);font-weight:bold;padding:8px">Alto Impacto ⬆️</div>
+                        <div style="background:#22c55e;color:#fff;padding:12px;border-radius:8px;text-align:center">
+                            <div style="font-size:20px">🎯</div>
+                            <b>¡HAZLO!</b><br>
+                            <span style="font-size:10px">POC ideal</span>
+                        </div>
+                        <div style="background:#eab308;color:#000;padding:12px;border-radius:8px;text-align:center">
+                            <div style="font-size:20px">🤔</div>
+                            <b>EVALÚA</b><br>
+                            <span style="font-size:10px">¿Vale el esfuerzo?</span>
+                        </div>
+                        <!-- Row 2 -->
+                        <div style="writing-mode:vertical-rl;transform:rotate(180deg);font-weight:bold;padding:8px">Bajo Impacto ⬇️</div>
+                        <div style="background:#3b82f6;color:#fff;padding:12px;border-radius:8px;text-align:center">
+                            <div style="font-size:20px">⚡</div>
+                            <b>QUICK WIN</b><br>
+                            <span style="font-size:10px">Práctica rápida</span>
+                        </div>
+                        <div style="background:#ef4444;color:#fff;padding:12px;border-radius:8px;text-align:center">
+                            <div style="font-size:20px">🚫</div>
+                            <b>EVITA</b><br>
+                            <span style="font-size:10px">No vale la pena</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CHECKLIST DINÁMICO DE AUTOMATIZACIÓN -->
+        <div class="visual-aid" style="background:#fefce8;border-color:#facc15" id="checklist-container">
+            <strong>✅ Checklist Interactivo: ¿Es automatizable?</strong>
+            <p style="margin:8px 0 12px;font-size:13px;color:#666">Haz clic en cada respuesta para evaluar tu idea:</p>
+            
+            <table style="width:100%;font-size:13px;border-collapse:collapse" id="checklist-table">
+                <tr class="checklist-row" data-question="repetitivo" data-positive="yes">
+                    <td style="padding:10px;border-bottom:1px solid #e5e5e5">📋 ¿Es <b>repetitivo</b>? (se hace igual o muy similar cada vez)</td>
+                    <td style="width:140px;text-align:center;border-bottom:1px solid #e5e5e5">
+                        <button onclick="setAnswer('repetitivo','yes')" class="check-btn" id="repetitivo-yes">✓ Sí</button>
+                        <button onclick="setAnswer('repetitivo','no')" class="check-btn" id="repetitivo-no">✗ No</button>
+                    </td>
+                </tr>
+                <tr class="checklist-row" data-question="datos" data-positive="yes">
+                    <td style="padding:10px;border-bottom:1px solid #e5e5e5">📊 ¿Los datos están <b>digitalizados</b>? (Excel, CSV, sistema, BD)</td>
+                    <td style="text-align:center;border-bottom:1px solid #e5e5e5">
+                        <button onclick="setAnswer('datos','yes')" class="check-btn" id="datos-yes">✓ Sí</button>
+                        <button onclick="setAnswer('datos','no')" class="check-btn" id="datos-no">✗ No</button>
+                    </td>
+                </tr>
+                <tr class="checklist-row" data-question="pasos" data-positive="yes">
+                    <td style="padding:10px;border-bottom:1px solid #e5e5e5">📝 ¿Puedes describir <b>reglas claras</b>? (pasos o condiciones exactas)</td>
+                    <td style="text-align:center;border-bottom:1px solid #e5e5e5">
+                        <button onclick="setAnswer('pasos','yes')" class="check-btn" id="pasos-yes">✓ Sí</button>
+                        <button onclick="setAnswer('pasos','no')" class="check-btn" id="pasos-no">✗ No</button>
+                    </td>
+                </tr>
+                <tr class="checklist-row" data-question="frecuencia" data-positive="yes">
+                    <td style="padding:10px;border-bottom:1px solid #e5e5e5">🔄 ¿Se hace <b>frecuentemente</b>? (diario, semanal, o muchas veces al mes)</td>
+                    <td style="text-align:center;border-bottom:1px solid #e5e5e5">
+                        <button onclick="setAnswer('frecuencia','yes')" class="check-btn" id="frecuencia-yes">✓ Sí</button>
+                        <button onclick="setAnswer('frecuencia','no')" class="check-btn" id="frecuencia-no">✗ No</button>
+                    </td>
+                </tr>
+                <tr class="checklist-row" data-question="juicio" data-positive="no">
+                    <td style="padding:10px">🧠 ¿Requiere <b>juicio subjetivo</b>? (intuición, negociación, "depende")</td>
+                    <td style="text-align:center">
+                        <button onclick="setAnswer('juicio','yes')" class="check-btn" id="juicio-yes">✓ Sí</button>
+                        <button onclick="setAnswer('juicio','no')" class="check-btn" id="juicio-no">✗ No</button>
+                    </td>
+                </tr>
+            </table>
+            
+            <!-- RESULTADO DINÁMICO -->
+            <div id="checklist-result" style="margin-top:16px;padding:16px;border-radius:8px;text-align:center;display:none;transition:all 0.3s">
+                <div id="result-icon" style="font-size:40px;margin-bottom:8px"></div>
+                <div id="result-title" style="font-size:18px;font-weight:bold;margin-bottom:4px"></div>
+                <div id="result-desc" style="font-size:13px"></div>
+                <div id="result-score" style="margin-top:8px;font-size:12px;opacity:0.7"></div>
+            </div>
+            
+            <button onclick="resetChecklist()" style="margin-top:12px;padding:6px 12px;font-size:12px;background:#fff;border:1px solid #ccc;border-radius:4px;cursor:pointer">� Reiniciar</button>
+        </div>
+        
+        <style>
+            .check-btn {
+                padding: 4px 10px;
+                margin: 2px;
+                border: 2px solid #ddd;
+                background: #fff;
+                border-radius: 4px;
+                cursor: pointer;
+                font-size: 12px;
+                transition: all 0.2s;
+            }
+            .check-btn:hover {
+                border-color: #999;
+                background: #f5f5f5;
+            }
+            .check-btn.selected-good {
+                background: #22c55e;
+                color: white;
+                border-color: #16a34a;
+            }
+            .check-btn.selected-bad {
+                background: #ef4444;
+                color: white;
+                border-color: #dc2626;
+            }
+            .check-btn.selected-neutral {
+                background: #6b7280;
+                color: white;
+                border-color: #4b5563;
+            }
+        </style>
+        
+        <script>
+            const answers = {};
+            const questions = ['repetitivo', 'datos', 'pasos', 'frecuencia', 'juicio'];
+            // Para las primeras 4, "yes" es bueno. Para "juicio", "no" es bueno (no requiere juicio = automatizable).
+            const positiveAnswer = {
+                'repetitivo': 'yes',   // Sí es repetitivo = bueno
+                'datos': 'yes',        // Sí hay datos digitales = bueno
+                'pasos': 'yes',        // Sí hay reglas claras = bueno
+                'frecuencia': 'yes',   // Sí es frecuente = bueno
+                'juicio': 'no'         // NO requiere juicio = bueno (automatizable)
+            };
+            
+            function setAnswer(question, value) {
+                answers[question] = value;
+                
+                // Limpiar botones de esta pregunta
+                document.getElementById(question + '-yes').className = 'check-btn';
+                document.getElementById(question + '-no').className = 'check-btn';
+                
+                // Marcar botón seleccionado
+                const btn = document.getElementById(question + '-' + value);
+                const isGood = (value === positiveAnswer[question]);
+                btn.className = 'check-btn ' + (isGood ? 'selected-good' : 'selected-bad');
+                
+                updateResult();
+            }
+            
+            function updateResult() {
+                const answered = Object.keys(answers).length;
+                if (answered < 5) return; // Esperar a que respondan todo
+                
+                // Calcular puntos buenos
+                let score = 0;
+                const requiereJuicio = answers['juicio'] === 'yes';
+                const esRepetitivo = answers['repetitivo'] === 'yes';
+                const tieneDatos = answers['datos'] === 'yes';
+                const tieneReglas = answers['pasos'] === 'yes';
+                const esFrecuente = answers['frecuencia'] === 'yes';
+                
+                questions.forEach(q => {
+                    if (answers[q] === positiveAnswer[q]) score++;
+                });
+                
+                const resultDiv = document.getElementById('checklist-result');
+                const iconEl = document.getElementById('result-icon');
+                const titleEl = document.getElementById('result-title');
+                const descEl = document.getElementById('result-desc');
+                const scoreEl = document.getElementById('result-score');
+                
+                resultDiv.style.display = 'block';
+                
+                // CASO BLOQUEANTE: Requiere juicio subjetivo
+                if (requiereJuicio) {
+                    if (score >= 3) {
+                        // Tiene potencial pero el juicio es un problema
+                        resultDiv.style.background = '#fef9c3';
+                        iconEl.textContent = '🤖';
+                        titleEl.textContent = 'Considera IA Generativa';
+                        titleEl.style.color = '#854d0e';
+                        descEl.textContent = 'El proceso tiene buenos fundamentos, pero el juicio subjetivo dificulta la automatización tradicional. Considera usar IA/LLMs para las partes que requieren criterio.';
+                    } else {
+                        // Muchos problemas + juicio = no automatizable
+                        resultDiv.style.background = '#fef2f2';
+                        iconEl.textContent = '🚫';
+                        titleEl.textContent = 'No es automatizable';
+                        titleEl.style.color = '#991b1b';
+                        descEl.textContent = 'Requiere juicio humano y tiene pocos criterios favorables. Busca un subproceso más específico o redefine el problema.';
+                    }
+                }
+                // CASO BLOQUEANTE: No hay datos digitales
+                else if (!tieneDatos) {
+                    resultDiv.style.background = '#fed7aa';
+                    iconEl.textContent = '📄';
+                    titleEl.textContent = 'Primero digitaliza los datos';
+                    titleEl.style.color = '#9a3412';
+                    descEl.textContent = 'Sin datos en formato digital (Excel, CSV, BD), no hay qué automatizar. El primer paso es estructurar la información.';
+                }
+                // CASO BLOQUEANTE: No hay reglas claras
+                else if (!tieneReglas) {
+                    resultDiv.style.background = '#fed7aa';
+                    iconEl.textContent = '📋';
+                    titleEl.textContent = 'Define las reglas primero';
+                    titleEl.style.color = '#9a3412';
+                    descEl.textContent = 'Si no puedes describir las reglas o pasos exactos, no se puede programar. Documenta la lógica del proceso antes de automatizar.';
+                }
+                // EXCELENTE: 5/5 o 4/5
+                else if (score >= 4) {
+                    resultDiv.style.background = '#dcfce7';
+                    iconEl.textContent = '🎯';
+                    titleEl.textContent = '¡Excelente candidato!';
+                    titleEl.style.color = '#166534';
+                    descEl.textContent = 'Este proceso cumple todos los criterios clave. Es repetitivo, tiene datos y reglas claras. ¡Adelante con el POC!';
+                }
+                // BUENO: 3/5
+                else if (score >= 3) {
+                    resultDiv.style.background = '#dbeafe';
+                    iconEl.textContent = '⚡';
+                    titleEl.textContent = 'Buen candidato';
+                    titleEl.style.color = '#1e40af';
+                    if (!esFrecuente) {
+                        descEl.textContent = 'Cumple los criterios técnicos. Aunque no es muy frecuente, puede ser un buen ejercicio de práctica o un "Quick Win".';
+                    } else if (!esRepetitivo) {
+                        descEl.textContent = 'Es frecuente pero varía mucho cada vez. Intenta identificar la parte que SÍ es repetitiva y enfócate en ella.';
+                    } else {
+                        descEl.textContent = 'Tiene potencial. Revisa los puntos en rojo y considera si puedes ajustar el alcance.';
+                    }
+                }
+                // REGULAR: 2/5
+                else {
+                    resultDiv.style.background = '#fef2f2';
+                    iconEl.textContent = '⚠️';
+                    titleEl.textContent = 'Replantea el enfoque';
+                    titleEl.style.color = '#991b1b';
+                    descEl.textContent = 'Pocos criterios favorables. Intenta: 1) Encontrar un subproceso más específico, 2) Definir mejor las reglas, o 3) Buscar otro problema.';
+                }
+                
+                scoreEl.textContent = `Puntuación: ${score}/5 criterios favorables`;
+            }
+            
+            function resetChecklist() {
+                Object.keys(answers).forEach(k => delete answers[k]);
+                questions.forEach(q => {
+                    document.getElementById(q + '-yes').className = 'check-btn';
+                    document.getElementById(q + '-no').className = 'check-btn';
+                });
+                document.getElementById('checklist-result').style.display = 'none';
+            }
+        </script>
+
+        <!-- EJEMPLOS BUENOS vs MALOS -->
+        <div class="visual-aid">
+            <strong>📋 Ejemplos: Buenos vs Malos candidatos</strong>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px;font-size:13px">
+                <div style="background:#dcfce7;padding:12px;border-radius:8px">
+                    <div style="font-weight:bold;color:#166534;margin-bottom:8px">✅ BUENOS CANDIDATOS</div>
+                    <ul style="margin:0;padding-left:18px">
+                        <li>Clasificar 500 facturas por tipo</li>
+                        <li>Extraer datos de PDFs a Excel</li>
+                        <li>Validar formato de RFCs</li>
+                        <li>Generar reportes mensuales</li>
+                        <li>Cruzar bases de datos</li>
+                    </ul>
+                </div>
+                <div style="background:#fef2f2;padding:12px;border-radius:8px">
+                    <div style="font-weight:bold;color:#991b1b;margin-bottom:8px">❌ MALOS CANDIDATOS</div>
+                    <ul style="margin:0;padding-left:18px">
+                        <li>"Analizar si el cliente miente"</li>
+                        <li>Datos en papel/escaneados mal</li>
+                        <li>Requiere negociar con personas</li>
+                        <li>Cada caso es completamente distinto</li>
+                        <li>Depende de "feeling" o experiencia</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- EJEMPLO APLICADO: GANTT EDITOR -->
+        <div class="visual-aid" style="background:#eff6ff;border-color:#3b82f6">
+            <strong>🚀 POC real: Gantt Editor con IA</strong>
+            <p style="margin:8px 0">Un <b>editor de cronogramas</b> que usa ChatGPT para modificar un Gantt con lenguaje natural.</p>
+            <ul style="margin:10px 0 0 18px;font-size:14px">
+                <li><b>Le dices:</b> "Agrega una tarea de QA en semana 3"</li>
+                <li><b>La IA entiende:</b> y genera los cambios automáticamente</li>
+                <li><b>Resultado:</b> El Gantt se actualiza en tiempo real</li>
+            </ul>
+            <p style="margin:12px 0 0;font-size:14px;color:#666">💡 <i>Esto se construyó en 1-2 días usando Python + ChatGPT</i></p>
+            <div style="margin-top:12px">
+                <a href="./gantt-editor.html" target="_blank" class="badge" style="background:var(--brand-accent);color:#fff;border:0;display:inline-block;padding:10px 16px;text-decoration:none;font-size:14px;border-radius:999px">📊 Ver Gantt Editor →</a>
+            </div>
+        </div>
+
+        <ul class="points-list">
+            <li><strong>Buenas candidatas:</strong> Tareas repetitivas con datos en Excel, CSV o formularios.</li>
+            <li><strong>Señales de alerta:</strong> Si requiere "juicio humano" o datos muy desordenados, es más complejo.</li>
+            <li><strong>La pregunta clave:</strong> ¿Puedes describir paso a paso cómo se hace hoy manualmente?</li>
+        </ul>
+    </div>
+
+    <!-- BLOQUE: DEMO EN VIVO -->
+    <div class="script-block animate-fadeInUp delay-5">
+        <span class="time-badge">0:25 - 0:45</span>
+        <h2>5. Demo en Vivo: Tu Primera Interacción con IA</h2>
+        <div class="visual-aid">
+            <strong>🎬 DEMOSTRACIÓN: ChatGPT como tu asistente</strong>
+            <div class="slide-frame" style="aspect-ratio:16/6;padding:16px;display:block">
+                <div class="slide-content" style="color:#222;padding:18px">
+                    <p><strong>Veremos juntos cómo la IA puede ayudarte a resolver problemas de negocio:</strong></p>
+                    <ol>
+                        <li>📝 <b>Describir un problema</b> — Le explicamos a ChatGPT un caso real de Taxes</li>
+                        <li>🤖 <b>Obtener una solución</b> — La IA nos propone pasos y código</li>
+                        <li>▶️ <b>Ejecutarlo</b> — Corremos el código en VS Code y vemos el resultado</li>
+                        <li>🔄 <b>Iterar</b> — Pedimos ajustes hasta que funcione como queremos</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        
+        <div class="visual-aid" style="background:#f0fdf4;border-color:#86efac">
+            <strong>💡 Mensaje clave</strong>
+            <p style="margin:8px 0;font-size:15px">No necesitas saber programar para usar IA. Solo necesitas saber <b>describir tu problema</b> claramente. La IA hace el trabajo técnico por ti.</p>
+        </div>
+        
+        <ul class="points-list">
+            <li><strong>Ejemplo práctico:</strong> "Tengo un Excel con 500 facturas y necesito clasificarlas por tipo de gasto"</li>
+            <li><strong>Lo que verán:</strong> Cómo ChatGPT genera código Python que resuelve eso en segundos</li>
+            <li><strong>Su rol:</strong> Observar y hacer preguntas — en las próximas sesiones ustedes lo harán</li>
+        </ul>
+    </div>
+
+    <!-- BLOQUE: CIERRE Y ENTREGABLES -->
+    <div class="script-block animate-fadeInUp delay-6">
+        <span class="time-badge">0:45 - 0:55</span>
+        <h2>6. Cierre y Próximos Pasos</h2>
+        
+        <!-- ENTREGABLES - MUY VISIBLE -->
+        <div class="visual-aid" style="background:#fef3c7;border-color:#f59e0b;border-width:3px">
+            <strong style="font-size:18px">� ENTREGABLES PARA LA PRÓXIMA SESIÓN</strong>
+            <div style="margin-top:12px">
+                <table style="width:100%;border-collapse:collapse;margin-top:8px">
+                    <tr style="background:#fff8e1">
+                        <td style="padding:12px;border:1px solid #f59e0b;width:40px;text-align:center;font-size:20px">1️⃣</td>
+                        <td style="padding:12px;border:1px solid #f59e0b">
+                            <strong>Instalar VS Code y Python</strong><br>
+                            <span style="font-size:13px;color:#666">Descarga e instala ambos programas en tu computadora</span>
+                        </td>
+                        <td style="padding:12px;border:1px solid #f59e0b;width:100px;text-align:center">
+                            <span style="background:#fcd34d;padding:4px 8px;border-radius:4px;font-size:12px">Individual</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding:12px;border:1px solid #f59e0b;text-align:center;font-size:20px">2️⃣</td>
+                        <td style="padding:12px;border:1px solid #f59e0b">
+                            <strong>Identificar un "dolor" de tu área</strong><br>
+                            <span style="font-size:13px;color:#666">¿Qué proceso repetitivo te quita tiempo? Habla con tu célula</span>
+                        </td>
+                        <td style="padding:12px;border:1px solid #f59e0b;text-align:center">
+                            <span style="background:#86efac;padding:4px 8px;border-radius:4px;font-size:12px">En equipo</span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <p style="margin:12px 0 0;font-size:14px;color:#92400e">⏰ <b>Fecha límite:</b> Antes de la sesión del 15 de Diciembre</p>
+        </div>
+
+        <div class="visual-aid" style="margin-top:16px">
+            <strong>� Recursos de apoyo</strong>
+            <ul style="margin:10px 0 0 18px">
+                <li><a href="https://code.visualstudio.com/Download" target="_blank">⬇️ Descargar VS Code</a></li>
+                <li><a href="https://www.python.org/downloads/" target="_blank">🐍 Descargar Python 3.12+</a></li>
+                <li>💬 Canal de dudas: [Teams / Email del facilitador]</li>
+            </ul>
+        </div>
+
+        <div class="key-message" style="margin-top:16px">
+            "Si al final de enero pueden decir 'yo construí esto', misión cumplida."
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

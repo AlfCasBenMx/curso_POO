@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Sesión 2 — Pensamiento en pruebas de concepto con Python y ChatGPT</title>
+  <title>Sesión 2 — Clasificación de POCs y Formación de Equipos | Copilot 365</title>
   <style>
     :root{
       --ey-yellow:#FFCD00;
@@ -17,24 +17,17 @@
     a{color:var(--ey-accent);text-decoration:none}
     a:hover{text-decoration:underline}
     .wrap{max-width:1100px;margin:0 auto;padding:24px}
-    /* HERO */
-    .hero{
-      background: linear-gradient(135deg, var(--ey-yellow) 0%, #ffe77a 60%, #fff3b0 100%);
-      padding:48px 24px 56px;
-      position:relative;overflow:hidden;display:flex;align-items:center;gap:28px;border-radius:8px
-    }
+    .hero{background:linear-gradient(135deg,var(--ey-yellow) 0%,#ffe77a 60%,#fff3b0 100%);padding:48px 24px 56px;position:relative;overflow:hidden;display:flex;align-items:center;gap:28px;border-radius:8px}
     .hero img{width:120px;height:auto}
     .hero .text{max-width:820px}
     .hero h1{margin:0;font-size:clamp(24px,4.5vw,40px);font-weight:800}
     .hero p.subtitle{margin:10px 0 0;font-size:16px;color:#222}
     .badge{display:inline-block;padding:4px 10px;border-radius:999px;background:#fff8d6;border:1px solid #ffe68a;font-size:12px;margin-right:8px}
-
     .strip{background:#fff;border-bottom:1px solid #eee;margin-top:18px}
     .strip-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
     .card-mini{padding:16px;border-left:4px solid var(--ey-yellow);background:var(--ey-light);border-radius:8px}
     .label{font-size:12px;letter-spacing:.08em;color:var(--ey-gray);text-transform:uppercase}
     .big{font-size:18px;font-weight:700;margin-top:6px}
-
     section{padding:36px 0;border-bottom:1px solid #f0f0f0}
     h2{font-size:24px;margin:0 0 12px}
     .lead{color:var(--ey-gray);max-width:900px}
@@ -42,7 +35,13 @@
     .card{background:#fff;border:1px solid #eee;border-radius:12px;padding:18px;box-shadow:0 1px 2px rgba(0,0,0,0.04)}
     ul{margin:10px 0 0 18px}
     footer{padding:36px 0;color:#777}
-    @media (max-width:900px){.strip-grid{grid-template-columns:1fr}.grid-2{grid-template-columns:1fr}.hero{flex-direction:column;align-items:flex-start}}
+    .limitation-card{background:#fff3cd;border:1px solid #ffc107;border-radius:8px;padding:14px;margin:10px 0;font-size:14px}
+    .limitation-card b{color:#856404}
+    .check-btn{padding:4px 10px;margin:2px;border:2px solid #ddd;background:#fff;border-radius:4px;cursor:pointer;font-size:12px;transition:all .2s}
+    .check-btn:hover{border-color:#999;background:#f5f5f5}
+    .check-btn.selected-good{background:#22c55e;color:white;border-color:#16a34a}
+    .check-btn.selected-bad{background:#ef4444;color:white;border-color:#dc2626}
+    @media(max-width:900px){.strip-grid{grid-template-columns:1fr}.grid-2{grid-template-columns:1fr}.hero{flex-direction:column;align-items:flex-start}}
   </style>
 </head>
 <body>
@@ -50,11 +49,11 @@
   <header class="hero">
     <img src="https://companieslogo.com/img/orig/ernst-and-young-6c5de5ba.svg?t=1720244494&download=true" alt="EY Logo">
     <div class="text">
-  <h1>Sesión 2 — Introducción a las pruebas de concepto</h1>
-  <p class="subtitle">Pensar en clave de prueba de concepto: qué es una prueba de concepto y ejemplos aplicados a Taxes. (Sesión A — Semana 1)</p>
+      <h1>Sesión 2 — Clasificación de POCs y Formación de Equipos</h1>
+      <p class="subtitle">Clasificar ideas de POC según tipología, formar equipos y seleccionar la idea a desarrollar con Copilot 365.</p>
       <div style="margin-top:12px">
         <span class="badge">Sesión A · 15-dic-25 · 15:00–16:00 (México)</span>
-        <span class="badge">Incluye Laboratorio Python semanal</span>
+        <span class="badge">Incluye Lab Copilot semanal</span>
       </div>
     </div>
   </header>
@@ -63,11 +62,11 @@
     <div class="wrap strip-grid">
       <div class="card-mini">
         <div class="label">Formato</div>
-        <div class="big">Sesión A — Concepto y casos</div>
+        <div class="big">Sesión A — Concepto y clasificación</div>
       </div>
       <div class="card-mini">
         <div class="label">Objetivo</div>
-  <div class="big">Identificar ideas de pruebas de concepto aplicables en Taxes</div>
+        <div class="big">Clasificar y priorizar ideas de POC viables con Copilot 365</div>
       </div>
       <div class="card-mini">
         <div class="label">Material</div>
@@ -82,36 +81,287 @@
       <h2>Objetivos de la sesión</h2>
       <div class="card">
         <ul>
-          <li>Entender qué es una prueba de concepto y para qué sirve en el contexto de Taxes y datos e inteligencia artificial.</li>
-          <li>Ver ejemplos concretos y criterios para priorizar ideas.</li>
-          <li>Generar al menos una propuesta inicial por célula que pueda desarrollarse en entregables posteriores.</li>
+          <li>Entender qué es una prueba de concepto y los tipos de POC que existen.</li>
+          <li>Clasificar ideas según tipología (Datos, Documentos, Presentaciones, Reuniones).</li>
+          <li>Aplicar criterios de viabilidad <b>específicos para Copilot 365</b> (OneDrive, formato Tabla, tamaño de datos).</li>
+          <li>Formar equipos y seleccionar al menos una idea por equipo para desarrollar.</li>
         </ul>
       </div>
     </section>
 
     <section>
-      <h2>Agenda breve</h2>
+      <h2>Agenda breve (60 min)</h2>
       <div class="card">
         <ol>
-          <li>Introducción y marco conceptual (10 min)</li>
-          <li>Casos reales y ejemplos aplicados a Taxes (15 min)</li>
-          <li>Dinámica: ideación rápida en células (20 min)</li>
-          <li>Cierre y siguientes pasos (15 min)</li>
+          <li>Recapitulación Sesión 1 y marco conceptual (10 min)</li>
+          <li>Tipología de POCs adaptada a Copilot 365 (15 min)</li>
+          <li>Dinámica: ideación rápida en equipos (20 min)</li>
+          <li>Formación de equipos + selección de idea (15 min)</li>
         </ol>
       </div>
     </section>
 
+    <!-- TIPOLOGÍA DE POCS -->
+    <section>
+      <h2>Tipología de POCs para Copilot 365</h2>
+      <div class="card">
+        <p class="lead">Clasificación adaptada a las herramientas de Microsoft 365 Copilot. Cada tipo indica dónde vive el POC y qué limitaciones tener en cuenta.</p>
+        <table style="width:100%;border-collapse:collapse;margin-top:12px">
+          <thead>
+            <tr style="background:var(--ey-light)">
+              <th style="text-align:left;padding:10px;border-bottom:2px solid var(--ey-yellow)">Tipo de POC</th>
+              <th style="text-align:left;padding:10px;border-bottom:2px solid var(--ey-yellow)">Herramienta</th>
+              <th style="text-align:left;padding:10px;border-bottom:2px solid var(--ey-yellow)">Qué valida</th>
+              <th style="text-align:left;padding:10px;border-bottom:2px solid var(--ey-yellow)">Ejemplo</th>
+              <th style="text-align:left;padding:10px;border-bottom:2px solid var(--ey-yellow)">⚠️ Limitación clave</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="padding:10px;border-bottom:1px solid #eee"><b>📊 Datos y Análisis</b></td>
+              <td style="padding:10px;border-bottom:1px solid #eee">Excel + Copilot</td>
+              <td style="padding:10px;border-bottom:1px solid #eee">Fórmulas, resúmenes, gráficos</td>
+              <td style="padding:10px;border-bottom:1px solid #eee">Análisis de variaciones presupuestales</td>
+              <td style="padding:10px;border-bottom:1px solid #eee">Datos como Tabla (Ctrl+T), &lt;5K filas</td>
+            </tr>
+            <tr style="background:#fafafa">
+              <td style="padding:10px;border-bottom:1px solid #eee"><b>📝 Documentos</b></td>
+              <td style="padding:10px;border-bottom:1px solid #eee">Word + Copilot</td>
+              <td style="padding:10px;border-bottom:1px solid #eee">Redacción, resúmenes, memos</td>
+              <td style="padding:10px;border-bottom:1px solid #eee">Resumen ejecutivo trimestral</td>
+              <td style="padding:10px;border-bottom:1px solid #eee">Archivo en OneDrive, sin memoria</td>
+            </tr>
+            <tr>
+              <td style="padding:10px;border-bottom:1px solid #eee"><b>📊 Presentaciones</b></td>
+              <td style="padding:10px;border-bottom:1px solid #eee">PowerPoint + Copilot</td>
+              <td style="padding:10px;border-bottom:1px solid #eee">Slides desde documentos</td>
+              <td style="padding:10px;border-bottom:1px solid #eee">Presentación de KPIs desde Word</td>
+              <td style="padding:10px;border-bottom:1px solid #eee">Sin animaciones complejas, templates limitados</td>
+            </tr>
+            <tr style="background:#fafafa">
+              <td style="padding:10px;border-bottom:1px solid #eee"><b>🎙️ Reuniones</b></td>
+              <td style="padding:10px;border-bottom:1px solid #eee">Teams + Copilot</td>
+              <td style="padding:10px;border-bottom:1px solid #eee">Minutas, action items, resúmenes</td>
+              <td style="padding:10px;border-bottom:1px solid #eee">Minutas automáticas de comités</td>
+              <td style="padding:10px;border-bottom:1px solid #eee">Requiere transcripción habilitada por IT</td>
+            </tr>
+            <tr>
+              <td style="padding:10px"><b>🔄 Flujo integrado</b></td>
+              <td style="padding:10px">Excel → Word → PPT</td>
+              <td style="padding:10px">Pipeline completo</td>
+              <td style="padding:10px">Reporte trimestral: datos → memo → slides</td>
+              <td style="padding:10px">Cada paso es independiente, sin automatización entre apps</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="limitation-card" style="margin-top:16px">
+        <b>⚠️ Recordatorio:</b> Copilot 365 <u>no genera código</u> (ni Python, ni VBA, ni macros). Si tu idea de POC requiere programación, necesitarás otra herramienta. En este curso, nos enfocamos en lo que Copilot <b>sí</b> puede hacer dentro de Excel, Word, PowerPoint y Teams.
+      </div>
+    </section>
+
+    <!-- CHECKLIST COPILOT -->
+    <section>
+      <h2>✅ Checklist: ¿Es viable con Copilot 365?</h2>
+      <div class="card" style="background:#fefce8;border-color:#facc15" id="checklist-container">
+        <p class="lead">Antes de comprometerte con una idea, evalúa si Copilot puede ejecutarla:</p>
+        <table style="width:100%;font-size:13px;border-collapse:collapse" id="checklist-table">
+          <tr data-question="repetitivo">
+            <td style="padding:10px;border-bottom:1px solid #e5e5e5">📋 ¿Es <b>repetitivo</b>? (se hace igual o muy similar cada vez)</td>
+            <td style="width:140px;text-align:center;border-bottom:1px solid #e5e5e5">
+              <button onclick="setAnswer('repetitivo','yes')" class="check-btn" id="repetitivo-yes">✓ Sí</button>
+              <button onclick="setAnswer('repetitivo','no')" class="check-btn" id="repetitivo-no">✗ No</button>
+            </td>
+          </tr>
+          <tr data-question="datos">
+            <td style="padding:10px;border-bottom:1px solid #e5e5e5">📊 ¿Los datos están en <b>Excel o CSV</b>?</td>
+            <td style="text-align:center;border-bottom:1px solid #e5e5e5">
+              <button onclick="setAnswer('datos','yes')" class="check-btn" id="datos-yes">✓ Sí</button>
+              <button onclick="setAnswer('datos','no')" class="check-btn" id="datos-no">✗ No</button>
+            </td>
+          </tr>
+          <tr data-question="onedrive">
+            <td style="padding:10px;border-bottom:1px solid #e5e5e5">☁️ ¿Los archivos están (o pueden estar) en <b>OneDrive / SharePoint</b>?</td>
+            <td style="text-align:center;border-bottom:1px solid #e5e5e5">
+              <button onclick="setAnswer('onedrive','yes')" class="check-btn" id="onedrive-yes">✓ Sí</button>
+              <button onclick="setAnswer('onedrive','no')" class="check-btn" id="onedrive-no">✗ No</button>
+            </td>
+          </tr>
+          <tr data-question="pasos">
+            <td style="padding:10px;border-bottom:1px solid #e5e5e5">📝 ¿Puedes describir <b>reglas claras</b>? (pasos o condiciones exactas)</td>
+            <td style="text-align:center;border-bottom:1px solid #e5e5e5">
+              <button onclick="setAnswer('pasos','yes')" class="check-btn" id="pasos-yes">✓ Sí</button>
+              <button onclick="setAnswer('pasos','no')" class="check-btn" id="pasos-no">✗ No</button>
+            </td>
+          </tr>
+          <tr data-question="tamano">
+            <td style="padding:10px;border-bottom:1px solid #e5e5e5">📏 ¿El dataset es <b>razonable</b>? (menos de 5,000 filas, sin celdas combinadas)</td>
+            <td style="text-align:center;border-bottom:1px solid #e5e5e5">
+              <button onclick="setAnswer('tamano','yes')" class="check-btn" id="tamano-yes">✓ Sí</button>
+              <button onclick="setAnswer('tamano','no')" class="check-btn" id="tamano-no">✗ No</button>
+            </td>
+          </tr>
+          <tr data-question="juicio">
+            <td style="padding:10px">🧠 ¿Requiere <b>juicio subjetivo</b>? (intuición, negociación, "depende")</td>
+            <td style="text-align:center">
+              <button onclick="setAnswer('juicio','yes')" class="check-btn" id="juicio-yes">✓ Sí</button>
+              <button onclick="setAnswer('juicio','no')" class="check-btn" id="juicio-no">✗ No</button>
+            </td>
+          </tr>
+        </table>
+
+        <div id="checklist-result" style="margin-top:16px;padding:16px;border-radius:8px;text-align:center;display:none;transition:all .3s">
+          <div id="result-icon" style="font-size:40px;margin-bottom:8px"></div>
+          <div id="result-title" style="font-size:18px;font-weight:bold;margin-bottom:4px"></div>
+          <div id="result-desc" style="font-size:13px"></div>
+          <div id="result-score" style="margin-top:8px;font-size:12px;opacity:.7"></div>
+        </div>
+        <button onclick="resetChecklist()" style="margin-top:12px;padding:6px 12px;font-size:12px;background:#fff;border:1px solid #ccc;border-radius:4px;cursor:pointer">🔄 Reiniciar</button>
+      </div>
+    </section>
+
+    <!-- EJERCICIOS -->
     <section>
       <h2>Ejercicios propuestos</h2>
       <div class="card">
         <ol>
-          <li>En tu célula, define un problema concreto en 2–3 frases y el beneficio esperado.</li>
-          <li>Clasifica la prueba de concepto según la tipología del curso (Técnico, De Datos, Texto e inteligencia artificial, Experiencia).</li>
+          <li>En tu equipo, describe un problema concreto en 2–3 frases y el beneficio esperado.</li>
+          <li>Clasifica la prueba de concepto según la tipología: Datos, Documentos, Presentaciones, Reuniones o Flujo integrado.</li>
+          <li>Responde el checklist de viabilidad para Copilot 365 (¿datos en Excel? ¿en OneDrive? ¿tamaño razonable?).</li>
           <li>Esboza las entradas/salidas necesarias y una métrica simple de éxito.</li>
         </ol>
       </div>
     </section>
 
+    <!-- EQUIPOS -->
+    <section>
+      <h2>Formación de equipos</h2>
+      <div class="card">
+        <p class="lead">Organiza los equipos para trabajar los entregables. Cada equipo necesita al menos un Product Owner (define el problema) y miembros que ejecuten en Copilot.</p>
+        <table style="width:100%;border-collapse:collapse;margin-top:12px">
+          <thead>
+            <tr style="background:var(--ey-light)">
+              <th style="text-align:left;padding:10px;border-bottom:2px solid var(--ey-yellow)">Equipo</th>
+              <th style="text-align:left;padding:10px;border-bottom:2px solid var(--ey-yellow)">Product Owner</th>
+              <th style="text-align:left;padding:10px;border-bottom:2px solid var(--ey-yellow)">Miembros</th>
+              <th style="text-align:left;padding:10px;border-bottom:2px solid var(--ey-yellow)">Idea de POC</th>
+              <th style="text-align:left;padding:10px;border-bottom:2px solid var(--ey-yellow)">Tipo</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td style="padding:10px;border-bottom:1px solid #eee">Equipo 1</td><td style="padding:10px;border-bottom:1px solid #eee"></td><td style="padding:10px;border-bottom:1px solid #eee"></td><td style="padding:10px;border-bottom:1px solid #eee"></td><td style="padding:10px;border-bottom:1px solid #eee"></td></tr>
+            <tr><td style="padding:10px;border-bottom:1px solid #eee">Equipo 2</td><td style="padding:10px;border-bottom:1px solid #eee"></td><td style="padding:10px;border-bottom:1px solid #eee"></td><td style="padding:10px;border-bottom:1px solid #eee"></td><td style="padding:10px;border-bottom:1px solid #eee"></td></tr>
+            <tr><td style="padding:10px;border-bottom:1px solid #eee">Equipo 3</td><td style="padding:10px;border-bottom:1px solid #eee"></td><td style="padding:10px;border-bottom:1px solid #eee"></td><td style="padding:10px;border-bottom:1px solid #eee"></td><td style="padding:10px;border-bottom:1px solid #eee"></td></tr>
+            <tr><td style="padding:10px">Equipo 4</td><td style="padding:10px"></td><td style="padding:10px"></td><td style="padding:10px"></td><td style="padding:10px"></td></tr>
+          </tbody>
+        </table>
+        <p style="margin-top:12px;font-size:14px;color:var(--ey-gray)">Sugerencia: equipos de 3–4 personas. El Product Owner define qué se necesita; los miembros construyen el POC con Copilot en Excel/Word/PPT.</p>
+      </div>
+    </section>
+
+    <!-- IDEAS DE POC -->
+    <section>
+      <h2>Ideas de POC — selección rápida</h2>
+      <div class="card">
+        <p class="lead">Selecciona una idea desde el combobox o escribe una nueva. Las ideas se agregan a la tabla donde puedes editarlas o eliminarlas.</p>
+        <div style="display:flex;gap:12px;align-items:center;margin-bottom:12px;flex-wrap:wrap">
+          <div style="flex:1;min-width:220px">
+            <label for="ideaInput" class="label">Idea / nombre</label>
+            <input id="ideaInput" list="ideasList" placeholder="Selecciona o escribe una idea" style="width:100%;padding:8px;border:1px solid #ddd;border-radius:6px">
+            <datalist id="ideasList"></datalist>
+          </div>
+          <div style="min-width:180px">
+            <label for="ideaType" class="label">Tipo</label>
+            <select id="ideaType" style="width:100%;padding:8px;border:1px solid #ddd;border-radius:6px">
+              <option value="">(automático)</option>
+              <option value="📊 Datos y Análisis">📊 Datos y Análisis</option>
+              <option value="📝 Documentos">📝 Documentos</option>
+              <option value="📊 Presentaciones">📊 Presentaciones</option>
+              <option value="🎙️ Reuniones">🎙️ Reuniones</option>
+              <option value="🔄 Flujo integrado">🔄 Flujo integrado</option>
+            </select>
+          </div>
+          <div style="min-width:150px">
+            <label for="ideaViable" class="label">¿Viable con Copilot?</label>
+            <select id="ideaViable" style="width:100%;padding:8px;border:1px solid #ddd;border-radius:6px">
+              <option value="Sí">Sí</option>
+              <option value="Parcial">Parcial</option>
+              <option value="No">No</option>
+            </select>
+          </div>
+          <div style="min-width:120px">
+            <button id="addIdeaBtn" style="padding:8px 12px;background:var(--ey-accent);color:#fff;border:0;border-radius:6px;cursor:pointer;margin-top:18px">Añadir idea</button>
+          </div>
+          <div style="min-width:160px">
+            <button id="exportXlsxBtn" style="padding:8px 12px;background:#0b74de;color:#fff;border:0;border-radius:6px;cursor:pointer;margin-top:18px">Exportar a XLSX</button>
+          </div>
+        </div>
+
+        <table id="ideasTable" style="width:100%;border-collapse:collapse">
+          <thead>
+            <tr>
+              <th style="text-align:left;padding:8px;border:1px solid #eee">Nombre</th>
+              <th style="text-align:left;padding:8px;border:1px solid #eee">Tipo</th>
+              <th style="text-align:left;padding:8px;border:1px solid #eee">¿Viable con Copilot?</th>
+              <th style="text-align:left;padding:8px;border:1px solid #eee">Descripción</th>
+              <th style="text-align:left;padding:8px;border:1px solid #eee">Acción</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- DESARROLLO Y VALOR -->
+    <section>
+      <h2>Valor de las pruebas de concepto con Copilot 365</h2>
+      <div class="card">
+        <p class="lead">¿Por qué un POC con Copilot 365 es diferente?</p>
+        <ul>
+          <li><b>Velocidad:</b> Un POC con Copilot puede construirse en horas, no semanas. No hay código que escribir ni infraestructura que configurar.</li>
+          <li><b>Accesibilidad:</b> Cualquier persona con licencia M365 puede ejecutar el POC — no necesitas ser técnico.</li>
+          <li><b>Bajo riesgo:</b> Usas las herramientas que tu equipo ya tiene. Si no funciona, no gastaste en desarrollo.</li>
+          <li><b>Evidencia tangible:</b> El resultado es un Excel con datos, un Word con resumen, o un PPT con slides — algo que puedes mostrar al stakeholder.</li>
+        </ul>
+
+        <h3>Colaboración: negocio + IA</h3>
+        <p>El equipo de negocio sabe qué problema resolver; Copilot sabe cómo acelerar las tareas repetitivas. Si trabajamos juntos — problema claro + datos limpios + prompts iterativos — podremos diseñar POCs con alto potencial de impacto.</p>
+        <p style="font-weight:600">Propuesta: identifiquemos 2–3 ideas concretas en esta sesión que podamos prototipar en el Lab Copilot.</p>
+      </div>
+    </section>
+
+    <!-- PLANTILLA RÁPIDA -->
+    <section>
+      <h2>Plantilla rápida para tu POC</h2>
+      <div class="grid-2">
+        <div class="card">
+          <h3>Esquema de propuesta</h3>
+          <ul>
+            <li>Problema (1–2 frases)</li>
+            <li>Valor/beneficio esperado</li>
+            <li>Tipo de POC (Datos / Documentos / Presentaciones / Reuniones)</li>
+            <li>Herramientas Copilot involucradas</li>
+            <li>Entradas / Salidas</li>
+            <li>Métrica de éxito</li>
+          </ul>
+        </div>
+        <div class="card" style="background:#fef3c7;border-color:#f59e0b">
+          <h3>⚠️ Filtro de viabilidad Copilot</h3>
+          <p>Antes de avanzar, confirma:</p>
+          <ul>
+            <li>✅ Datos en Excel o CSV (no en SAP, no en papel)</li>
+            <li>✅ Archivos en OneDrive/SharePoint</li>
+            <li>✅ Dataset &lt; 5,000 filas sin celdas combinadas</li>
+            <li>✅ Datos formateados como Tabla (Ctrl+T)</li>
+            <li>✅ No requiere VBA, macros ni código</li>
+            <li>✅ No requiere conexión a sistemas externos</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- RECURSOS -->
     <section>
       <h2>Recursos y enlaces</h2>
       <div class="grid-2">
@@ -120,604 +370,158 @@
           <ul>
             <li><a href="intro.html">Brochure del curso (intro)</a></li>
             <li><a href="sesion1.html">Material Sesión 1</a></li>
-            <li>Ejemplo: <code>sesion1/calcular_retenciones.py</code></li>
+            <li><a href="ejercicios/ejercicios_instrucciones.md">Instrucciones de ejercicios</a></li>
           </ul>
         </div>
         <div class="card">
-          <h3>Plantilla rápida</h3>
-          <p class="lead">Usa este esquema para tu propuesta:</p>
+          <h3>Recursos Copilot 365</h3>
           <ul>
-            <li>Problema (1–2 frases)</li>
-            <li>Valor/beneficio</li>
-            <li>Tipo de prueba de concepto</li>
-            <li>¿Automatizable? (Sí / No / Parcial)</li>
-            <li>Entradas / Salidas</li>
-            <li>Métrica de éxito</li>
+            <li><a href="https://support.microsoft.com/copilot-excel" target="_blank">Guía oficial: Copilot en Excel</a></li>
+            <li><a href="https://support.microsoft.com/copilot-word" target="_blank">Guía oficial: Copilot en Word</a></li>
+            <li><a href="https://support.microsoft.com/copilot-powerpoint" target="_blank">Guía oficial: Copilot en PowerPoint</a></li>
           </ul>
         </div>
       </div>
     </section>
 
-    
-
-      <section>
-        <h2>Selección de equipos</h2>
-        <div class="card">
-          <p class="lead">Organiza las células (equipos) para trabajar los entregables B. Usa la tabla para asignar roles y notas.</p>
-          <table>
-            <thead>
-              <tr>
-                <th>Equipo / Célula</th>
-                <th>Product Owner</th>
-                <th>Enlace técnico</th>
-                <th>Analistas</th>
-                <th>Notas</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Equipo 1</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td>Equipo 2</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td>Equipo 3</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-            </tbody>
-          </table>
-          <p style="margin-top:12px">Sugerencia: cada equipo debe tener al menos 1 Product Owner y 1 enlace técnico. Los analistas pueden ser 1–3 personas según la complejidad de la prueba de concepto.</p>
-        </div>
-      </section>
-
-      <section>
-  <h2>Ideas de pruebas de concepto — selección rápida</h2>
-        <div class="card">
-          <p class="lead">Selecciona una idea desde el combobox o escribe una nueva. Las ideas añadidas aparecerán en la tabla dinámica abajo, donde puedes editar la descripción o eliminarla.</p>
-
-      <!-- Nueva sección: desarrollo y valor de las pruebas de concepto -->
-      <section>
-        <h2>Desarrollo y valor de las pruebas de concepto en Taxes</h2>
-        <div class="card">
-          <p class="lead">Breve historia y propósito de las pruebas de concepto.</p>
-          <p>El concepto de prueba de concepto surge en ingeniería y en la gestión de producto como una forma rápida y enfocada de validar una hipótesis técnica o de negocio con el menor esfuerzo posible. No se atribuye a una sola persona: es una práctica consolidada en equipos de Investigación y Desarrollo, equipos de producto y consultoría para reducir riesgo y acelerar la toma de decisiones.</p>
-
-          <h3>Por qué son especialmente útiles en Taxes</h3>
-          <ul>
-            <li>Permiten validar si la automatización o las técnicas de inteligencia artificial aportan un impacto medible en procesos fiscales complejos.</li>
-            <li>Reducen el riesgo técnico y comercial antes de una inversión mayor o de la puesta en producción.</li>
-            <li>Ayudan a identificar datos, reglas y métricas necesarias para escalar una solución con confianza.</li>
-          </ul>
-
-          <h3>Un posible diferenciador en el mercado de Taxes</h3>
-          <p>Las grandes firmas de consultoría cuentan con prácticas de Taxes consolidadas, pero no todas han integrado de forma transversal pruebas de concepto con inteligencia artificial. Aquellos equipos que combinen profundo conocimiento del dominio fiscal con capacidades técnicas en inteligencia artificial podrán ofrecer soluciones más innovadoras y difíciles de replicar por la competencia.</p>
-
-          <h3>Colaboración: negocio + inteligencia artificial</h3>
-          <p>El equipo de inteligencia artificial sabe cómo construir la solución técnica; las ideas de negocio y el contexto las aportan los expertos en Taxes. Si trabajamos juntos —idea de negocio, datos y ejecución técnica— podremos diseñar pruebas de concepto con alto potencial de impacto.</p>
-
-          <p style="font-weight:600">Propuesta: identifiquemos 2–3 ideas concretas en esta sesión que podamos prototipar en el laboratorio.</p>
-        </div>
-      </section>
-
-      <section>
-        <h2>Tipología de pruebas de concepto (resumen)</h2>
-        <div class="card">
-          <p class="lead">Clasificación rápida para ayudar a decidir el enfoque y los criterios de validación.</p>
-          <table>
-            <thead>
-              <tr>
-                <th>Tipo de prueba de concepto</th>
-                <th>Propósito</th>
-                <th>Qué valida</th>
-                <th>Ejemplo</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><b>Técnico / Automatización</b></td>
-                <td>Validar viabilidad técnica o de proceso</td>
-                <td>Lógica, conectividad, flujo</td>
-                <td>Automatizar conciliación entre dos fuentes</td>
-              </tr>
-              <tr>
-                <td><b>De Datos</b></td>
-                <td>Validar disponibilidad, calidad y valor</td>
-                <td>Estructura, reglas, métricas</td>
-                <td>Reporte/analítica de riesgos con CSV de muestra</td>
-              </tr>
-              <tr>
-                <td><b>De Texto e inteligencia artificial</b></td>
-                <td>Validar generación o análisis semántico</td>
-                <td>Coherencia, calidad del output</td>
-                <td>Resumir y clasificar notas/requerimientos</td>
-              </tr>
-              <tr>
-                <td><b>De Experiencia / Negocio</b></td>
-                <td>Validar valor percibido y usabilidad</td>
-                <td>Storytelling, claridad de la solución</td>
-                <td>Wireframe de un dashboard narrativo</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-    <!-- CHECKLIST DINÁMICO DE AUTOMATIZACIÓN (copiado de Sesión 1) -->
-    <div class="visual-aid" style="background:#fefce8;border-color:#facc15" id="checklist-container">
-      <strong>✅ Checklist Interactivo: ¿Es automatizable?</strong>
-      <p style="margin:8px 0 12px;font-size:13px;color:#666">Haz clic en cada respuesta para evaluar tu idea:</p>
-            
-      <table style="width:100%;font-size:13px;border-collapse:collapse" id="checklist-table">
-        <tr class="checklist-row" data-question="repetitivo" data-positive="yes">
-          <td style="padding:10px;border-bottom:1px solid #e5e5e5">📋 ¿Es <b>repetitivo</b>? (se hace igual o muy similar cada vez)</td>
-          <td style="width:140px;text-align:center;border-bottom:1px solid #e5e5e5">
-            <button onclick="setAnswer('repetitivo','yes')" class="check-btn" id="repetitivo-yes">✓ Sí</button>
-            <button onclick="setAnswer('repetitivo','no')" class="check-btn" id="repetitivo-no">✗ No</button>
-          </td>
-        </tr>
-        <tr class="checklist-row" data-question="datos" data-positive="yes">
-          <td style="padding:10px;border-bottom:1px solid #e5e5e5">📊 ¿Los datos están <b>digitalizados</b>? (Excel, CSV, sistema, BD)</td>
-          <td style="text-align:center;border-bottom:1px solid #e5e5e5">
-            <button onclick="setAnswer('datos','yes')" class="check-btn" id="datos-yes">✓ Sí</button>
-            <button onclick="setAnswer('datos','no')" class="check-btn" id="datos-no">✗ No</button>
-          </td>
-        </tr>
-        <tr class="checklist-row" data-question="pasos" data-positive="yes">
-          <td style="padding:10px;border-bottom:1px solid #e5e5e5">📝 ¿Puedes describir <b>reglas claras</b>? (pasos o condiciones exactas)</td>
-          <td style="text-align:center;border-bottom:1px solid #e5e5e5">
-            <button onclick="setAnswer('pasos','yes')" class="check-btn" id="pasos-yes">✓ Sí</button>
-            <button onclick="setAnswer('pasos','no')" class="check-btn" id="pasos-no">✗ No</button>
-          </td>
-        </tr>
-        <tr class="checklist-row" data-question="frecuencia" data-positive="yes">
-          <td style="padding:10px;border-bottom:1px solid #e5e5e5">🔄 ¿Se hace <b>frecuentemente</b>? (diario, semanal, o muchas veces al mes)</td>
-          <td style="text-align:center;border-bottom:1px solid #e5e5e5">
-            <button onclick="setAnswer('frecuencia','yes')" class="check-btn" id="frecuencia-yes">✓ Sí</button>
-            <button onclick="setAnswer('frecuencia','no')" class="check-btn" id="frecuencia-no">✗ No</button>
-          </td>
-        </tr>
-        <tr class="checklist-row" data-question="juicio" data-positive="no">
-          <td style="padding:10px">🧠 ¿Requiere <b>juicio subjetivo</b>? (intuición, negociación, "depende")</td>
-          <td style="text-align:center">
-            <button onclick="setAnswer('juicio','yes')" class="check-btn" id="juicio-yes">✓ Sí</button>
-            <button onclick="setAnswer('juicio','no')" class="check-btn" id="juicio-no">✗ No</button>
-          </td>
-        </tr>
-      </table>
-            
-      <!-- RESULTADO DINÁMICO -->
-      <div id="checklist-result" style="margin-top:16px;padding:16px;border-radius:8px;text-align:center;display:none;transition:all 0.3s">
-        <div id="result-icon" style="font-size:40px;margin-bottom:8px"></div>
-        <div id="result-title" style="font-size:18px;font-weight:bold;margin-bottom:4px"></div>
-        <div id="result-desc" style="font-size:13px"></div>
-        <div id="result-score" style="margin-top:8px;font-size:12px;opacity:0.7"></div>
-      </div>
-            
-      <button onclick="resetChecklist()" style="margin-top:12px;padding:6px 12px;font-size:12px;background:#fff;border:1px solid #ccc;border-radius:4px;cursor:pointer">� Reiniciar</button>
-    </div>
-
-    <style>
-      .check-btn {
-        padding: 4px 10px;
-        margin: 2px;
-        border: 2px solid #ddd;
-        background: #fff;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 12px;
-        transition: all 0.2s;
-      }
-      .check-btn:hover {
-        border-color: #999;
-        background: #f5f5f5;
-      }
-      .check-btn.selected-good {
-        background: #22c55e;
-        color: white;
-        border-color: #16a34a;
-      }
-      .check-btn.selected-bad {
-        background: #ef4444;
-        color: white;
-        border-color: #dc2626;
-      }
-      .check-btn.selected-neutral {
-        background: #6b7280;
-        color: white;
-        border-color: #4b5563;
-      }
-    </style>
-      </section>
-
-          <div style="display:flex;gap:12px;align-items:center;margin-bottom:12px;flex-wrap:wrap">
-            <div style="flex:1;min-width:220px">
-              <label for="ideaInput" class="label">Idea / nombre</label>
-              <input id="ideaInput" list="ideasList" placeholder="Selecciona o escribe una idea" style="width:100%;padding:8px;border:1px solid #ddd;border-radius:6px">
-              <datalist id="ideasList">
-                <!-- options serán pobladas por script -->
-              </datalist>
-            </div>
-            <div style="min-width:120px;display:flex;align-items:center;gap:8px">
-              <input type="checkbox" id="autoCheck" style="width:16px;height:16px">
-              <label for="autoCheck" style="margin:0;font-size:14px">¿Es automatizable?</label>
-            </div>
-            <div style="min-width:180px">
-              <label for="ideaType" class="label">Tipo</label>
-              <select id="ideaType" style="width:100%;padding:8px;border:1px solid #ddd;border-radius:6px">
-                <option value="">(automático / opcional)</option>
-                <option value="Técnico / Automatización">Técnico / Automatización</option>
-                <option value="De Datos">De Datos</option>
-                <option value="De Texto e inteligencia artificial">De Texto e inteligencia artificial</option>
-                <option value="De Experiencia / Negocio">De Experiencia / Negocio</option>
-              </select>
-            </div>
-            <div style="min-width:120px">
-              <button id="addIdeaBtn" style="padding:8px 12px;background:var(--ey-accent);color:#fff;border:0;border-radius:6px;cursor:pointer">Añadir idea</button>
-            </div>
-            <div style="min-width:160px">
-              <button id="exportXlsxBtn" style="padding:8px 12px;background:#0b74de;color:#fff;border:0;border-radius:6px;cursor:pointer">Exportar a XLSX</button>
-            </div>
-            <div style="min-width:280px;display:flex;flex-direction:column;gap:6px">
-              <label for="importText" class="label" style="font-size:12px;margin-bottom:4px">Pegar filas (TSV/CSV)</label>
-              <textarea id="importText" placeholder="Ej: Nombre\tTipo\tAutomatizable\tDescripción" style="width:100%;min-height:46px;padding:6px;border:1px solid #ddd;border-radius:6px;font-size:13px"></textarea>
-              <div style="display:flex;gap:8px;justify-content:flex-end">
-                <button id="importBtn" style="padding:6px 10px;background:#10b981;color:#fff;border:0;border-radius:6px;cursor:pointer">Importar filas</button>
-                <button id="clearImportBtn" style="padding:6px 10px;background:#f3f4f6;color:#111;border:1px solid #ddd;border-radius:6px;cursor:pointer">Limpiar</button>
-              </div>
-            </div>
-          </div>
-
-          <table id="ideasTable" style="width:100%;border-collapse:collapse">
-            <thead>
-              <tr>
-                <th style="text-align:left;padding:8px;border:1px solid #eee">Nombre</th>
-                <th style="text-align:left;padding:8px;border:1px solid #eee">Tipo</th>
-                <th style="text-align:left;padding:8px;border:1px solid #eee">Automatizable</th>
-                <th style="text-align:left;padding:8px;border:1px solid #eee">Descripción</th>
-                <th style="text-align:left;padding:8px;border:1px solid #eee">Acción</th>
-              </tr>
-            </thead>
-            <tbody>
-              <!-- filas dinámicas -->
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      <footer>
+    <footer>
       <div class="grid-2">
         <div>
           <h3>Contacto</h3>
           <p><b>Alfredo Castañeda</b><br>Manager — Technology & Data Analytics<br><a href="mailto:luis.a.castaneda@mx.ey.com">luis.a.castaneda@mx.ey.com</a></p>
         </div>
         <div style="text-align:right">
-          <a href="sesion1.html" class="badge" style="background:var(--ey-accent);color:#fff;border:0;padding:8px 12px;text-decoration:none">Ir a Sesión 1</a>
+          <a href="sesion1.html" class="badge" style="background:var(--ey-accent);color:#fff;border:0;padding:8px 12px;text-decoration:none">← Sesión 1</a>
+          <a href="sesion3.html" class="badge" style="background:var(--ey-accent);color:#fff;border:0;padding:8px 12px;text-decoration:none">Sesión 3 →</a>
         </div>
       </div>
-      
     </footer>
 
   </main>
+
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-    <script>
-    // Lista inicial de ideas (nombre -> tipo por defecto)
-    const initialIdeas = [
-      {name: 'Auto conciliación de facturas', type: 'Técnico / Automatización'},
-      {name: 'Reporte de riesgo por CSV', type: 'De Datos'},
-  {name: 'Clasificador de notas fiscales', type: 'De Texto e inteligencia artificial'},
-      {name: 'Dashboard de cumplimiento', type: 'De Experiencia / Negocio'}
+  <script>
+    // === IDEAS DE POC ===
+    const initialIdeas=[
+      {name:'Análisis de variaciones presupuestales',type:'📊 Datos y Análisis'},
+      {name:'Resumen ejecutivo trimestral',type:'📝 Documentos'},
+      {name:'Dashboard de KPIs para dirección',type:'📊 Presentaciones'},
+      {name:'Minutas automáticas de comités',type:'🎙️ Reuniones'},
+      {name:'Reporte trimestral: datos → memo → slides',type:'🔄 Flujo integrado'},
+      {name:'Conciliación de facturas en Excel',type:'📊 Datos y Análisis'},
+      {name:'Memo de hallazgos de auditoría',type:'📝 Documentos'}
     ];
 
-    const ideasList = document.getElementById('ideasList');
-    const ideaInput = document.getElementById('ideaInput');
-    const ideaType = document.getElementById('ideaType');
-    // checkbox para marcar automatizable
-    const autoCheck = document.getElementById('autoCheck');
-    // nuevo selector para automatizable
-    const ideaAuto = (function(){
-      // crear dinámicamente si no existe en el DOM (compatibilidad)
-      let el = document.getElementById('ideaAuto');
-      if(!el){
-        // insert after ideaType select
-        const container = ideaType.parentElement;
-        const sel = document.createElement('select');
-        sel.id = 'ideaAuto';
-        sel.style.width = '100%';
-        sel.style.padding = '8px';
-        sel.style.border = '1px solid #ddd';
-        sel.style.borderRadius = '6px';
-        sel.innerHTML = '<option value="">(auto)</option><option value="Sí">Sí</option><option value="Parcial">Parcial</option><option value="No">No</option>';
-        const wrapper = document.createElement('div');
-        wrapper.style.minWidth = '160px';
-        wrapper.appendChild(document.createElement('label')).textContent = '';
-        container.parentElement.insertBefore(wrapper, container.nextSibling);
-        wrapper.appendChild(sel);
-        el = sel;
-      }
-      return el;
-    })();
-    if(autoCheck){
-      // si se marca/desmarca, habilitar/deshabilitar el selector manual
-      autoCheck.addEventListener('change', () => {
-        if(ideaAuto) ideaAuto.disabled = autoCheck.checked;
-      });
-    }
-    const addIdeaBtn = document.getElementById('addIdeaBtn');
-    const ideasTableBody = document.querySelector('#ideasTable tbody');
+    const ideasList=document.getElementById('ideasList');
+    const ideaInput=document.getElementById('ideaInput');
+    const ideaType=document.getElementById('ideaType');
+    const ideaViable=document.getElementById('ideaViable');
+    const addIdeaBtn=document.getElementById('addIdeaBtn');
+    const ideasTableBody=document.querySelector('#ideasTable tbody');
 
-    function populateDatalist() {
-      initialIdeas.forEach(i => {
-        const opt = document.createElement('option');
-        opt.value = i.name;
-        ideasList.appendChild(opt);
-      });
-    }
+    function populateDatalist(){initialIdeas.forEach(i=>{const o=document.createElement('option');o.value=i.name;ideasList.appendChild(o)})}
+    function findTypeByName(n){const f=initialIdeas.find(i=>i.name.toLowerCase()===n.toLowerCase());return f?f.type:''}
+    function escapeHtml(s){return String(s||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"}[m]))}
 
-    function findTypeByName(name){
-      const found = initialIdeas.find(i => i.name.toLowerCase() === name.toLowerCase());
-      return found ? found.type : '';
-    }
-
-    function defaultAutoByType(t){
-      if(!t) return '';
-      if(t.includes('Técnico')) return 'Sí';
-      if(t.includes('Datos')) return 'Parcial';
-      if(t.includes('Texto') || (t && t.toLowerCase().includes('inteligencia'))) return 'Parcial';
-      if(t.includes('Experiencia')) return 'No';
-      return '';
-    }
-
-    function addIdeaToTable(name, type, automatable='', description=''){
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
+    function addIdeaToTable(name,type,viable='Sí',desc=''){
+      const tr=document.createElement('tr');
+      tr.innerHTML=`
         <td style="padding:8px;border:1px solid #eee">${escapeHtml(name)}</td>
         <td style="padding:8px;border:1px solid #eee">${escapeHtml(type)}</td>
         <td style="padding:8px;border:1px solid #eee">
           <select style="padding:6px;border-radius:6px;border:1px solid #ddd">
-            <option value="Sí" ${automatable==='Sí'?'selected':''}>Sí</option>
-            <option value="Parcial" ${automatable==='Parcial'?'selected':''}>Parcial</option>
-            <option value="No" ${automatable==='No'?'selected':''}>No</option>
+            <option value="Sí" ${viable==='Sí'?'selected':''}>Sí</option>
+            <option value="Parcial" ${viable==='Parcial'?'selected':''}>Parcial</option>
+            <option value="No" ${viable==='No'?'selected':''}>No</option>
           </select>
         </td>
-        <td style="padding:8px;border:1px solid #eee"><div contenteditable="true" style="min-width:140px;min-height:22px">${escapeHtml(description)}</div></td>
+        <td style="padding:8px;border:1px solid #eee"><div contenteditable="true" style="min-width:140px;min-height:22px">${escapeHtml(desc)}</div></td>
         <td style="padding:8px;border:1px solid #eee"><button class="delBtn" style="padding:6px 8px;border-radius:6px;border:0;background:#e74c3c;color:#fff;cursor:pointer">Eliminar</button></td>
       `;
       ideasTableBody.appendChild(tr);
-      tr.querySelector('.delBtn').addEventListener('click', () => tr.remove());
+      tr.querySelector('.delBtn').addEventListener('click',()=>tr.remove());
     }
 
-    function escapeHtml(s){
-      return String(s||'').replace(/[&<>"']/g, function(m){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"}[m]});
-    }
-
-    addIdeaBtn.addEventListener('click', () => {
-      const name = ideaInput.value && ideaInput.value.trim();
-      if(!name){
-        ideaInput.focus();
-        return;
-      }
-      let type = ideaType.value;
-      if(!type) type = findTypeByName(name) || '—';
-      let auto = '';
-      if(autoCheck && autoCheck.checked){
-        auto = 'Sí';
-      } else {
-        auto = ideaAuto && ideaAuto.value ? ideaAuto.value : defaultAutoByType(type);
-      }
-      addIdeaToTable(name, type, auto);
-      ideaInput.value = '';
-      ideaType.value = '';
-      if(ideaAuto) ideaAuto.value = '';
+    addIdeaBtn.addEventListener('click',()=>{
+      const name=ideaInput.value&&ideaInput.value.trim();
+      if(!name){ideaInput.focus();return}
+      let type=ideaType.value;
+      if(!type)type=findTypeByName(name)||'—';
+      const viable=ideaViable.value||'Sí';
+      addIdeaToTable(name,type,viable);
+      ideaInput.value='';ideaType.value='';
     });
-
-    // soporte Enter en el input
-    ideaInput.addEventListener('keydown', (e) => { if(e.key === 'Enter'){ e.preventDefault(); addIdeaBtn.click(); } });
-
-    // inicializar
+    ideaInput.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();addIdeaBtn.click()}});
     populateDatalist();
 
-    // --- Exportar tabla a XLSX usando SheetJS ---
-    const exportBtn = document.getElementById('exportXlsxBtn');
+    // === XLSX EXPORT ===
+    const exportBtn=document.getElementById('exportXlsxBtn');
     if(exportBtn){
-      exportBtn.addEventListener('click', () => {
-        exportTableToXLSX('ideasTable', 'ideas_poc.xlsx');
+      exportBtn.addEventListener('click',()=>{
+        const tbl=document.getElementById('ideasTable');
+        try{const wb=XLSX.utils.table_to_book(tbl,{sheet:'Ideas POC'});XLSX.writeFile(wb,'ideas_poc_copilot.xlsx')}
+        catch(err){alert('Error al exportar. Revisa la consola.');console.error(err)}
       });
     }
 
-    function exportTableToXLSX(tableId, filename){
-      const tbl = document.getElementById(tableId);
-      if(!tbl){ alert('Tabla no encontrada: ' + tableId); return; }
-      try{
-        const wb = XLSX.utils.table_to_book(tbl, {sheet: 'Ideas'});
-        XLSX.writeFile(wb, filename);
-      }catch(err){
-        console.error('Error exportando a XLSX', err);
-        alert('Error al generar XLSX. Revisa la consola.');
+    // === CHECKLIST ===
+    const answers={};
+    const questions=['repetitivo','datos','onedrive','pasos','tamano','juicio'];
+    const positiveAnswer={'repetitivo':'yes','datos':'yes','onedrive':'yes','pasos':'yes','tamano':'yes','juicio':'no'};
+
+    function setAnswer(q,v){
+      answers[q]=v;
+      document.getElementById(q+'-yes').className='check-btn';
+      document.getElementById(q+'-no').className='check-btn';
+      const btn=document.getElementById(q+'-'+v);
+      btn.className='check-btn '+(v===positiveAnswer[q]?'selected-good':'selected-bad');
+      updateResult();
+    }
+
+    function updateResult(){
+      if(Object.keys(answers).length<6)return;
+      let score=0;
+      questions.forEach(q=>{if(answers[q]===positiveAnswer[q])score++});
+      const rDiv=document.getElementById('checklist-result');
+      const icon=document.getElementById('result-icon');
+      const title=document.getElementById('result-title');
+      const desc=document.getElementById('result-desc');
+      const sc=document.getElementById('result-score');
+      rDiv.style.display='block';
+
+      if(answers['juicio']==='yes'){
+        rDiv.style.background=score>=4?'#fef9c3':'#fef2f2';
+        icon.textContent=score>=4?'🤖':'🚫';
+        title.textContent=score>=4?'Copilot puede ayudar parcialmente':'No es buen candidato para Copilot';
+        title.style.color=score>=4?'#854d0e':'#991b1b';
+        desc.textContent=score>=4?'El proceso tiene buenos fundamentos, pero el juicio subjetivo limita lo que Copilot puede hacer solo.':'Requiere juicio humano y tiene pocos criterios favorables. Busca un subproceso más específico.';
+      } else if(answers['datos']==='no'){
+        rDiv.style.background='#fed7aa';icon.textContent='📄';title.textContent='Primero digitaliza los datos';title.style.color='#9a3412';
+        desc.textContent='Copilot necesita datos en Excel/CSV. Sin datos digitales, el primer paso es estructurar la información.';
+      } else if(answers['onedrive']==='no'){
+        rDiv.style.background='#fed7aa';icon.textContent='☁️';title.textContent='Sube los archivos a OneDrive';title.style.color='#9a3412';
+        desc.textContent='Copilot en Excel solo funciona con archivos en OneDrive o SharePoint. Sube tus datos a la nube primero.';
+      } else if(answers['tamano']==='no'){
+        rDiv.style.background='#fef9c3';icon.textContent='📏';title.textContent='Dataset demasiado grande';title.style.color='#854d0e';
+        desc.textContent='Copilot funciona mejor con datasets < 5,000 filas sin celdas combinadas. Filtra o divide tus datos.';
+      } else if(score>=5){
+        rDiv.style.background='#dcfce7';icon.textContent='🎯';title.textContent='¡Excelente candidato para Copilot!';title.style.color='#166534';
+        desc.textContent='Este proceso cumple todos los criterios. ¡Adelante con el POC!';
+      } else if(score>=4){
+        rDiv.style.background='#dbeafe';icon.textContent='⚡';title.textContent='Buen candidato';title.style.color='#1e40af';
+        desc.textContent='Cumple la mayoría de criterios. Revisa los puntos en rojo y ajusta el alcance.';
+      } else{
+        rDiv.style.background='#fef2f2';icon.textContent='⚠️';title.textContent='Replantea el enfoque';title.style.color='#991b1b';
+        desc.textContent='Pocos criterios favorables. Intenta encontrar un subproceso más específico.';
       }
+      sc.textContent='Puntuación: '+score+'/6 criterios favorables';
     }
 
-    // --- Importar filas TSV/CSV pegadas en la textarea ---
-    const importBtn = document.getElementById('importBtn');
-    const clearImportBtn = document.getElementById('clearImportBtn');
-    const importText = document.getElementById('importText');
-
-    if(importBtn){
-      importBtn.addEventListener('click', () => {
-        const txt = importText.value && importText.value.trim();
-        if(!txt){ alert('Pega una o más filas en la caja antes de importar.'); importText.focus(); return; }
-        addIdeasFromText(txt);
-        importText.value = '';
-      });
+    function resetChecklist(){
+      Object.keys(answers).forEach(k=>delete answers[k]);
+      questions.forEach(q=>{document.getElementById(q+'-yes').className='check-btn';document.getElementById(q+'-no').className='check-btn'});
+      document.getElementById('checklist-result').style.display='none';
     }
-    if(clearImportBtn){
-      clearImportBtn.addEventListener('click', () => { importText.value = ''; importText.focus(); });
-    }
-
-    function addIdeasFromText(text){
-      const lines = text.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
-      lines.forEach(line => {
-        // intentamos separar por tab, si no hay tab, por comma
-        let cols = line.split('\t');
-        if(cols.length === 1) cols = line.split(',');
-        // Normalizar y asignar columnas: [Nombre, Tipo, Automatizable, Descripción]
-        const name = (cols[0]||'').trim();
-        const type = (cols[1]||'').trim();
-        let auto = (cols[2]||'').trim();
-        const desc = (cols[3]||'').trim();
-        // Si el campo automatizable viene concatenado (ej. "SíParcialNo") - heurística:
-        auto = detectAutomatizable(auto);
-        if(!name) return; // omitir líneas vacías
-        addIdeaToTable(name, type || '—', auto, desc);
-      });
-    }
-
-    function detectAutomatizable(raw){
-      if(!raw) return '';
-      const s = raw.toLowerCase();
-      if(/sí|si/.test(s)) return 'Sí';
-      if(/parcial/.test(s)) return 'Parcial';
-      if(/no/.test(s)) return 'No';
-      // si no se detecta, devolver el texto original (trimmed)
-      return raw;
-    }
-
-  // CHECKLIST script (copiado de sesion1)
-      const answers = {};
-      const questions = ['repetitivo', 'datos', 'pasos', 'frecuencia', 'juicio'];
-      // Para las primeras 4, "yes" es bueno. Para "juicio", "no" es bueno (no requiere juicio = automatizable).
-      const positiveAnswer = {
-        'repetitivo': 'yes',   // Sí es repetitivo = bueno
-        'datos': 'yes',        // Sí hay datos digitales = bueno
-        'pasos': 'yes',        // Sí hay reglas claras = bueno
-        'frecuencia': 'yes',   // Sí es frecuente = bueno
-        'juicio': 'no'         // NO requiere juicio = bueno (automatizable)
-      };
-            
-      function setAnswer(question, value) {
-        answers[question] = value;
-                
-        // Limpiar botones de esta pregunta
-        document.getElementById(question + '-yes').className = 'check-btn';
-        document.getElementById(question + '-no').className = 'check-btn';
-                
-        // Marcar botón seleccionado
-        const btn = document.getElementById(question + '-' + value);
-        const isGood = (value === positiveAnswer[question]);
-        btn.className = 'check-btn ' + (isGood ? 'selected-good' : 'selected-bad');
-                
-        updateResult();
-      }
-            
-      function updateResult() {
-        const answered = Object.keys(answers).length;
-        if (answered < 5) return; // Esperar a que respondan todo
-                
-        // Calcular puntos buenos
-        let score = 0;
-        const requiereJuicio = answers['juicio'] === 'yes';
-        const esRepetitivo = answers['repetitivo'] === 'yes';
-        const tieneDatos = answers['datos'] === 'yes';
-        const tieneReglas = answers['pasos'] === 'yes';
-        const esFrecuente = answers['frecuencia'] === 'yes';
-                
-        questions.forEach(q => {
-          if (answers[q] === positiveAnswer[q]) score++;
-        });
-                
-        const resultDiv = document.getElementById('checklist-result');
-        const iconEl = document.getElementById('result-icon');
-        const titleEl = document.getElementById('result-title');
-        const descEl = document.getElementById('result-desc');
-        const scoreEl = document.getElementById('result-score');
-                
-        resultDiv.style.display = 'block';
-                
-        // CASO BLOQUEANTE: Requiere juicio subjetivo
-        if (requiereJuicio) {
-          if (score >= 3) {
-            // Tiene potencial pero el juicio es un problema
-            resultDiv.style.background = '#fef9c3';
-            iconEl.textContent = '🤖';
-            titleEl.textContent = 'Considera inteligencia artificial generativa';
-            titleEl.style.color = '#854d0e';
-            descEl.textContent = 'El proceso tiene buenos fundamentos, pero el juicio subjetivo dificulta la automatización tradicional. Considera usar inteligencia artificial y modelos de lenguaje para las partes que requieren criterio.';
-          } else {
-            // Muchos problemas + juicio = no automatizable
-            resultDiv.style.background = '#fef2f2';
-            iconEl.textContent = '🚫';
-            titleEl.textContent = 'No es automatizable';
-            titleEl.style.color = '#991b1b';
-            descEl.textContent = 'Requiere juicio humano y tiene pocos criterios favorables. Busca un subproceso más específico o redefine el problema.';
-          }
-        }
-        // CASO BLOQUEANTE: No hay datos digitales
-        else if (!tieneDatos) {
-          resultDiv.style.background = '#fed7aa';
-          iconEl.textContent = '📄';
-          titleEl.textContent = 'Primero digitaliza los datos';
-          titleEl.style.color = '#9a3412';
-          descEl.textContent = 'Sin datos en formato digital (Excel, CSV, BD), no hay qué automatizar. El primer paso es estructurar la información.';
-        }
-        // CASO BLOQUEANTE: No hay reglas claras
-        else if (!tieneReglas) {
-          resultDiv.style.background = '#fed7aa';
-          iconEl.textContent = '📋';
-          titleEl.textContent = 'Define las reglas primero';
-          titleEl.style.color = '#9a3412';
-          descEl.textContent = 'Si no puedes describir las reglas o pasos exactos, no se puede programar. Documenta la lógica del proceso antes de automatizar.';
-        }
-        // EXCELENTE: 5/5 o 4/5
-        else if (score >= 4) {
-          resultDiv.style.background = '#dcfce7';
-          iconEl.textContent = '🎯';
-          titleEl.textContent = '¡Excelente candidato!';
-          titleEl.style.color = '#166534';
-          descEl.textContent = 'Este proceso cumple todos los criterios clave. Es repetitivo, tiene datos y reglas claras. ¡Adelante con la prueba de concepto!';
-        }
-        // BUENO: 3/5
-        else if (score >= 3) {
-          resultDiv.style.background = '#dbeafe';
-          iconEl.textContent = '⚡';
-          titleEl.textContent = 'Buen candidato';
-          titleEl.style.color = '#1e40af';
-          if (!esFrecuente) {
-            descEl.textContent = 'Cumple los criterios técnicos. Aunque no es muy frecuente, puede ser un buen ejercicio de práctica o un "Quick Win".';
-          } else if (!esRepetitivo) {
-            descEl.textContent = 'Es frecuente pero varía mucho cada vez. Intenta identificar la parte que SÍ es repetitiva y enfócate en ella.';
-          } else {
-            descEl.textContent = 'Tiene potencial. Revisa los puntos en rojo y considera si puedes ajustar el alcance.';
-          }
-        }
-        // REGULAR: 2/5
-        else {
-          resultDiv.style.background = '#fef2f2';
-          iconEl.textContent = '⚠️';
-          titleEl.textContent = 'Replantea el enfoque';
-          titleEl.style.color = '#991b1b';
-          descEl.textContent = 'Pocos criterios favorables. Intenta: 1) Encontrar un subproceso más específico, 2) Definir mejor las reglas, o 3) Buscar otro problema.';
-        }
-                
-        scoreEl.textContent = `Puntuación: ${score}/5 criterios favorables`;
-      }
-            
-      function resetChecklist() {
-        Object.keys(answers).forEach(k => delete answers[k]);
-        questions.forEach(q => {
-          document.getElementById(q + '-yes').className = 'check-btn';
-          document.getElementById(q + '-no').className = 'check-btn';
-        });
-        document.getElementById('checklist-result').style.display = 'none';
-      }
   </script>
 </body>
 </html>

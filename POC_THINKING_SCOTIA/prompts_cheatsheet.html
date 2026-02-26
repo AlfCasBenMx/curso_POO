@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cheatsheet de Prompts — Microsoft 365 Copilot</title>
+  <style>
+    :root{--ey-yellow:#FFCD00;--ey-dark:#242424;--ey-gray:#6B6B6B;--ey-light:#F7F7F7;--ey-accent:#0F62FE}
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--ey-dark);background:#fff;line-height:1.6}
+    a{color:var(--ey-accent);text-decoration:none}
+    a:hover{text-decoration:underline}
+    .wrap{max-width:1000px;margin:0 auto;padding:24px}
+    .hero-sm{background:linear-gradient(135deg,var(--ey-yellow) 0%,#ffe77a 60%,#fff3b0 100%);padding:40px 24px;display:flex;align-items:center;gap:24px}
+    .hero-sm img{width:100px}
+    .hero-sm h1{margin:0;font-size:clamp(22px,4vw,36px);font-weight:800}
+    .hero-sm p{margin:6px 0 0;color:#333}
+    .badge{display:inline-block;padding:4px 10px;border-radius:999px;background:#fff8d6;border:1px solid #ffe68a;font-size:12px;margin-right:6px}
+
+    section{padding:28px 0;border-bottom:1px solid #f0f0f0}
+    section:last-of-type{border-bottom:none}
+    h2{font-size:24px;margin:0 0 12px}
+    h3{margin:18px 0 8px;color:var(--ey-accent)}
+
+    .prompt-card{background:#f0f4ff;border:1px solid #d0dcff;border-radius:10px;padding:14px 18px;margin:8px 0;font-family:'Cascadia Code',Consolas,monospace;font-size:13.5px;line-height:1.5;white-space:pre-wrap;position:relative;cursor:pointer;transition:box-shadow .15s}
+    .prompt-card:hover{box-shadow:0 2px 8px rgba(15,98,254,.15)}
+    .prompt-card::after{content:'📋';position:absolute;top:10px;right:12px;font-size:16px;opacity:.4;transition:opacity .15s}
+    .prompt-card:hover::after{opacity:1}
+
+    .app-header{display:flex;align-items:center;gap:12px;padding:12px 18px;border-radius:10px;font-weight:700;font-size:18px;margin-top:28px}
+    .app-excel{background:#217346;color:#fff}
+    .app-word{background:#2B579A;color:#fff}
+    .app-ppt{background:#D24726;color:#fff}
+    .app-teams{background:#6264A7;color:#fff}
+
+    .tip-table{width:100%;border-collapse:collapse;margin-top:12px}
+    .tip-table th,.tip-table td{border:1px solid #e5e7eb;padding:10px 12px;text-align:left;vertical-align:top;font-size:14px}
+    .tip-table th{background:#fffaf0;font-weight:700}
+    .tip-table .bad{color:#c62828;background:#ffebee}
+    .tip-table .good{color:#2e7d32;background:#e8f5e9}
+
+    .pattern-box{background:var(--ey-light);border:2px solid var(--ey-yellow);border-radius:12px;padding:20px;margin:16px 0}
+    .pattern-box code{font-family:'Cascadia Code',Consolas,monospace;font-size:14px}
+    .pattern-box .example{background:#fff;border:1px solid #e0e0e0;border-radius:8px;padding:14px;margin-top:12px;font-family:'Cascadia Code',Consolas,monospace;font-size:13px;white-space:pre-wrap;line-height:1.5}
+
+    .grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+    .box{background:#fff;border:1px solid #eee;border-radius:12px;padding:16px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+
+    footer{padding:28px 0;text-align:center;color:#999;font-size:13px}
+    .back-link{display:inline-block;margin-bottom:20px;font-size:14px}
+
+    .copied-toast{position:fixed;bottom:24px;right:24px;background:#2e7d32;color:#fff;padding:12px 20px;border-radius:8px;font-size:14px;font-weight:600;opacity:0;transform:translateY(10px);transition:all .3s;pointer-events:none;z-index:999}
+    .copied-toast.show{opacity:1;transform:translateY(0)}
+
+    @media(max-width:800px){.grid-2{grid-template-columns:1fr}.hero-sm{flex-direction:column;align-items:flex-start}}
+    @media print{.hero-sm{background:#fffbe6 !important;-webkit-print-color-adjust:exact}.prompt-card::after{display:none}body{font-size:11px}.prompt-card{font-size:11px;padding:8px 12px}}
+  </style>
+</head>
+<body>
+
+  <header class="hero-sm">
+    <img src="https://companieslogo.com/img/orig/ernst-and-young-6c5de5ba.svg?t=1720244494&download=true" alt="EY Logo">
+    <div>
+      <h1>🧠 Cheatsheet de Prompts</h1>
+      <p>Microsoft 365 Copilot · Guía rápida para PMs y profesionales financieros</p>
+      <span class="badge">Referencia rápida</span>
+      <span class="badge">Click en cualquier prompt para copiarlo</span>
+    </div>
+  </header>
+
+  <main class="wrap">
+
+    <a href="sesion1.html" class="back-link">← Volver a Sesión 1</a>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- EXCEL -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div class="app-header app-excel">📊 Excel + Copilot</div>
+    <section>
+      <h3>Análisis de datos</h3>
+      <div class="prompt-card">"Resume esta tabla y muestra las estadísticas principales (promedio, total, máximo, mínimo)"</div>
+      <div class="prompt-card">"¿Cuáles son las 10 filas con mayor monto? Ordénalas de mayor a menor"</div>
+      <div class="prompt-card">"Identifica valores atípicos o transacciones con montos inusuales en esta tabla"</div>
+      <div class="prompt-card">"Compara los totales del Q1 vs Q2 y muestra la variación porcentual"</div>
+
+      <h3>Fórmulas y cálculos</h3>
+      <div class="prompt-card">"Agrega una columna que calcule el IVA al 16% sobre la columna Monto"</div>
+      <div class="prompt-card">"Crea una fórmula que clasifique el riesgo: si monto &gt; 100,000 = Alto, si &gt; 50,000 = Medio, si no = Bajo"</div>
+      <div class="prompt-card">"Calcula el acumulado mensual (running total) de la columna Ventas"</div>
+
+      <h3>Tablas dinámicas y gráficos</h3>
+      <div class="prompt-card">"Crea una tabla dinámica que resuma el total por categoría y mes"</div>
+      <div class="prompt-card">"Genera un gráfico de líneas que muestre la tendencia mensual de gastos"</div>
+      <div class="prompt-card">"Crea un gráfico de barras comparando presupuesto vs real por departamento"</div>
+
+      <h3>Limpieza de datos</h3>
+      <div class="prompt-card">"Identifica filas duplicadas en esta tabla"</div>
+      <div class="prompt-card">"Encuentra celdas vacías o con datos inconsistentes"</div>
+      <div class="prompt-card">"Estandariza los nombres de la columna Proveedor (elimina espacios extra, unifica mayúsculas)"</div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- WORD -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div class="app-header app-word">📝 Word + Copilot</div>
+    <section>
+      <h3>Generación de documentos</h3>
+      <div class="prompt-card">"Redacta un business case ejecutivo con: problema, solución propuesta, beneficios esperados, cronograma estimado y presupuesto"</div>
+      <div class="prompt-card">"Crea un documento de alcance (scope) para un proyecto de automatización de reportes financieros"</div>
+      <div class="prompt-card">"Genera una minuta de reunión con: asistentes, temas tratados, acuerdos y próximos pasos"</div>
+
+      <h3>Resúmenes y análisis</h3>
+      <div class="prompt-card">"Resume este documento en un executive summary de máximo 1 página"</div>
+      <div class="prompt-card">"Extrae los 5 puntos más importantes de este reporte"</div>
+      <div class="prompt-card">"Identifica riesgos y dependencias mencionados en este plan de proyecto"</div>
+
+      <h3>Refinamiento de texto</h3>
+      <div class="prompt-card">"Reescribe este párrafo en un tono más ejecutivo y directo"</div>
+      <div class="prompt-card">"Simplifica este texto técnico para que lo entienda un director financiero"</div>
+      <div class="prompt-card">"Revisa la estructura de este documento y sugiere mejoras de organización"</div>
+
+      <h3>Plantillas y formatos</h3>
+      <div class="prompt-card">"Crea una plantilla de reporte mensual de finanzas con secciones para: resumen ejecutivo, ingresos, gastos, variaciones, proyecciones y recomendaciones"</div>
+      <div class="prompt-card">"Genera un formato de propuesta de inversión con: justificación, análisis costo-beneficio, ROI esperado y riesgos"</div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- POWERPOINT -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div class="app-header app-ppt">📽️ PowerPoint + Copilot</div>
+    <section>
+      <h3>Crear presentaciones</h3>
+      <div class="prompt-card">"Crea una presentación de 8 slides sobre [tema] con diseño profesional"</div>
+      <div class="prompt-card">"Transforma este documento de Word en una presentación ejecutiva"</div>
+      <div class="prompt-card">"Genera un pitch deck para un comité directivo sobre un proyecto de automatización"</div>
+
+      <h3>Slides específicos</h3>
+      <div class="prompt-card">"Agrega un slide con un diagrama de flujo del proceso actual vs propuesto"</div>
+      <div class="prompt-card">"Crea un slide de comparación antes/después con métricas clave"</div>
+      <div class="prompt-card">"Agrega un slide de timeline con los hitos principales del proyecto"</div>
+
+      <h3>Refinamiento</h3>
+      <div class="prompt-card">"Mejora el diseño visual de esta presentación manteniendo el contenido"</div>
+      <div class="prompt-card">"Agrega notas del presentador en cada slide con los puntos clave a mencionar"</div>
+      <div class="prompt-card">"Resume esta presentación de 20 slides en una versión de 8 slides"</div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- TEAMS -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div class="app-header app-teams">💬 Teams + Copilot</div>
+    <section>
+      <h3>Durante reuniones</h3>
+      <div class="prompt-card">"Resume lo discutido hasta ahora en esta reunión"</div>
+      <div class="prompt-card">"¿Qué decisiones se han tomado?"</div>
+      <div class="prompt-card">"Lista los action items mencionados con responsables"</div>
+
+      <h3>Post-reunión</h3>
+      <div class="prompt-card">"Genera un resumen completo de esta reunión"</div>
+      <div class="prompt-card">"¿Cuáles fueron los temas principales y las conclusiones?"</div>
+      <div class="prompt-card">"Crea una lista de seguimiento con fechas límite"</div>
+
+      <h3>En chats</h3>
+      <div class="prompt-card">"Resume las conversaciones de la última semana en este canal"</div>
+      <div class="prompt-card">"¿Qué se decidió sobre [tema] en las últimas conversaciones?"</div>
+      <div class="prompt-card">"Encuentra los archivos compartidos relacionados con [proyecto]"</div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- TIPS -->
+    <!-- ═══════════════════════════════════════════ -->
+    <section>
+      <h2>🎯 Tips para mejores prompts</h2>
+      <table class="tip-table">
+        <thead>
+          <tr><th>Tip</th><th>❌ Ejemplo malo</th><th>✅ Ejemplo bueno</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>Sé específico</b></td>
+            <td class="bad">"Analiza los datos"</td>
+            <td class="good">"Analiza la tabla de gastos y muestra el top 5 por categoría"</td>
+          </tr>
+          <tr>
+            <td><b>Da contexto</b></td>
+            <td class="bad">"Haz un reporte"</td>
+            <td class="good">"Genera un reporte mensual de gastos para el CFO con gráficos"</td>
+          </tr>
+          <tr>
+            <td><b>Define formato</b></td>
+            <td class="bad">"Resume esto"</td>
+            <td class="good">"Resume en máximo 5 bullets de 1 línea cada uno"</td>
+          </tr>
+          <tr>
+            <td><b>Itera</b></td>
+            <td class="bad">(aceptar el primer resultado)</td>
+            <td class="good">"Ahora hazlo más conciso y en tono ejecutivo"</td>
+          </tr>
+          <tr>
+            <td><b>Usa roles</b></td>
+            <td class="bad">"Escribe un email"</td>
+            <td class="good">"Como PM, escribe un email de actualización de proyecto al sponsor"</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- PATRÓN -->
+    <!-- ═══════════════════════════════════════════ -->
+    <section>
+      <h2>🔄 Patrón de prompt efectivo</h2>
+      <div class="pattern-box">
+        <p style="margin:0 0 8px"><b>Fórmula:</b></p>
+        <code>[ROL] + [ACCIÓN] + [CONTEXTO] + [FORMATO] + [RESTRICCIONES]</code>
+
+        <div class="grid-2" style="margin-top:16px">
+          <div class="box">
+            <b>🧩 Componente</b>
+            <ul style="list-style:none;padding:0;margin:8px 0 0">
+              <li>🎭 <b>ROL</b> — ¿Quién eres?</li>
+              <li>⚡ <b>ACCIÓN</b> — ¿Qué quieres?</li>
+              <li>📋 <b>CONTEXTO</b> — ¿Sobre qué datos?</li>
+              <li>📐 <b>FORMATO</b> — ¿Cómo lo quieres?</li>
+              <li>🚫 <b>RESTRICCIONES</b> — ¿Qué excluir?</li>
+            </ul>
+          </div>
+          <div class="box">
+            <b>💡 Ejemplo completo</b>
+            <div class="example">"Como analista financiero,
+resume esta tabla de transacciones
+identificando los top 10 proveedores
+por monto total,
+en formato de tabla con columnas:
+Proveedor, Monto Total, % del Total,
+sin incluir transacciones menores
+a $1,000"</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- QUICK REFERENCE -->
+    <!-- ═══════════════════════════════════════════ -->
+    <section>
+      <h2>⚡ Referencia rápida por situación</h2>
+      <div class="grid-2">
+        <div class="box">
+          <h3 style="margin-top:0">🔍 "Necesito entender estos datos"</h3>
+          <ol style="margin:8px 0 0;padding-left:18px;font-size:14px">
+            <li>Excel → <i>"Resume esta tabla con estadísticas principales"</i></li>
+            <li>Excel → <i>"Identifica tendencias y valores atípicos"</i></li>
+            <li>Excel → <i>"Crea un gráfico que muestre [lo que descubriste]"</i></li>
+          </ol>
+        </div>
+        <div class="box">
+          <h3 style="margin-top:0">📊 "Necesito presentar resultados"</h3>
+          <ol style="margin:8px 0 0;padding-left:18px;font-size:14px">
+            <li>Word → <i>"Genera un executive summary de este análisis"</i></li>
+            <li>PPT → <i>"Transforma este Word en una presentación de 8 slides"</i></li>
+            <li>PPT → <i>"Agrega notas del presentador por slide"</i></li>
+          </ol>
+        </div>
+        <div class="box">
+          <h3 style="margin-top:0">🧹 "Mis datos están sucios"</h3>
+          <ol style="margin:8px 0 0;padding-left:18px;font-size:14px">
+            <li>Excel → <i>"Identifica filas duplicadas"</i></li>
+            <li>Excel → <i>"Encuentra celdas vacías o inconsistentes"</i></li>
+            <li>Excel → <i>"Estandariza los nombres de la columna [X]"</i></li>
+          </ol>
+        </div>
+        <div class="box">
+          <h3 style="margin-top:0">📋 "Tuve una reunión importante"</h3>
+          <ol style="margin:8px 0 0;padding-left:18px;font-size:14px">
+            <li>Teams → <i>"Genera un resumen de la reunión"</i></li>
+            <li>Teams → <i>"Lista action items con responsables"</i></li>
+            <li>Word → <i>"Genera una minuta formal con acuerdos"</i></li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>POC Thinking con Microsoft 365 Copilot · Cheatsheet de Prompts</p>
+    <p style="font-size:12px">Tip: Imprime esta página (Ctrl+P) para tenerla como referencia rápida durante el curso.</p>
+  </footer>
+
+  <!-- Toast de copiado -->
+  <div class="copied-toast" id="toast">✅ Prompt copiado al portapapeles</div>
+
+  <script>
+    // Click-to-copy en todos los prompt cards
+    document.querySelectorAll('.prompt-card').forEach(card => {
+      card.addEventListener('click', () => {
+        const text = card.textContent.trim();
+        navigator.clipboard.writeText(text).then(() => {
+          const toast = document.getElementById('toast');
+          toast.classList.add('show');
+          setTimeout(() => toast.classList.remove('show'), 1800);
+        });
+      });
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,543 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Presentación POC — Scotiabank</title>
+  <style>
+    :root {
+      --scotia-red: #EC111A;
+      --scotia-dark-red: #AD0B13;
+      --scotia-dark: #1A1A1A;
+      --scotia-gray: #6B6B6B;
+      --scotia-light: #F5F5F5;
+      --scotia-white: #FFFFFF;
+      --scotia-green: #00874E;
+      --scotia-yellow: #F4B400;
+      --scotia-blue: #0072CE;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0 }
+    html { scroll-behavior: smooth }
+    body {
+      font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, system-ui, Roboto, Helvetica, Arial, sans-serif;
+      color: var(--scotia-dark);
+      background: var(--scotia-white);
+      line-height: 1.6;
+    }
+
+    /* ── NAVIGATION ────────────────────────────── */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background: rgba(26,26,26,.95);
+      backdrop-filter: blur(12px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      height: 56px;
+    }
+    .nav img { height: 24px }
+    .nav-dots { display: flex; gap: 6px }
+    .nav-dots a {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.3);
+      display: block;
+      transition: all .3s;
+    }
+    .nav-dots a:hover,
+    .nav-dots a.active { background: var(--scotia-red); transform: scale(1.3) }
+    .nav-label { color: rgba(255,255,255,.6); font-size: 11px; letter-spacing: .1em; text-transform: uppercase }
+
+    /* ── SLIDES ─────────────────────────────────── */
+    .slide {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 80px 40px 40px;
+      position: relative;
+    }
+    .slide-inner { max-width: 1000px; width: 100% }
+
+    /* Slide 1: Portada */
+    .slide-cover {
+      background: linear-gradient(160deg, var(--scotia-dark) 0%, #2a0507 40%, var(--scotia-red) 100%);
+      color: #fff;
+      text-align: center;
+    }
+    .slide-cover img { height: 48px; margin-bottom: 24px }
+    .slide-cover h1 { font-size: clamp(32px, 6vw, 56px); font-weight: 800; letter-spacing: -0.03em; line-height: 1.15 }
+    .slide-cover .subtitle { font-size: 20px; opacity: .7; margin-top: 12px }
+    .slide-cover .team { margin-top: 32px; font-size: 14px; opacity: .5 }
+
+    /* Slide 2: El problema */
+    .slide-problem { background: var(--scotia-light) }
+    .problem-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center }
+    .problem-stat {
+      text-align: center;
+      padding: 40px;
+      background: var(--scotia-white);
+      border-radius: 20px;
+      box-shadow: 0 4px 20px rgba(236,17,26,.1);
+    }
+    .problem-stat .big-num { font-size: 72px; font-weight: 900; color: var(--scotia-red); line-height: 1 }
+    .problem-stat .big-label { font-size: 18px; color: var(--scotia-gray); margin-top: 8px }
+    .problem-list { list-style: none; padding: 0 }
+    .problem-list li {
+      padding: 16px 20px;
+      background: var(--scotia-white);
+      border-left: 4px solid var(--scotia-red);
+      border-radius: 0 12px 12px 0;
+      margin-bottom: 10px;
+      font-size: 15px;
+    }
+
+    /* Slide 3: Antes vs Después */
+    .slide-compare { background: var(--scotia-white) }
+    .compare-grid { display: grid; grid-template-columns: 1fr auto 1fr; gap: 24px; align-items: stretch }
+    .compare-col {
+      border-radius: 16px;
+      padding: 32px;
+    }
+    .compare-before { background: #fef7f7; border: 2px solid #fcc }
+    .compare-after { background: #eefbf4; border: 2px solid #a0e5c2 }
+    .compare-vs {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      font-weight: 900;
+      color: var(--scotia-gray);
+    }
+    .compare-col h3 { font-size: 18px; margin-bottom: 16px }
+    .compare-col ul { list-style: none; padding: 0 }
+    .compare-col li { padding: 10px 0; border-bottom: 1px solid rgba(0,0,0,.06); font-size: 14px }
+    .compare-col li:last-child { border-bottom: none }
+    .savings-badge {
+      text-align: center;
+      margin-top: 24px;
+      background: var(--scotia-red);
+      color: #fff;
+      padding: 20px 32px;
+      border-radius: 16px;
+      font-size: 20px;
+      font-weight: 800;
+    }
+
+    /* Slide 4: Pipeline */
+    .slide-pipeline { background: var(--scotia-dark); color: #fff }
+    .pipeline-flow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin: 32px 0;
+    }
+    .pipeline-step {
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.15);
+      border-radius: 16px;
+      padding: 24px 20px;
+      text-align: center;
+      width: 150px;
+      transition: transform .3s;
+    }
+    .pipeline-step:hover { transform: translateY(-4px); background: rgba(236,17,26,.15) }
+    .pipeline-step .icon { font-size: 32px; margin-bottom: 8px }
+    .pipeline-step .label { font-size: 13px; font-weight: 700 }
+    .pipeline-step .desc { font-size: 11px; opacity: .6; margin-top: 4px }
+    .pipeline-arrow { font-size: 24px; color: var(--scotia-red) }
+
+    /* Slide 5: Métricas */
+    .slide-metrics { background: var(--scotia-light) }
+    .metrics-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 24px }
+    .metric-card {
+      background: var(--scotia-white);
+      border-radius: 16px;
+      padding: 32px 20px;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,.06);
+      border-top: 4px solid var(--scotia-red);
+    }
+    .metric-card .icon { font-size: 36px; margin-bottom: 12px }
+    .metric-card .value { font-size: 36px; font-weight: 900; color: var(--scotia-dark) }
+    .metric-card .label { font-size: 13px; color: var(--scotia-gray); margin-top: 4px }
+    .metric-card .detail { font-size: 12px; color: var(--scotia-green); margin-top: 8px; font-weight: 600 }
+
+    /* Slide 6: Riesgos */
+    .slide-risks { background: var(--scotia-white) }
+    .risks-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 24px }
+    .risk-card {
+      border-radius: 16px;
+      padding: 28px;
+      border: 1px solid #e8e8e8;
+    }
+    .risk-card h4 { margin-bottom: 8px; display: flex; align-items: center; gap: 8px }
+    .risk-card p { font-size: 13px; color: var(--scotia-gray) }
+    .risk-mitigation {
+      margin-top: 12px;
+      padding: 10px 14px;
+      background: var(--scotia-light);
+      border-radius: 8px;
+      font-size: 12px;
+    }
+
+    /* Slide 7: Timeline */
+    .slide-timeline { background: var(--scotia-light) }
+    .timeline {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 0;
+      margin-top: 40px;
+      position: relative;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      top: 32px;
+      left: 10%;
+      right: 10%;
+      height: 4px;
+      background: linear-gradient(90deg, var(--scotia-green), var(--scotia-red), var(--scotia-gray));
+      border-radius: 2px;
+    }
+    .tl-phase {
+      flex: 1;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+      padding: 0 12px;
+    }
+    .tl-dot {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      margin: 20px auto 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      color: #fff;
+      font-weight: 800;
+    }
+    .tl-done { background: var(--scotia-green) }
+    .tl-current { background: var(--scotia-red); box-shadow: 0 0 0 6px rgba(236,17,26,.2) }
+    .tl-pending { background: var(--scotia-gray) }
+    .tl-phase h4 { font-size: 14px; margin-bottom: 4px }
+    .tl-phase p { font-size: 12px; color: var(--scotia-gray) }
+    .tl-deliverables {
+      background: var(--scotia-white);
+      border-radius: 10px;
+      padding: 12px;
+      margin-top: 12px;
+      font-size: 11px;
+      box-shadow: 0 1px 3px rgba(0,0,0,.06);
+      text-align: left;
+    }
+    .tl-deliverables li { margin-bottom: 3px }
+
+    /* Slide 8: CTA */
+    .slide-cta {
+      background: var(--scotia-red);
+      color: #fff;
+      text-align: center;
+    }
+    .slide-cta h2 { font-size: clamp(28px, 5vw, 48px); font-weight: 800; margin-bottom: 16px }
+    .slide-cta p { font-size: 18px; opacity: .8; margin-bottom: 32px }
+    .cta-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap }
+    .btn {
+      display: inline-block;
+      padding: 16px 36px;
+      border-radius: 50px;
+      font-size: 16px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: transform .2s, box-shadow .2s;
+      cursor: pointer;
+    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,.2); text-decoration: none }
+    .btn-white { background: #fff; color: var(--scotia-red) }
+    .btn-outline { background: transparent; border: 2px solid #fff; color: #fff }
+
+    @media (max-width: 800px) {
+      .problem-grid, .compare-grid { grid-template-columns: 1fr }
+      .compare-vs { display: none }
+      .metrics-grid, .risks-grid { grid-template-columns: 1fr 1fr }
+      .pipeline-flow { flex-direction: column; align-items: center }
+      .pipeline-arrow { transform: rotate(90deg) }
+      .timeline { flex-direction: column; align-items: center }
+      .timeline::before { display: none }
+    }
+    @media (max-width: 500px) {
+      .metrics-grid, .risks-grid { grid-template-columns: 1fr }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVIGATION -->
+  <nav class="nav">
+    <img src="https://cdn.aglty.io/scotia-bank-mexico/images/logo-scotiabank-rojo.png" alt="Scotiabank" style="filter: brightness(10); height: 24px">
+    <div class="nav-dots">
+      <a href="#cover" title="Portada"></a>
+      <a href="#problem" title="Problema"></a>
+      <a href="#compare" title="Antes vs Después"></a>
+      <a href="#pipeline" title="Pipeline"></a>
+      <a href="#metrics" title="Métricas"></a>
+      <a href="#risks" title="Riesgos"></a>
+      <a href="#timeline" title="Timeline"></a>
+      <a href="#cta" title="Acción"></a>
+    </div>
+    <div class="nav-label">POC Pensamiento Ejecutivo</div>
+  </nav>
+
+  <!-- SLIDE 1: PORTADA -->
+  <section id="cover" class="slide slide-cover">
+    <div class="slide-inner">
+      <img src="https://cdn.aglty.io/scotia-bank-mexico/images/logo-scotiabank-rojo.png" alt="Scotiabank" style="filter: brightness(10); height: 48px">
+      <h1>Automatización del Control Presupuestal</h1>
+      <div class="subtitle">Proof of Concept — POC Thinking con Copilot</div>
+      <div class="team">Equipo: [Nombre del Equipo] · Scotiabank México · Febrero 2026</div>
+    </div>
+  </section>
+
+  <!-- SLIDE 2: EL PROBLEMA -->
+  <section id="problem" class="slide slide-problem">
+    <div class="slide-inner">
+      <h2 style="text-align:center;margin-bottom:32px">El Problema</h2>
+      <div class="problem-grid">
+        <ul class="problem-list">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> El control presupuestal se hace <b>manualmente en Excel</b> cada mes</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> Se requieren <b>3+ revisiones</b> antes de entregar al comité</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Los errores de conciliación aparecen <b>2 semanas después</b></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg> No hay visibilidad en <b>tiempo real</b> del estatus presupuestal</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> Se necesitan <b>2 analistas dedicados</b> durante 6 días cada mes</li>
+        </ul>
+        <div class="problem-stat">
+          <div class="big-num">6</div>
+          <div class="big-label">días-persona / mes</div>
+          <p style="margin-top:16px;font-size:14px;color:var(--scotia-gray)">dedicados solo a conciliación y reporteo presupuestal</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 3: ANTES vs DESPUÉS -->
+  <section id="compare" class="slide slide-compare">
+    <div class="slide-inner">
+      <h2 style="text-align:center;margin-bottom:32px">Antes vs Después</h2>
+      <div class="compare-grid">
+        <div class="compare-col compare-before">
+          <h3 style="color:#c62828"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> Antes (proceso actual)</h3>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> <b>6 días-persona</b> por ciclo mensual</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> <b>3 revisiones</b> manuales obligatorias</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> <b>2 analistas</b> dedicados</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> <b>15% tasa de error</b> en conciliación</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg> Reportes en <b>Word + Excel estáticos</b></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg> Distribución por <b>email con adjuntos</b></li>
+          </ul>
+        </div>
+        <div class="compare-vs">vs</div>
+        <div class="compare-col compare-after">
+          <h3 style="color:var(--scotia-green)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> Después (con Copilot)</h3>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> <b>4 horas</b> por ciclo mensual</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> <b>1 revisión</b> (datos pre-validados)</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> <b>Cualquier analista</b> puede ejecutar</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> <b>< 1% tasa de error</b> automatizado</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> Reportes <b>HTML interactivos</b></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg> Un <b>link compartido</b> siempre actualizado</li>
+          </ul>
+        </div>
+      </div>
+      <div class="savings-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20" style="display:inline;vertical-align:middle"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 3 0 3 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-3 0-3"/></svg> 92% menos tiempo · 94% menos errores · 100% más impacto visual
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 4: PIPELINE -->
+  <section id="pipeline" class="slide slide-pipeline">
+    <div class="slide-inner">
+      <h2 style="text-align:center;margin-bottom:8px">Pipeline del POC</h2>
+      <p style="text-align:center;opacity:.6;margin-bottom:16px">De datos crudos a entregables ejecutivos en minutos</p>
+      <div class="pipeline-flow">
+        <div class="pipeline-step">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="32" height="32"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+          <div class="label">Datos Excel</div>
+          <div class="desc">Archivo fuente del área</div>
+        </div>
+        <div class="pipeline-arrow">→</div>
+        <div class="pipeline-step">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="32" height="32"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/><line x1="8" y1="16" x2="8" y2="16"/><line x1="16" y1="16" x2="16" y2="16"/></svg></div>
+          <div class="label">Copilot Procesa</div>
+          <div class="desc">Análisis + fórmulas</div>
+        </div>
+        <div class="pipeline-arrow">→</div>
+        <div class="pipeline-step">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="32" height="32"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+          <div class="label">Reporte HTML</div>
+          <div class="desc">KPIs, riesgos, recs</div>
+        </div>
+        <div class="pipeline-arrow">→</div>
+        <div class="pipeline-step">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="32" height="32"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+          <div class="label">Presentación</div>
+          <div class="desc">Slides interactivos</div>
+        </div>
+        <div class="pipeline-arrow">→</div>
+        <div class="pipeline-step">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="32" height="32"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+          <div class="label">Revisión Humana</div>
+          <div class="desc">Validar + ajustar</div>
+        </div>
+        <div class="pipeline-arrow">→</div>
+        <div class="pipeline-step" style="border-color:var(--scotia-green)">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="32" height="32"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+          <div class="label">Aprobación</div>
+          <div class="desc">Comité directivo</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 5: MÉTRICAS -->
+  <section id="metrics" class="slide slide-metrics">
+    <div class="slide-inner">
+      <h2 style="text-align:center">Métricas de Éxito</h2>
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="36" height="36"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+          <div class="value">92%</div>
+          <div class="label">Reducción de tiempo</div>
+          <div class="detail">De 6 días → 4 horas</div>
+        </div>
+        <div class="metric-card">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="36" height="36"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
+          <div class="value">&lt;1%</div>
+          <div class="label">Tasa de error</div>
+          <div class="detail">Antes: 15%</div>
+        </div>
+        <div class="metric-card">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="36" height="36"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+          <div class="value">$180K</div>
+          <div class="label">Ahorro anual estimado</div>
+          <div class="detail">En horas-persona + retrabajo</div>
+        </div>
+        <div class="metric-card">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="36" height="36"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg></div>
+          <div class="value">4.8/5</div>
+          <div class="label">Satisfacción del equipo</div>
+          <div class="detail">Encuesta post-piloto</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 6: RIESGOS -->
+  <section id="risks" class="slide slide-risks">
+    <div class="slide-inner">
+      <h2 style="text-align:center;margin-bottom:8px">Análisis de Riesgos</h2>
+      <div class="risks-grid">
+        <div class="risk-card" style="border-top:4px solid var(--scotia-yellow)">
+          <h4><svg viewBox="0 0 24 24" width="14" height="14"><circle cx="12" cy="12" r="8" fill="#F4B400"/></svg> Riesgo Técnico</h4>
+          <p>Copilot puede generar datos inexactos o fórmulas incorrectas al procesar archivos complejos.</p>
+          <div class="risk-mitigation"><b>Mitigación:</b> Validación humana obligatoria. Checklist de verificación en cada ciclo.</div>
+        </div>
+        <div class="risk-card" style="border-top:4px solid var(--scotia-yellow)">
+          <h4><svg viewBox="0 0 24 24" width="14" height="14"><circle cx="12" cy="12" r="8" fill="#F4B400"/></svg> Riesgo de Datos</h4>
+          <p>Datos sensibles podrían procesarse en servicios cloud no aprobados por InfoSec.</p>
+          <div class="risk-mitigation"><b>Mitigación:</b> Usar solo Copilot 365 (tenant corporativo). No subir datos a Copilot público.</div>
+        </div>
+        <div class="risk-card" style="border-top:4px solid var(--scotia-red)">
+          <h4><svg viewBox="0 0 24 24" width="14" height="14"><circle cx="12" cy="12" r="8" fill="#c62828"/></svg> Resistencia al Cambio</h4>
+          <p>Equipos acostumbrados al proceso manual podrían resistir la adopción de la nueva herramienta.</p>
+          <div class="risk-mitigation"><b>Mitigación:</b> Champions por área + capacitación hands-on + quick wins visibles en semana 1.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 7: TIMELINE -->
+  <section id="timeline" class="slide slide-timeline">
+    <div class="slide-inner">
+      <h2 style="text-align:center;margin-bottom:8px">Timeline del POC</h2>
+      <div class="timeline">
+        <div class="tl-phase">
+          <div class="tl-dot tl-done">✓</div>
+          <h4>Sesión 1</h4>
+          <p>Datos + Análisis</p>
+          <div class="tl-deliverables">
+            <ul>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> Excel enriquecido</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> Dashboard Power BI</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> Ficha de problema</li>
+            </ul>
+          </div>
+        </div>
+        <div class="tl-phase">
+          <div class="tl-dot tl-current">2</div>
+          <h4>Sesión 2</h4>
+          <p>Documentación HTML</p>
+          <div class="tl-deliverables">
+            <ul>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> Reporte HTML</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> Presentación HTML</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> Dashboard HTML</li>
+            </ul>
+          </div>
+        </div>
+        <div class="tl-phase">
+          <div class="tl-dot tl-pending">3</div>
+          <h4>Sesión 3</h4>
+          <p>Demo + Pitch</p>
+          <div class="tl-deliverables">
+            <ul>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" style="display:inline;vertical-align:middle"><path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"/><path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/></svg> Demo en vivo</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" style="display:inline;vertical-align:middle"><path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"/><path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/></svg> Pitch ejecutivo</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" style="display:inline;vertical-align:middle"><path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"/><path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/></svg> Plan de acción</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 8: CALL TO ACTION -->
+  <section id="cta" class="slide slide-cta">
+    <div class="slide-inner">
+      <h2>¿Aprobamos este POC?</h2>
+      <p>Los datos demuestran un ahorro potencial del 92% en tiempo y $180K anuales.<br>El siguiente paso es un piloto de 4 semanas con el equipo de Finanzas.</p>
+      <div class="cta-buttons">
+        <a href="#" class="btn btn-white"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> Sí, avancemos con el piloto</a>
+        <a href="#" class="btn btn-outline"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg> Necesito más información</a>
+      </div>
+      <p style="margin-top:40px;font-size:13px;opacity:.5">Scotiabank · POC Thinking con Copilot · Confidencial</p>
+    </div>
+  </section>
+
+  <!-- SCROLL ACTIVE DOT -->
+  <script>
+    const dots = document.querySelectorAll('.nav-dots a');
+    const sections = document.querySelectorAll('.slide');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.id;
+          dots.forEach(d => d.classList.toggle('active', d.getAttribute('href') === '#' + id));
+        }
+      });
+    }, { threshold: 0.5 });
+    sections.forEach(s => observer.observe(s));
+  </script>
+
+</body>
+</html>

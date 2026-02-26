@@ -1,0 +1,770 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sesión 1 — Ideación y datos con Copilot en Excel y Power BI</title>
+  <style>
+    :root{--ey-yellow:#FFCD00;--ey-dark:#242424;--ey-gray:#6B6B6B;--ey-light:#F7F7F7;--ey-accent:#0F62FE}
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--ey-dark);background:#fff;line-height:1.6}
+    a{color:var(--ey-accent);text-decoration:none}
+    a:hover{text-decoration:underline}
+    .wrap{max-width:1000px;margin:0 auto;padding:24px}
+    .hero-sm{background:linear-gradient(135deg,var(--ey-yellow) 0%,#ffe77a 60%,#fff3b0 100%);padding:40px 24px;display:flex;align-items:center;gap:24px}
+    .hero-sm img{width:100px}
+    .hero-sm h1{margin:0;font-size:clamp(22px,4vw,36px);font-weight:800}
+    .hero-sm p{margin:6px 0 0;color:#333}
+    .badge{display:inline-block;padding:4px 10px;border-radius:999px;background:#fff8d6;border:1px solid #ffe68a;font-size:12px;margin-right:6px}
+    section{padding:32px 0;border-bottom:1px solid #f0f0f0}
+    h2{font-size:24px;margin:0 0 10px}
+    h3{margin:16px 0 8px}
+    .grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+    .box{background:#fff;border:1px solid #eee;border-radius:12px;padding:18px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+    ul,ol{margin:8px 0 0 16px}
+    .activity{background:var(--ey-light);border-left:4px solid var(--ey-yellow);padding:14px 18px;border-radius:8px;margin:12px 0}
+    .prompt-example{background:#f0f4ff;border:1px solid #d0dcff;border-radius:10px;padding:16px;margin:10px 0;font-family:'Cascadia Code',Consolas,monospace;font-size:14px;line-height:1.5;white-space:pre-wrap}
+    .block-header{background:var(--ey-accent);color:#fff;padding:10px 18px;border-radius:10px 10px 0 0;font-weight:700;font-size:16px;margin-top:24px}
+    .block-body{border:1px solid #d0dcff;border-top:0;border-radius:0 0 10px 10px;padding:18px}
+    table{width:100%;border-collapse:collapse;margin-top:10px}
+    th,td{border:1px solid #eee;padding:10px;text-align:left;vertical-align:top}
+    th{background:#fffaf0}
+    footer{padding:28px 0;text-align:center;color:#999}
+    .limitation-card{background:#fff8e1;border:1px solid #ffcc80;border-radius:10px;padding:16px;margin:12px 0}
+    .limitation-card b{color:#e65100}
+    .plan-b{background:#e8f5e9;border:1px solid #a5d6a7;border-radius:10px;padding:14px;margin:8px 0;font-size:13px}
+    .plan-b b{color:#2e7d32}
+    .check-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:12px}
+    .check-item{background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:12px;display:flex;align-items:flex-start;gap:8px}
+    .check-item input{margin-top:3px}
+    @media(max-width:800px){.grid-2{grid-template-columns:1fr}.hero-sm{flex-direction:column;align-items:flex-start}.check-grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+
+  <header class="hero-sm">
+    <img src="https://companieslogo.com/img/orig/ernst-and-young-6c5de5ba.svg?t=1720244494&download=true" alt="EY Logo">
+    <div>
+      <h1>Sesión 1 — Ideación y datos con Excel y Power BI</h1>
+      <p>POC Thinking con Microsoft 365 Copilot · Para PMs y profesionales financieros</p>
+      <span class="badge">Sesión 1 de 3</span>
+      <span class="badge">Duración: 3 horas</span>
+      <span class="badge">Herramientas: Excel + Power BI + Copilot</span>
+    </div>
+  </header>
+
+  <main class="wrap">
+
+    <!-- AGENDA -->
+    <section>
+      <h2>📋 Agenda de la sesión</h2>
+      <table>
+        <thead>
+          <tr><th style="width:120px">Bloque</th><th>Contenido</th><th style="width:100px">Duración</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><b>Bloque 1</b></td><td>Teoría: Qué es un POC · Intro a Copilot 365 · Alcances y limitaciones · Tipología · Células de trabajo</td><td style="text-align:center"><b>1 hora</b></td></tr>
+          <tr><td><b>Bloque 2</b></td><td>Lab práctico: Excel con Copilot (40 min) — análisis, fórmulas, tablas dinámicas, gráficos · Power BI conversacional (20 min) — demo del pipeline Excel → dashboard</td><td style="text-align:center"><b>1 hora</b></td></tr>
+          <tr><td><b>Bloque 3</b></td><td>Descubrimiento de problemas: Formación de equipos + Taller de problemas reales + Ficha de Problema para generar datasets personalizados</td><td style="text-align:center"><b>1 hora</b></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- CHECKLIST PREPARACIÓN -->
+    <section>
+      <h2>⚠️ Antes de empezar — Checklist de preparación</h2>
+      <p>Verifica estos puntos <b>antes</b> de iniciar el laboratorio. Son los requisitos mínimos para que Copilot funcione correctamente.</p>
+      <div class="check-grid">
+        <label class="check-item"><input type="checkbox"> <span><b>Licencia Copilot 365 activa</b> — Verifica en cualquier app de Office que aparezca el ícono de Copilot.</span></label>
+        <label class="check-item"><input type="checkbox"> <span><b>Archivos en OneDrive/SharePoint</b> — Copilot NO funciona con archivos locales. Sube todo a la nube primero.</span></label>
+        <label class="check-item"><input type="checkbox"> <span><b>Datos en formato Tabla</b> — Los archivos .xlsx del curso ya vienen formateados como Tabla. Si trabajas con tus propios datos: selecciona todo → <code>Ctrl+T</code>. Sin Tabla, Copilot no los reconoce.</span></label>
+        <label class="check-item"><input type="checkbox"> <span><b>Dataset ≤ 5,000 filas</b> — Copilot trabaja bien hasta ~5K filas. Para datasets mayores, filtra o divide primero.</span></label>
+        <label class="check-item"><input type="checkbox"> <span><b>Autoguardado activado</b> — Copilot necesita Autoguardado ON. Si está desactivado, actívalo en la barra superior.</span></label>
+        <label class="check-item"><input type="checkbox"> <span><b>Conexión a internet estable</b> — Copilot procesa en la nube. Sin internet, no funciona.</span></label>
+      </div>
+    </section>
+
+    <!-- ═══════════ BLOQUE 1 ═══════════ -->
+    <div class="block-header">🎓 Bloque 1 — Teoría (1 hora)</div>
+    <div class="block-body">
+
+      <section style="border:none;padding:20px 0">
+        <h2>📌 ¿Qué es un POC?</h2>
+        <div class="grid-2">
+          <div class="box">
+            <h3>Definición</h3>
+            <p>Una <b>Prueba de Concepto</b> es un ejercicio acotado para demostrar que una idea es <b>viable</b> antes de invertir recursos completos. No es un producto terminado — es una <b>prueba rápida de valor</b>.</p>
+          </div>
+          <div class="box">
+            <h3>¿Por qué importa?</h3>
+            <ul>
+              <li>Reduce riesgo antes de comprometer presupuesto</li>
+              <li>Genera evidencia tangible para tomadores de decisión</li>
+              <li>Alinea expectativas entre negocio y tecnología</li>
+              <li>Permite iterar rápido con feedback real</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section style="border:none;padding:20px 0">
+        <h2>🤖 ¿Qué es Microsoft 365 Copilot?</h2>
+        <p>Un asistente de IA integrado en las apps de Microsoft 365. Funciona con <b>prompts</b> — instrucciones en lenguaje natural.</p>
+
+        <!-- Diagrama de arquitectura Copilot 365 -->
+        <div style="margin:24px 0;text-align:center">
+          <div style="display:inline-block;background:linear-gradient(135deg,#0F62FE 0%,#4589FF 100%);color:#fff;padding:18px 36px;border-radius:16px;font-size:20px;font-weight:800;box-shadow:0 4px 12px rgba(15,98,254,.3)">
+            🧠 Microsoft 365 Copilot
+            <div style="font-size:13px;font-weight:400;margin-top:4px;opacity:.9">Motor de IA (GPT) integrado en tus apps</div>
+          </div>
+          <div style="margin:8px 0;font-size:28px;color:#0F62FE">▼</div>
+          <div style="display:inline-block;background:#e8f0fe;border:2px dashed #0F62FE;padding:10px 24px;border-radius:10px;font-size:14px;font-weight:600;color:#0F62FE;margin-bottom:8px">
+            Funciona con <b>PROMPTS</b> — instrucciones en lenguaje natural
+          </div>
+          <div style="margin:8px 0;font-size:28px;color:#0F62FE">▼</div>
+          <div style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:0 auto;max-width:820px">
+            <div style="flex:1;min-width:140px;max-width:160px;background:#fff;border:2px solid #217346;border-radius:12px;padding:14px 10px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06)">
+              <div style="font-size:32px">📊</div>
+              <div style="font-weight:800;color:#217346;font-size:15px;margin:4px 0">Excel</div>
+              <div style="font-size:11px;color:#555;line-height:1.4">Fórmulas · Tablas dinámicas · Gráficos · Patrones</div>
+            </div>
+            <div style="flex:1;min-width:140px;max-width:160px;background:#fff;border:2px solid #F2C811;border-radius:12px;padding:14px 10px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06)">
+              <div style="font-size:32px">📈</div>
+              <div style="font-weight:800;color:#B8960C;font-size:15px;margin:4px 0">Power BI</div>
+              <div style="font-size:11px;color:#555;line-height:1.4">Q&A natural · Dashboards · Narrativa automática</div>
+              <div style="font-size:10px;color:#e65100;font-weight:600;margin-top:6px;background:#fff3e0;padding:3px 6px;border-radius:4px">⚠️ Copilot en PBI = Premium/Fabric<br>Q&A y Smart Narrative = gratis</div>
+            </div>
+            <div style="flex:1;min-width:140px;max-width:160px;background:#fff;border:2px solid #2B579A;border-radius:12px;padding:14px 10px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06)">
+              <div style="font-size:32px">📝</div>
+              <div style="font-weight:800;color:#2B579A;font-size:15px;margin:4px 0">Word</div>
+              <div style="font-size:11px;color:#555;line-height:1.4">Redactar · Resumir · Reportes · Cambiar tono</div>
+            </div>
+            <div style="flex:1;min-width:140px;max-width:160px;background:#fff;border:2px solid #D24726;border-radius:12px;padding:14px 10px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06)">
+              <div style="font-size:32px">📽️</div>
+              <div style="font-weight:800;color:#D24726;font-size:15px;margin:4px 0">PowerPoint</div>
+              <div style="font-size:11px;color:#555;line-height:1.4">Slides desde prompt · Word → PPT · Diseños</div>
+            </div>
+            <div style="flex:1;min-width:140px;max-width:160px;background:#fff;border:2px solid #6264A7;border-radius:12px;padding:14px 10px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06)">
+              <div style="font-size:32px">💬</div>
+              <div style="font-weight:800;color:#6264A7;font-size:15px;margin:4px 0">Teams</div>
+              <div style="font-size:11px;color:#555;line-height:1.4">Resumir reuniones · Action items · Buscar chats</div>
+            </div>
+          </div>
+          <div style="margin-top:16px">
+            <div style="display:inline-block;background:#f0f4ff;border:1px solid #c8d6f0;padding:10px 24px;border-radius:8px;font-size:13px;color:#333">
+              📁 <b>Requisito:</b> Todos los archivos deben estar en <b>OneDrive / SharePoint</b> con Autoguardado ON
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-2" style="margin-top:16px">
+          <div class="box"><h3>📊 Excel</h3><ul><li>Analizar y resumir datos</li><li>Crear fórmulas complejas</li><li>Tablas dinámicas y gráficos</li><li>Detectar patrones</li></ul><p style="font-size:11px;color:#217346;margin:8px 0 0">🔑 Requiere: licencia Copilot 365</p></div>
+          <div class="box"><h3>📈 Power BI</h3><ul><li>Q&A en lenguaje natural <b style="color:#2e7d32">(gratis)</b></li><li>Smart Narrative <b style="color:#2e7d32">(gratis)</b></li><li>Dashboards interactivos</li><li>Conectar datos de Excel</li></ul><p style="font-size:11px;color:#e65100;margin:8px 0 0;background:#fff3e0;padding:6px 8px;border-radius:6px">⚠️ <b>Copilot dentro de PBI</b> requiere licencia <b>Premium o Fabric</b> (separada de Copilot 365).<br>En este curso usamos <b>Q&A nativo + Smart Narrative</b> — ambos gratuitos.</p></div>
+          <div class="box"><h3>📝 Word</h3><ul><li>Redactar documentos desde cero</li><li>Resumir textos largos</li><li>Business cases y reportes</li><li>Cambiar tono y estructura</li></ul><p style="font-size:11px;color:#2B579A;margin:8px 0 0">🔑 Requiere: licencia Copilot 365</p></div>
+          <div class="box"><h3>📽️ PowerPoint</h3><ul><li>Crear presentaciones desde un prompt</li><li>Transformar Word en slides</li><li>Generar diseños visuales</li></ul><p style="font-size:11px;color:#D24726;margin:8px 0 0">🔑 Requiere: licencia Copilot 365</p></div>
+          <div class="box"><h3>💬 Teams</h3><ul><li>Resumir reuniones</li><li>Generar action items</li><li>Buscar en chats pasados</li></ul><p style="font-size:11px;color:#6264A7;margin:8px 0 0">🔑 Requiere: licencia Copilot 365</p></div>
+        </div>
+      </section>
+
+      <section style="border:none;padding:20px 0">
+        <h2>� Alcances y limitaciones de Copilot 365</h2>
+        <p>Copilot es muy poderoso, pero tiene <b>límites claros</b>. Conocerlos evita frustraciones y te ayuda a diseñar mejores POCs.</p>
+        <div class="grid-2">
+          <div class="box" style="border-left:4px solid #22c55e">
+            <h3>✅ Copilot SÍ puede</h3>
+            <ul>
+              <li>Analizar, resumir y transformar datos <b>dentro de una Tabla</b></li>
+              <li>Crear fórmulas, tablas dinámicas y gráficos</li>
+              <li>Redactar documentos y presentaciones desde cero</li>
+              <li>Resumir reuniones de Teams (con transcripción)</li>
+              <li>Iterar: mejorar, acortar, cambiar tono de un output</li>
+            </ul>
+          </div>
+          <div class="box" style="border-left:4px solid #ef4444">
+            <h3>❌ Copilot NO puede</h3>
+            <ul>
+              <li>Trabajar con archivos <b>locales</b> (requiere OneDrive/SharePoint)</li>
+              <li>Generar o ejecutar <b>VBA, macros ni código</b></li>
+              <li>Conectarse a <b>APIs externas o bases de datos</b></li>
+              <li>Recordar conversaciones anteriores (<b>sin memoria</b>)</li>
+              <li>Procesar datasets <b>mayores a ~5,000 filas</b> de forma confiable</li>
+              <li>Crear <b>animaciones complejas</b> en PowerPoint</li>
+            </ul>
+          </div>
+        </div>
+        <div class="limitation-card" style="margin-top:16px">
+          <b>⚡ 3 Reglas de oro:</b>
+          <ol style="margin:8px 0 0">
+            <li><b>Un prompt = una tarea.</b> No pidas 5 cosas a la vez. Divide y conquista.</li>
+            <li><b>Siempre verifica el output.</b> Copilot puede inventar datos (alucinaciones). Revisa antes de usar.</li>
+            <li><b>Si el prompt en español no funciona, prueba en inglés.</b> Los modelos de lenguaje tienen mejor rendimiento en inglés.</li>
+          </ol>
+        </div>
+      </section>
+
+      <section style="border:none;padding:20px 0">
+        <h2>�🏷️ Tipología de POCs</h2>
+        <table>
+          <thead><tr><th>Tipo</th><th>Propósito</th><th>Ejemplo financiero</th></tr></thead>
+          <tbody>
+            <tr><td><b>Automatización financiera</b></td><td>Agilizar procesos manuales</td><td>Conciliación bancaria con reglas en Excel</td></tr>
+            <tr><td><b>De Datos</b></td><td>Validar calidad y valor de datos</td><td>Análisis de variaciones presupuestales</td></tr>
+            <tr><td><b>De Texto / IA</b></td><td>Análisis o generación semántica</td><td>Resumen automático de contratos</td></tr>
+            <tr><td><b>De Experiencia / Negocio</b></td><td>Validar valor percibido</td><td>Dashboard narrativo de KPIs</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section style="border:none;padding:20px 0">
+        <h2>👥 Formación de células de trabajo</h2>
+        <div class="grid-2">
+          <div class="box">
+            <h3>Roles</h3>
+            <ul>
+              <li><b>Product Owner (1-2):</b> Define el problema y valida valor de negocio</li>
+              <li><b>PM / Líder (1):</b> Coordina entregables y presentaciones</li>
+              <li><b>Analistas financieros (2-3):</b> Datos, prompts y entregables</li>
+            </ul>
+          </div>
+          <div class="box">
+            <h3>Actividad rápida (10 min)</h3>
+            <ol>
+              <li>Formen equipos de 4-6 personas</li>
+              <li>Asignen roles</li>
+              <li>Compartan 2-3 ideas de POC</li>
+            </ol>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ═══════════ BLOQUE 2 ═══════════ -->
+    <div class="block-header">🔬 Bloque 2 — Lab: Excel con Copilot (40 min) + Power BI conversacional (20 min)</div>
+    <div class="block-body">
+
+      <div class="limitation-card">
+        <b>⚠️ Antes de empezar el lab:</b>
+        <ol style="margin:8px 0 0">
+          <li>Abre el archivo en Excel <b>desde OneDrive</b> (no desde tu escritorio).</li>
+          <li>Los archivos .xlsx del curso <b>ya vienen como Tabla</b>. Si usas tus propios datos: selecciona todo → <b>Ctrl+T</b> → Aceptar. Sin Tabla, Copilot no funciona.</li>
+          <li>Verifica que <b>Autoguardado</b> esté activado (esquina superior izquierda).</li>
+          <li>Si no ves el ícono de Copilot, cierra y reabre el archivo desde OneDrive.</li>
+        </ol>
+      </div>
+
+      <section style="border:none;padding:20px 0">
+        <h2>📂 Datasets de ejemplo</h2>
+        <p>Para este lab usaremos un archivo financiero pre-generado. El instructor lo compartirá vía OneDrive/SharePoint.</p>
+        <div>
+          <div class="box" style="border-left:4px solid var(--ey-accent)">
+            <h3>📊 gastos_departamentales.xlsx</h3>
+            <p><b>~315 filas</b> · Presupuesto vs gasto real por departamento, mes y categoría. <b>Ya formateado como Tabla de Excel.</b></p>
+            <p style="font-size:13px;color:var(--ey-gray)">Columnas: ID, Departamento, Centro_Costo, Categoria_Gasto, Mes, Anio, Presupuesto_MXN, Gasto_Real_MXN, Variacion_Pct, Responsable, Estatus</p>
+            <p style="font-size:13px">✨ Incluye <b>duplicados intencionales</b> y <b>outliers</b> para ejercicios de detección.</p>
+          </div>
+        </div>
+      </section>
+
+      <section style="border:none;padding:20px 0">
+        <h2>🖥️ Parte A — Ejercicios en Excel con Copilot (40 min)</h2>
+        <p><b>Archivo:</b> <code>gastos_departamentales.xlsx</code> (abierto en Excel desde OneDrive — ya tiene formato de Tabla, no necesitan hacer Ctrl+T).</p>
+        <div style="background:#fff3e0;border:1px solid #ffcc80;border-radius:10px;padding:14px 18px;margin:12px 0;font-size:13px">
+          <b>⚠️ Comportamiento de Copilot en Excel:</b> Cuando Copilot genera columnas, tablas dinámicas o gráficos, crea un <b>nuevo archivo</b> con los cambios — tu archivo original queda intacto. Haz click en "Descargar" o "Abrir" para ver el resultado. Para análisis y resúmenes, muestra el resultado en el panel lateral.
+        </div>
+
+        <div class="activity">
+          <b>Paso 1:</b> Abre el archivo en Excel con Copilot habilitado.
+          <div class="prompt-example">📊 "Resume esta tabla y muestra las estadísticas principales: promedio, total, máximo y mínimo de Presupuesto_MXN y Gasto_Real_MXN por Departamento"</div>
+          <div class="plan-b">🔄 <b>Plan B (inglés):</b> "Summarize this table and show key statistics: average, total, max and min of Presupuesto_MXN and Gasto_Real_MXN by Departamento"</div>
+        </div>
+        <div class="activity">
+          <b>Paso 2:</b> Crea tabla dinámica con IA.
+          <div class="prompt-example">📊 "Crea una tabla dinámica que resuma el total de Gasto_Real_MXN por Departamento y por Mes"</div>
+        </div>
+        <div class="activity">
+          <b>Paso 3:</b> Fórmulas con Copilot.
+          <div class="prompt-example">📊 "Agrega una columna llamada IVA_MXN que calcule el 16% de Gasto_Real_MXN"</div>
+        </div>
+        <div class="activity">
+          <b>Paso 4:</b> Reglas de negocio sin código.
+          <div class="prompt-example">📊 "Agrega una columna Alerta_Variacion: si Variacion_Pct > 20 = '🔴 Excedido', si > 10 = '🟡 Atención', si no = '🟢 OK'"</div>
+          <div class="plan-b">🔄 <b>Plan B (inglés):</b> "Add a column Alerta_Variacion: if Variacion_Pct > 20 = 'Exceeded', if > 10 = 'Warning', otherwise = 'OK'"</div>
+        </div>
+        <div class="activity">
+          <b>Paso 5:</b> Detecta anomalías.
+          <div class="prompt-example">📊 "Identifica filas con Variacion_Pct mayor a 50% o menor a -30%. ¿Hay filas duplicadas con mismo Departamento, Categoria_Gasto y Mes?"</div>
+        </div>
+        <div class="activity">
+          <b>Paso 6:</b> Visualiza resultados.
+          <div class="prompt-example">📊 "Genera un gráfico de barras agrupadas comparando Presupuesto_MXN vs Gasto_Real_MXN por Departamento"</div>
+        </div>
+      </section>
+
+      <section style="border:none;padding:20px 0">
+        <h2>🎯 Tips para mejores prompts en Excel</h2>
+        <div class="grid-2">
+          <div class="box"><h3>✅ Buenas prácticas</h3><ul><li>Sé específico: menciona columnas por nombre</li><li>Pide un formato de salida concreto</li><li>Itera: mejora el prompt si no es ideal</li><li>Da contexto: "Esta es una tabla de gastos…"</li></ul></div>
+          <div class="box"><h3>❌ Errores comunes</h3><ul><li>"Analiza los datos" (demasiado vago)</li><li>No especificar columnas o métricas</li><li>Aceptar el primer resultado sin iterar</li><li>Pedir demasiado en un solo prompt</li><li><b>No tener los datos en formato Tabla (Ctrl+T)</b></li><li>Archivo abierto desde escritorio (no OneDrive)</li></ul></div>
+        </div>
+      </section>
+
+      <section style="border:none;padding:20px 0">
+        <h2>📈 Parte B — Power BI desde cero (20 min) — Demo guiada</h2>
+        <p>Ahora veremos cómo los <b>mismos datos de Excel</b> se transforman en un <b>dashboard interactivo</b> en Power BI. Usaremos <b>Copilot 365 chat</b> para generar las fórmulas DAX y las pegaremos en Power BI.</p>
+
+        <div class="limitation-card">
+          <b>💡 Nota:</b> Esta parte es una <b>demo guiada por el instructor</b>. No necesitan experiencia previa en Power BI. Observen el flujo paso a paso y tomen nota.
+        </div>
+
+        <div class="limitation-card" style="background:#e8f5e9;border-color:#a5d6a7">
+          <b>🔗 Pipeline de esta demo:</b>
+          <p style="margin:8px 0 0;font-size:15px;text-align:center">
+            📊 <b>Excel</b> (análisis detallado) → 🤖 <b>Copilot 365 chat</b> (genera DAX) → 📈 <b>Power BI Q&A</b> (crea visuales con lenguaje natural)
+          </p>
+        </div>
+
+        <!-- PASO 0: QUÉ ES POWER BI -->
+        <div class="activity">
+          <b>🔰 ¿Qué es Power BI?</b>
+          <p>Power BI Desktop es una aplicación <b>gratuita</b> de Microsoft para crear dashboards interactivos. A diferencia de Excel:</p>
+          <ul>
+            <li>Excel = trabajas fila por fila, fórmulas, tablas dinámicas</li>
+            <li>Power BI = escribes preguntas en lenguaje natural → genera visuales automáticamente</li>
+          </ul>
+          <p style="font-size:13px;color:var(--ey-gray)">Descargar: <a href="https://powerbi.microsoft.com/desktop/" target="_blank">powerbi.microsoft.com/desktop</a> (gratis, no necesita licencia para usar local)</p>
+        </div>
+
+        <!-- PASO 1: ABRIR POWER BI -->
+        <div class="activity">
+          <b>Paso 1:</b> Abrir Power BI Desktop.
+          <div style="background:#fff;border:1px solid #e0e0e0;border-radius:8px;padding:14px;margin:10px 0">
+            <ol style="margin:0">
+              <li>Buscar <b>"Power BI Desktop"</b> en el menú de Windows (tecla Windows → escribir "Power BI")</li>
+              <li>Se abre una pantalla de inicio — cerrar la ventana de bienvenida si aparece</li>
+              <li>Verás un <b>lienzo en blanco</b> con 3 paneles: Visualizaciones (derecha), Campos/Datos (derecha), y el lienzo central donde irán los gráficos</li>
+            </ol>
+          </div>
+        </div>
+
+        <!-- PASO 2: CARGAR DATOS -->
+        <div class="activity">
+          <b>Paso 2:</b> Cargar el dataset.
+          <div style="background:#fff;border:1px solid #e0e0e0;border-radius:8px;padding:14px;margin:10px 0">
+            <ol style="margin:0">
+              <li>Click en <b>Inicio</b> (pestaña superior) → <b>Obtener datos</b> → <b>Libro de Excel</b></li>
+              <li>Navegar hasta <code>gastos_departamentales.xlsx</code> → seleccionarlo → <b>Abrir</b></li>
+              <li>En la ventana "Navegador" que aparece, marcar la tabla <b>GastosDepartamentales</b> (checkbox)</li>
+              <li>Aparece una vista previa de los datos → verificar que las columnas se ven correctas</li>
+              <li>Click en <b>"Cargar"</b> (NO en "Transformar datos" — queremos los datos tal cual)</li>
+              <li>Esperamos unos segundos → en el panel <b>Datos</b> (derecha) aparece la tabla <code>gastos_departamentales</code> con todas las columnas</li>
+            </ol>
+          </div>
+          <div class="plan-b">✅ <b>Verificación:</b> En el panel derecho deben ver la tabla con columnas como Departamento, Presupuesto_MXN, Gasto_Real_MXN, etc. Si no aparece, repetir el paso.</div>
+        </div>
+
+        <!-- PASO 3: COPILOT 365 GENERA DAX -->
+        <div class="activity">
+          <b>Paso 3:</b> Generar medidas DAX con Copilot 365 chat.
+          <p>Copilot 365 nos genera la lógica de cálculo (DAX) que después usaremos en los visuales.</p>
+          <div style="background:#fff;border:1px solid #e0e0e0;border-radius:8px;padding:14px;margin:10px 0">
+            <ol style="margin:0">
+              <li>Abrir <a href="https://copilot.microsoft.com" target="_blank"><b>copilot.microsoft.com</b></a> en el navegador</li>
+              <li><b>Adjuntar</b> el archivo <code>gastos_departamentales.xlsx</code> (ícono de clip / adjuntar archivo)</li>
+              <li>Escribir el siguiente prompt:</li>
+            </ol>
+          </div>
+          <div class="prompt-example">🤖 "Analyze this Excel file. Generate DAX measures for Power BI.
+The table in Power BI is named GastosDepartamentales. Generate these measures:
+1. Total Gasto Real = SUM of Gasto_Real_MXN
+2. Total Presupuesto = SUM of Presupuesto_MXN
+3. Variacion Promedio = AVERAGE of Variacion_Pct
+4. Registros Excedidos = COUNT of rows where Variacion_Pct > 20
+5. Gasto Aprobado = SUM of Gasto_Real_MXN only where Estatus = 'Aprobado'
+
+Give me each DAX measure ready to copy and paste into Power BI."</div>
+          <div class="plan-b">💡 <b>¿Por qué en inglés?</b> Copilot genera DAX más preciso cuando el prompt está en inglés. Los nombres de columnas van tal cual están en el Excel (en español).</div>
+          <p style="margin-top:10px">Copilot responderá con código DAX como este:</p>
+          <div class="prompt-example" style="background:#1e1e1e;color:#d4d4d4;font-size:13px">Total Gasto Real = SUM(GastosDepartamentales[Gasto_Real_MXN])
+
+Total Presupuesto = SUM(GastosDepartamentales[Presupuesto_MXN])
+
+Variacion Promedio = AVERAGE(GastosDepartamentales[Variacion_Pct])
+
+Registros Excedidos = COUNTROWS(
+    FILTER(GastosDepartamentales, GastosDepartamentales[Variacion_Pct] > 20)
+)
+
+Gasto Aprobado = CALCULATE(
+    SUM(GastosDepartamentales[Gasto_Real_MXN]),
+    GastosDepartamentales[Estatus] = "Aprobado"
+)</div>
+        </div>
+
+        <!-- PASO 4: PEGAR DAX EN POWER BI -->
+        <div class="activity">
+          <b>Paso 4:</b> Pegar las medidas DAX en Power BI.
+          <div style="background:#fff;border:1px solid #e0e0e0;border-radius:8px;padding:14px;margin:10px 0">
+            <p><b>Para cada medida, repetir estos pasos:</b></p>
+            <ol style="margin:0">
+              <li>En Power BI, click en pestaña <b>"Modelado"</b> (barra superior)</li>
+              <li>Click en <b>"Nueva medida"</b></li>
+              <li>En la <b>barra de fórmulas</b> que aparece arriba del lienzo, <b>borrar</b> lo que diga (usualmente dice <code>Medida = </code>)</li>
+              <li><b>Pegar</b> la medida DAX copiada de Copilot (Ctrl+V)</li>
+              <li>Presionar <b>Enter</b> → la medida aparece en el panel Datos con un ícono de calculadora 🔢</li>
+              <li>Repetir para las 5 medidas</li>
+            </ol>
+          </div>
+          <div class="plan-b">✅ <b>Verificación:</b> En el panel Datos (derecha), debajo de la tabla, deben ver las 5 medidas con ícono de calculadora. Si alguna da error, copiar el error → pegar en Copilot 365 chat → pedirle que corrija.</div>
+        </div>
+
+        <!-- PASO 5: Q&A — CREAR TODOS LOS VISUALES CON LENGUAJE NATURAL -->
+        <div class="activity">
+          <b>Paso 5:</b> Crear el dashboard completo con Q&A — <b>lenguaje natural, sin arrastrar campos</b>.
+          <p>Q&A es una función <b>nativa</b> de Power BI (no necesita Copilot). Escribes una pregunta en inglés y PBI genera el visual automáticamente.</p>
+
+          <div class="limitation-card">
+            <b>💡 Importante:</b> Q&A funciona <b>mucho mejor en inglés</b>. Usa los nombres exactos de las columnas (Departamento, Gasto_Real_MXN, etc.) combinados con instrucciones en inglés.
+          </div>
+
+          <div style="background:#fff;border:1px solid #e0e0e0;border-radius:8px;padding:14px;margin:10px 0">
+            <p><b>Cómo abrir Q&A:</b></p>
+            <ol style="margin:0">
+              <li>Click en un espacio vacío del lienzo</li>
+              <li>Panel <b>Visualizaciones</b> (derecha) → click en ícono de <b>Q&A</b> (ícono con "??")</li>
+              <li>Aparece un cuadro de texto: <i>"Ask a question about your data"</i></li>
+              <li>Escribir la pregunta → PBI genera el visual → click en <b>"Turn this Q&A result into a standard visual"</b> para fijarlo</li>
+            </ol>
+          </div>
+
+          <p style="margin:16px 0 8px"><b>Visual 1 — Tarjeta KPI:</b></p>
+          <div class="prompt-example">📈 "total Gasto_Real_MXN as a card"</div>
+
+          <p style="margin:16px 0 8px"><b>Visual 2 — Gráfico de barras (Presupuesto vs Gasto por Departamento):</b></p>
+          <div class="prompt-example">📈 "Presupuesto_MXN and Gasto_Real_MXN by Departamento as a clustered bar chart"</div>
+
+          <p style="margin:16px 0 8px"><b>Visual 3 — Gráfico de líneas (tendencia mensual):</b></p>
+          <div class="prompt-example">📈 "total Gasto_Real_MXN by Mes as a line chart"</div>
+
+          <p style="margin:16px 0 8px"><b>Visual 4 — Tabla de detalle:</b></p>
+          <div class="prompt-example">📈 "show Departamento, Categoria_Gasto, sum of Gasto_Real_MXN, average of Variacion_Pct as a table"</div>
+
+          <p style="margin:16px 0 8px"><b>Visual 5 — Top departamentos con mayor desviación:</b></p>
+          <div class="prompt-example">📈 "top 3 Departamento by average Variacion_Pct as a bar chart"</div>
+
+          <div class="plan-b" style="margin-top:12px">
+            💡 <b>Tip:</b> Después de cada visual, click en <b>"Turn this Q&A result into a standard visual"</b> (ícono de pin 📌) para fijarlo al dashboard. Luego click en espacio vacío → agregar otro Q&A para el siguiente visual.
+          </div>
+
+          <p style="margin:16px 0 8px"><b>Visual 6 — Filtro por Mes (Slicer):</b></p>
+          <div style="background:#fff;border:1px solid #e0e0e0;border-radius:8px;padding:14px;margin:10px 0">
+            <ol style="margin:0">
+              <li>Click en espacio vacío → panel Visualizaciones → ícono de <b>Segmentación</b> (Slicer)</li>
+              <li>Arrastrar <b>Mes</b> al campo</li>
+              <li>Al hacer click en un mes, <b>TODOS</b> los demás visuales se filtran automáticamente</li>
+            </ol>
+          </div>
+          <p style="font-size:13px;color:var(--ey-gray)">💡 El Slicer es el único visual que requiere arrastrar un campo — todos los demás los creamos con Q&A.</p>
+        </div>
+
+        <!-- PASO 6: SMART NARRATIVE -->
+        <div class="activity">
+          <b>Paso 6:</b> Narrativa inteligente — resumen automático en texto.
+          <div style="background:#fff;border:1px solid #e0e0e0;border-radius:8px;padding:14px;margin:10px 0">
+            <ol style="margin:0">
+              <li>Click en espacio vacío → panel Visualizaciones → ícono de <b>Narración inteligente</b> (ícono con líneas de texto y ✨)</li>
+              <li>Power BI genera automáticamente un párrafo tipo: <i>"El gasto total fue de $X MXN. El departamento con mayor gasto fue Operaciones con $Y MXN..."</i></li>
+              <li>Este texto se <b>actualiza automáticamente</b> cuando filtras por Mes u otro slicer</li>
+            </ol>
+          </div>
+          <p style="font-size:13px;color:var(--ey-gray)">💡 La Narración inteligente NO necesita Copilot — es una función nativa de Power BI desde 2021.</p>
+        </div>
+
+        <!-- PASO 7: Q&A INTERACTIVO CON LA AUDIENCIA -->
+        <div class="activity">
+          <b>Paso 7:</b> Q&A interactivo — preguntas de la audiencia.
+          <div style="background:#fff;border:1px solid #e0e0e0;border-radius:8px;padding:14px;margin:10px 0">
+            <ol style="margin:0">
+              <li>Abrir un nuevo Q&A en el lienzo</li>
+              <li>Preguntar a la audiencia: <i>"¿Qué quieren saber de estos datos?"</i></li>
+              <li>Escribir las preguntas que pidan, en inglés — ejemplos:</li>
+            </ol>
+          </div>
+          <div class="prompt-example">📈 "which Departamento has the highest Gasto_Real_MXN"</div>
+          <div class="prompt-example">📈 "count of rows where Estatus is 'Rechazado'"</div>
+          <div class="prompt-example">📈 "Gasto_Real_MXN by Categoria_Gasto as a pie chart"</div>
+          <div class="prompt-example">📈 "average Variacion_Pct by Departamento where Variacion_Pct > 10"</div>
+          <div class="plan-b">🔄 <b>Plan B:</b> Si Q&A no entiende una pregunta, reformularla usando los nombres exactos de las columnas. Si persiste, crear el visual manualmente arrastrando campos.</div>
+        </div>
+
+        <!-- RESUMEN: EXCEL vs PBI -->
+        <div class="grid-2" style="margin-top:16px">
+          <div class="box" style="border-left:4px solid var(--ey-accent)">
+            <h3>🔗 Excel vs Power BI — ¿Cuándo usar cuál?</h3>
+            <ul>
+              <li><b>Excel:</b> Análisis detallado, fórmulas, limpieza, tablas dinámicas, trabajo fila por fila</li>
+              <li><b>Power BI Q&A:</b> Escribes preguntas en inglés → genera visuales automáticamente → dashboard ejecutivo</li>
+              <li><b>Copilot 365 chat:</b> Genera DAX (lógica compleja) y análisis que pegas en cualquier herramienta</li>
+              <li><b>Pipeline ideal:</b> Limpia en Excel → DAX con Copilot chat → Q&A + Smart Narrative en PBI → PPT</li>
+            </ul>
+          </div>
+          <div class="box" style="border-left:4px solid #f59e0b">
+            <h3>💡 Q&A nativo: tu "Copilot gratis" en Power BI</h3>
+            <ul>
+              <li>Q&A existe desde 2019 — <b>no necesita Copilot ni licencia especial</b></li>
+              <li><b>Funciona mucho mejor en inglés</b> — usa nombres exactos de columnas + instrucciones en inglés</li>
+              <li>Después de crear un visual con Q&A, click en "Turn into standard visual" para fijarlo</li>
+              <li>Combínalo con <b>Smart Narrative</b> (resumen textual automático) para un dashboard completo</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ═══════════ BLOQUE 3 ═══════════ -->
+    <div class="block-header">🏗️ Bloque 3 — Descubrimiento de problemas y formación de equipos (1 hora)</div>
+    <div class="block-body">
+
+      <section style="border:none;padding:20px 0">
+        <h2>👥 Paso 1 — Formación de equipos (15 min)</h2>
+        <div class="grid-2">
+          <div class="box">
+            <h3>Estructura del equipo</h3>
+            <ul>
+              <li><b>Product Owner (1-2):</b> Define el problema y valida valor de negocio</li>
+              <li><b>PM / Líder (1):</b> Coordina entregables y presentaciones</li>
+              <li><b>Analistas financieros (2-3):</b> Datos, prompts y entregables</li>
+            </ul>
+          </div>
+          <div class="box">
+            <h3>Instrucciones</h3>
+            <ol>
+              <li>Formen equipos de <b>4-6 personas</b></li>
+              <li>Asignen roles (PO, PM, analistas)</li>
+              <li>Elijan un nombre de equipo</li>
+              <li>Abran la <b>Ficha de Problema</b> (proporcionada por el instructor)</li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <section style="border:none;padding:20px 0">
+        <h2>🔍 Paso 2 — Taller de descubrimiento de problemas (30 min)</h2>
+        <p>Cada integrante comparte <b>1-2 problemas reales</b> de su día a día. El equipo elige uno para desarrollar como POC.</p>
+
+        <div class="activity">
+          <b>Ronda 1 (10 min) — Lluvia de problemas:</b>
+          <p>Cada persona responde en 2 minutos:</p>
+          <ul>
+            <li>"¿Qué tarea me consume <b>más tiempo</b> cada semana/mes?"</li>
+            <li>"¿Qué proceso <b>repito manualmente</b> que podría automatizarse?"</li>
+            <li>"¿Qué reporte o análisis me <b>piden frecuentemente</b> y es tedioso?"</li>
+          </ul>
+        </div>
+
+        <div class="activity">
+          <b>Ronda 2 (10 min) — Priorización:</b>
+          <p>Evalúen cada problema con estos criterios:</p>
+          <table>
+            <thead><tr><th>Criterio</th><th>Pregunta clave</th></tr></thead>
+            <tbody>
+              <tr><td><b>Impacto</b></td><td>¿Cuántas horas/personas se benefician?</td></tr>
+              <tr><td><b>Datos disponibles</b></td><td>¿Tenemos acceso a los datos necesarios?</td></tr>
+              <tr><td><b>Viabilidad con Copilot</b></td><td>¿Se puede resolver con Excel + Power BI + Word + PPT?</td></tr>
+              <tr><td><b>Demostrable</b></td><td>¿Podemos mostrar resultados en 2 sesiones más?</td></tr>
+            </tbody>
+          </table>
+          <p style="margin-top:10px">Voten: cada integrante pone ⭐ en su problema favorito. El más votado es el POC del equipo.</p>
+        </div>
+
+        <div class="activity">
+          <b>Ronda 3 (10 min) — Completar la Ficha de Problema:</b>
+          <p>Con el problema elegido, completen la <b>Ficha de Problema</b> (<code>ficha_problema.md</code>). Esta ficha será la base para generar <b>datasets personalizados</b> para la Sesión 2.</p>
+          <div class="limitation-card">
+            <b>📋 La Ficha de Problema incluye:</b>
+            <ol style="margin:8px 0 0">
+              <li>Datos del equipo y roles</li>
+              <li>Descripción del problema (qué, quién, frecuencia, tiempo invertido)</li>
+              <li>Los datos: qué columnas tiene, cuántas filas, si son confidenciales</li>
+              <li>El resultado esperado: qué output, para quién, en qué herramienta</li>
+              <li>Tipología del POC</li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <section style="border:none;padding:20px 0">
+        <h2>📢 Paso 3 — Pitch rápido (15 min)</h2>
+        <div class="activity">
+          Cada equipo presenta en <b>2 minutos</b>:
+          <ol>
+            <li>Nombre del equipo</li>
+            <li>El problema elegido (en una frase)</li>
+            <li>¿Por qué es importante? (impacto)</li>
+            <li>¿Qué herramienta principal usarían? (Excel, Power BI, Word, PPT)</li>
+          </ol>
+          <p style="margin-top:8px">Los demás equipos dan <b>1 sugerencia de mejora</b> por equipo.</p>
+        </div>
+      </section>
+
+      <section style="border:none;padding:20px 0">
+        <h2>💡 Ideas semilla — si no tienen un problema propio</h2>
+        <div class="grid-2">
+          <div class="box"><h3>📊 Automatización</h3><ul><li>Conciliación bancaria con reglas en Excel</li><li>Generación automática de reportes de cierre</li><li>Detección de duplicados en facturas</li></ul></div>
+          <div class="box"><h3>📈 Análisis de datos</h3><ul><li>Dashboard de variaciones presupuestales</li><li>Análisis de tendencias de gastos</li><li>Scoring de riesgo crediticio simplificado</li></ul></div>
+          <div class="box"><h3>📝 Texto / IA</h3><ul><li>Resumen automático de contratos</li><li>Clasificación de notas de auditoría</li><li>Extracción de cláusulas clave</li></ul></div>
+          <div class="box"><h3>📽️ Experiencia / Negocio</h3><ul><li>Presentación ejecutiva trimestral</li><li>Narrativa visual de KPIs para board</li><li>Onboarding interactivo</li></ul></div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ENTREGABLE -->
+    <section>
+      <h2>📦 Entregable de la Sesión 1</h2>
+      <div class="box" style="background:#f9fafb;border-left:4px solid var(--ey-yellow)">
+        <ol>
+          <li><b>Análisis de datos en Excel con Copilot:</b> al menos 4 prompts aplicados al dataset (resumen, tabla dinámica, fórmula, gráfico).</li>
+          <li><b>Demo Power BI:</b> observación del pipeline Excel → Power BI → Dashboard (apuntes de prompts y hallazgos).</li>
+          <li><b>Ficha de Problema completa:</b> problema real del equipo, datos involucrados, resultado esperado, tipología del POC.</li>
+        </ol>
+        <p style="margin-top:12px;padding:10px;background:#e8f5e9;border-radius:8px;font-size:14px">💡 <b>¿Para qué la Ficha de Problema?</b> Con ella, el instructor generará <b>datasets personalizados</b> basados en los problemas reales de cada equipo. En la Sesión 2 trabajarán con datos que se parecen a los suyos.</p>
+      </div>
+    </section>
+
+    <!-- PREPARACIÓN SESIÓN 2 -->
+    <section>
+      <h2>📋 Preparación para la Sesión 2</h2>
+      <div class="box">
+        <h3>Lo que haremos entre sesiones:</h3>
+        <ol>
+          <li><b>El instructor genera datasets personalizados</b> basados en las Fichas de Problema de cada equipo (misma estructura, datos simulados).</li>
+          <li>Cada equipo recibirá su dataset vía OneDrive/SharePoint antes de la Sesión 2.</li>
+        </ol>
+        <h3 style="margin-top:16px">Lo que ustedes deben preparar:</h3>
+        <ol>
+          <li>Refinar mentalmente su problema: ¿qué output convencería a su jefe?</li>
+          <li>Pensar en la <b>narrativa de valor</b>: ¿por qué importa resolver esto?</li>
+          <li>Practicar al menos 5 prompts más con Copilot en Excel o Power BI.</li>
+          <li>Si tienen datos reales (no confidenciales), traerlos en Excel para complementar.</li>
+        </ol>
+      </div>
+    </section>
+
+    <footer>
+      <a href="intro.html">← Volver al brochure</a> &nbsp;|&nbsp;
+      <a href="sesion2.html">Sesión 2 →</a> &nbsp;|&nbsp;
+      POC Thinking con Microsoft 365 Copilot — EY
+    </footer>
+
+  </main>
+
+  <!-- ============================================= -->
+  <!-- MINI-POC: BRIEFING EJECUTIVO EN 5 MINUTOS     -->
+  <!-- ============================================= -->
+  <div style="max-width:1000px;margin:40px auto 0;padding:0 24px">
+    <section style="background:linear-gradient(135deg,#0F62FE 0%,#4589FF 100%);border-radius:16px;padding:32px;color:#fff;margin-bottom:24px">
+      <h2 style="margin:0 0 8px;font-size:28px;color:#fff">🚀 Mini-POC: Briefing Ejecutivo en 5 Minutos</h2>
+      <p style="margin:0;opacity:.9;font-size:15px">El cierre perfecto — un pipeline donde cada paso alimenta al siguiente: datos enriquecidos → resumen ejecutivo → dashboard de riesgo → narrativa</p>
+      <p style="margin:8px 0 0;font-size:13px;opacity:.7">⏱️ Duración: 5 minutos · Se hace AL FINAL de la sesión, después de los pitches</p>
+      <p style="margin:8px 0 0;font-size:14px;opacity:1">📁 Archivo: <b>gastos_departamentales.xlsx</b> (el mismo del Bloque 2A)</p>
+    </section>
+
+    <section style="border:none;padding:0 0 20px">
+      <!-- Por qué este POC y no fórmulas simples -->
+      <div style="background:#fff3e0;border:1px solid #ffcc80;border-radius:10px;padding:14px 18px;margin:0 0 16px;font-size:13px">
+        <b>💡 ¿Por qué esto y no un simple IF en Excel?</b> Un financiero sabe hacer fórmulas en 30 seg. Este mini-POC hace cosas que <b>NO se hacen rápido manualmente</b>: clasificar tendencias cruzando 315 filas, calcular un score de riesgo con múltiples variables, y generar un resumen ejecutivo bien redactado. Eso es el valor real de la IA.
+      </div>
+
+      <div style="background:#fff;border:2px solid #0F62FE;border-radius:12px;overflow:hidden">
+        <!-- Header del pipeline -->
+        <div style="background:#e8f0fe;padding:16px 20px;border-bottom:1px solid #c8d6f0;text-align:center">
+          <div style="display:flex;justify-content:center;align-items:center;gap:12px;flex-wrap:wrap;font-weight:700;font-size:14px">
+            <span style="background:#217346;color:#fff;padding:6px 14px;border-radius:20px">📊 Excel Copilot</span>
+            <span style="color:#0F62FE;font-size:20px">→</span>
+            <span style="background:#0F62FE;color:#fff;padding:6px 14px;border-radius:20px">🤖 Copilot 365 Chat</span>
+            <span style="color:#0F62FE;font-size:20px">→</span>
+            <span style="background:#F2C811;color:#333;padding:6px 14px;border-radius:20px">📈 PBI Q&A</span>
+            <span style="color:#0F62FE;font-size:20px">→</span>
+            <span style="background:#F2C811;color:#333;padding:6px 14px;border-radius:20px">📈 Smart Narrative</span>
+          </div>
+        </div>
+
+        <!-- Paso 1 -->
+        <div style="padding:18px 20px;border-bottom:1px solid #f0f0f0">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+            <span style="background:#217346;color:#fff;font-weight:800;padding:4px 12px;border-radius:20px;font-size:13px">Paso 1</span>
+            <b>Enriquecer datos con tendencias y riesgo — Excel Copilot</b>
+          </div>
+          <div class="prompt-example" style="margin:0">📊 "Agrega dos columnas: 1) Tendencia — clasifica cada departamento como 'Creciente', 'Estable' o 'Decreciente' según el patrón de Gasto_Real_MXN en los últimos meses. 2) Riesgo_Acumulado — calcula para cada departamento el total acumulado de meses donde Variacion_Pct superó 10%, y clasifica: 4+ meses = 'Crítico', 2-3 = 'Medio', 0-1 = 'Bajo'."</div>
+          <div class="plan-b" style="margin-top:8px">🔄 <b>Plan B (inglés):</b> "Add two columns: 1) Tendencia — classify each department as 'Creciente', 'Estable' or 'Decreciente' based on the Gasto_Real_MXN pattern over the last months. 2) Riesgo_Acumulado — for each department count total months where Variacion_Pct exceeded 10%, classify: 4+ = 'Crítico', 2-3 = 'Medio', 0-1 = 'Bajo'."</div>
+          <p style="font-size:12px;color:#666;margin:8px 0 0">⚠️ Copilot genera un <b>nuevo archivo</b> con las columnas añadidas → descárgalo/ábrelo. <b>Este archivo enriquecido alimenta los pasos 2, 3 y 4.</b></p>
+          <p style="font-size:12px;color:#e65100;margin:4px 0 0"><b>¿Por qué la IA?</b> Tendencia requiere análisis cruzado fila por fila por departamento. Riesgo_Acumulado requiere contar meses excedidos por departamento y luego clasificar. Son lógicas que necesitan COUNTIFS anidados + IF — fácil equivocarse, lento de armar.</p>
+        </div>
+
+        <!-- Paso 2 -->
+        <div style="padding:18px 20px;border-bottom:1px solid #f0f0f0">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+            <span style="background:#0F62FE;color:#fff;font-weight:800;padding:4px 12px;border-radius:20px;font-size:13px">Paso 2</span>
+            <b>Resumen ejecutivo para el CFO — Copilot 365 Chat</b>
+          </div>
+          <p style="font-size:13px;color:#555;margin:0 0 8px">Abrir <b>copilot.microsoft.com</b> → adjuntar el <b>archivo nuevo del Paso 1</b> (con Tendencia y Riesgo_Acumulado) → escribir:</p>
+          <div class="prompt-example" style="margin:0">🤖 "Act as a financial controller. Analyze this budget execution data — pay special attention to the Tendencia and Riesgo_Acumulado columns. Write a 5-bullet executive summary for the CFO highlighting: top risks, departments requiring immediate attention, and 3 recommended actions. Be specific with numbers."</div>
+          <p style="font-size:12px;color:#e65100;margin:8px 0 0"><b>¿Por qué la IA?</b> Redactar un resumen ejecutivo profesional con hallazgos específicos, bien estructurado y con recomendaciones toma 30-60 min manualmente.</p>
+        </div>
+
+        <!-- Paso 3 -->
+        <div style="padding:18px 20px;border-bottom:1px solid #f0f0f0">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+            <span style="background:#F2C811;color:#333;font-weight:800;padding:4px 12px;border-radius:20px;font-size:13px">Paso 3</span>
+            <b>Dashboard de riesgo con datos enriquecidos — Power BI Q&A</b>
+          </div>
+          <p style="font-size:13px;color:#555;margin:0 0 8px">Cargar el <b>archivo nuevo del Paso 1</b> en Power BI → abrir Q&A:</p>
+          <div class="prompt-example" style="margin:0">📈 "sum of Gasto_Real_MXN by Departamento by Tendencia as a clustered bar chart"</div>
+          <p style="font-size:12px;color:#555;margin:8px 0 0">🎯 Segundo visual con la otra columna enriquecida:</p>
+          <div class="prompt-example" style="margin:0">📈 "sum of Gasto_Real_MXN by Departamento by Riesgo_Acumulado as a stacked bar chart"</div>
+          <p style="font-size:12px;color:#555;margin:8px 0 0">💡 El primer gráfico muestra <b>cuánto gastan</b> los departamentos según su tendencia. El segundo muestra <b>cómo se distribuye el gasto</b> por nivel de riesgo. Ambos usan columnas que NO existían hasta que Copilot las creó.</p>
+          <p style="font-size:12px;color:#e65100;margin:4px 0 0"><b>¿Por qué la IA?</b> Sin las columnas enriquecidas del Paso 1, estas visualizaciones serían imposibles. Copilot creó las dimensiones de análisis que PBI necesitaba.</p>
+        </div>
+
+        <!-- Paso 4 -->
+        <div style="padding:18px 20px">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+            <span style="background:#F2C811;color:#333;font-weight:800;padding:4px 12px;border-radius:20px;font-size:13px">Paso 4</span>
+            <b>Narrativa automática — Smart Narrative</b>
+          </div>
+          <p style="font-size:13px;color:#555;margin:0">Insertar visual de <b>Narración inteligente</b> → Power BI genera automáticamente un resumen analítico con los datos del dashboard.</p>
+          <p style="font-size:12px;color:#e65100;margin:8px 0 0"><b>¿Por qué la IA?</b> Traducir un dashboard en texto analítico coherente es trabajo de redacción que toma 15-20 min.</p>
+        </div>
+      </div>
+
+      <!-- Mensaje de cierre -->
+      <div style="background:#e8f5e9;border:2px solid #66bb6a;border-radius:12px;padding:20px;margin-top:16px;text-align:center">
+        <div style="font-size:24px;margin-bottom:8px">⏱️ → 🚀</div>
+        <p style="margin:0;font-size:16px;font-weight:700;color:#2e7d32">"Lo que acabamos de hacer — enriquecer datos con tendencias y riesgo, generar un resumen ejecutivo con esos datos, y crear un dashboard que usa columnas que NO existían — es un PIPELINE. Cada paso alimentó al siguiente. Eso tarda 2-3 horas manualmente."</p>
+        <p style="margin:8px 0 0;font-size:13px;color:#555">Datos crudos → archivo enriquecido → resumen ejecutivo → dashboard de riesgo → narrativa. Un pipeline completo, todo con IA.</p>
+      </div>
+
+      <!-- Qué acaban de demostrar -->
+      <div style="background:#f0f4ff;border:1px solid #c8d6f0;border-radius:12px;padding:18px;margin-top:16px">
+        <b>💡 ¿Qué acabamos de demostrar?</b>
+        <table style="margin-top:10px">
+          <thead><tr><th>Paso</th><th>Herramienta</th><th>Qué hizo la IA</th><th>Tiempo manual</th><th>Tiempo con IA</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>Excel Copilot</td><td>Clasificó tendencias y calculó riesgo acumulado → nuevo archivo enriquecido</td><td>~30 min</td><td>~30 seg</td></tr>
+            <tr><td>2</td><td>Copilot 365 Chat</td><td>Escribió resumen ejecutivo con riesgos y recomendaciones</td><td>~45 min</td><td>~30 seg</td></tr>
+            <tr><td>3</td><td>PBI Q&A</td><td>Creó dashboard usando Tendencia y Riesgo_Acumulado del Paso 1</td><td>~15 min</td><td>~20 seg</td></tr>
+            <tr><td>4</td><td>Smart Narrative</td><td>Generó narrativa analítica del dashboard</td><td>~20 min</td><td>~5 seg</td></tr>
+            <tr style="font-weight:700;background:#e8f5e9"><td colspan="3">TOTAL</td><td>~2 horas</td><td>~5 min</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+
+  <footer style="max-width:1000px;margin:0 auto;padding:28px 24px;text-align:center;color:#999">
+    <a href="intro.html">← Volver al brochure</a> &nbsp;|&nbsp;
+    <a href="sesion2.html">Sesión 2 →</a> &nbsp;|&nbsp;
+    POC Thinking con Microsoft 365 Copilot — EY
+  </footer>
+
+</body>
+</html>

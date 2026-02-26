@@ -1,0 +1,536 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=5,viewport-fit=cover" />
+  <meta name="theme-color" content="#0b1020" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <title>Reporte Ejecutivo — Viabilidad App de Reporte Ciudadano de Faltas Viales (Puebla)</title>
+  <style>
+    :root{
+      --bg:#0b1020;
+      --card:#111a33;
+      --muted:#9fb0d0;
+      --text:#e8eefc;
+      --accent:#7dd3fc;
+      --accent2:#a7f3d0;
+      --warn:#fbbf24;
+      --risk:#fb7185;
+      --ok:#34d399;
+      --line:rgba(255,255,255,.10);
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius:16px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:var(--sans);
+      background: radial-gradient(1200px 800px at 20% 10%, rgba(125,211,252,.12), transparent 60%),
+                  radial-gradient(900px 600px at 80% 20%, rgba(167,243,208,.10), transparent 55%),
+                  var(--bg);
+      color:var(--text);
+      line-height:1.45;
+    }
+    a{color:var(--accent); text-decoration:none}
+    .wrap{max-width:1100px; margin:0 auto; padding:16px 12px 40px}
+    @media (min-width: 600px){
+      .wrap{padding:32px 20px 60px}
+    }
+    header{
+      display:flex; gap:12px; align-items:flex-start; justify-content:space-between; flex-wrap:wrap;
+      padding:14px 14px;
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border:1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    @media (min-width: 600px){
+      header{padding:22px 22px; gap:18px}
+    }
+    .hgroup{min-width:0; width:100%}
+    @media (min-width: 700px){
+      .hgroup{min-width:280px; width:auto}
+    }
+    h1{margin:0 0 6px; font-size:17px; letter-spacing:.2px; line-height:1.3}
+    @media (min-width: 600px){
+      h1{font-size:20px}
+    }
+    .subtitle{margin:0; color:var(--muted); font-size:12px; line-height:1.4}
+    @media (min-width: 600px){
+      .subtitle{font-size:13px}
+    }
+    .meta{
+      display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-start;
+      color:var(--muted); font-size:11px;
+      width:100%;
+    }
+    @media (min-width: 700px){
+      .meta{justify-content:flex-end; width:auto; font-size:12px}
+    }
+    .pill{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      padding:5px 8px;
+      border-radius:999px;
+      display:inline-flex; gap:6px; align-items:center;
+      font-size:11px;
+    }
+    @media (min-width: 600px){
+      .pill{padding:6px 10px; gap:8px; font-size:12px}
+    }
+    .dot{width:7px; height:7px; border-radius:999px; background:var(--accent)}
+    @media (min-width: 600px){
+      .dot{width:8px; height:8px}
+    }
+    .grid{
+      margin-top:14px;
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:12px;
+    }
+    @media (min-width: 900px){
+      .grid{grid-template-columns: 1.2fr .8fr; gap:14px; margin-top:18px}
+    }
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border:1px solid var(--line);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      padding:14px 12px;
+    }
+    @media (min-width: 600px){
+      .card{padding:18px 18px; border-radius: var(--radius)}
+    }
+    h2{
+      margin:0 0 8px;
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      color: var(--accent);
+    }
+    @media (min-width: 600px){
+      h2{font-size:14px; margin:0 0 10px}
+    }
+    h3{
+      margin:12px 0 6px;
+      font-size:13px;
+      letter-spacing:.2px;
+    }
+    @media (min-width: 600px){
+      h3{margin:14px 0 8px; font-size:14px}
+    }
+    p{margin:0 0 10px; color:rgba(232,238,252,.92)}
+    .muted{color:var(--muted)}
+    .kpi{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:8px;
+      margin-top:10px;
+    }
+    @media (min-width: 480px){
+      .kpi{grid-template-columns: repeat(3, 1fr); gap:10px}
+    }
+    .kpi .box{
+      border:1px solid var(--line);
+      background: rgba(0,0,0,.12);
+      border-radius: 12px;
+      padding:10px 12px;
+      display:flex;
+      flex-direction:column;
+    }
+    @media (min-width: 600px){
+      .kpi .box{padding:12px 12px; border-radius:14px}
+    }
+    .kpi .label{font-size:10px; color:var(--muted); margin-bottom:4px}
+    @media (min-width: 600px){
+      .kpi .label{font-size:11px; margin-bottom:6px}
+    }
+    .kpi .value{font-size:14px; font-weight:700}
+    @media (min-width: 600px){
+      .kpi .value{font-size:16px}
+    }
+    .kpi .note{font-size:11px; color:var(--muted); margin-top:4px}
+    @media (min-width: 600px){
+      .kpi .note{font-size:12px; margin-top:6px}
+    }
+    .barwrap{margin-top:10px}
+    .barlabel{display:flex; justify-content:space-between; font-size:12px; color:var(--muted); margin:0 0 6px}
+    .bar{
+      width:100%;
+      height:12px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.05);
+      overflow:hidden;
+    }
+    .fill{
+      height:100%;
+      width:0%;
+      border-radius:999px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+    }
+    .fill.medhigh{width:78%}
+    .fill.med{width:62%}
+    .fill.low{width:35%}
+    .fill.high{width:90%}
+    .table-wrap{
+      overflow-x:auto;
+      -webkit-overflow-scrolling:touch;
+      margin:10px -12px 0 -12px;
+      padding:0 12px;
+    }
+    @media (min-width: 600px){
+      .table-wrap{margin:10px 0 0 0; padding:0}
+    }
+    table{
+      width:100%;
+      min-width:320px;
+      border-collapse:collapse;
+      overflow:hidden;
+      border-radius: 12px;
+    }
+    th, td{
+      border-bottom:1px solid var(--line);
+      padding:8px 8px;
+      font-size:12px;
+      vertical-align:top;
+    }
+    @media (min-width: 600px){
+      th, td{padding:10px 10px; font-size:13px}
+    }
+    th{
+      text-align:left;
+      color: var(--muted);
+      font-weight:600;
+      background: rgba(0,0,0,.12);
+    }
+    tr:last-child td{border-bottom:none}
+    .tag{
+      display:inline-block;
+      padding:4px 8px;
+      border-radius: 999px;
+      font-size:11px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      color: var(--muted);
+      margin-right:6px;
+      white-space:nowrap;
+    }
+    .tag.risk{color: rgba(255,255,255,.9); background: rgba(251,113,133,.14); border-color: rgba(251,113,133,.35)}
+    .tag.warn{color: rgba(255,255,255,.9); background: rgba(251,191,36,.14); border-color: rgba(251,191,36,.35)}
+    .tag.ok{color: rgba(255,255,255,.9); background: rgba(52,211,153,.14); border-color: rgba(52,211,153,.35)}
+    .callout{
+      border:1px dashed rgba(125,211,252,.35);
+      background: rgba(125,211,252,.08);
+      padding:10px 10px;
+      border-radius: 12px;
+      margin-top:10px;
+      color: rgba(232,238,252,.95);
+      font-size:12px;
+      line-height:1.5;
+    }
+    @media (min-width: 600px){
+      .callout{padding:12px 12px; border-radius:14px; font-size:13px}
+    }
+    .cols{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:10px;
+    }
+    @media (min-width: 600px){
+      .cols{grid-template-columns: 1fr 1fr; gap:12px}
+    }
+    ul{margin:6px 0 0 16px; color:rgba(232,238,252,.92); font-size:13px}
+    @media (min-width: 600px){
+      ul{margin:8px 0 0 18px; font-size:inherit}
+    }
+    li{margin:6px 0}
+    .flow{
+      margin-top:10px;
+      padding:10px;
+      border-radius: 12px;
+      border:1px solid var(--line);
+      background: rgba(0,0,0,.10);
+      font-family: var(--mono);
+      font-size:11px;
+      color: rgba(232,238,252,.9);
+      overflow-x:auto;
+      -webkit-overflow-scrolling:touch;
+      white-space:pre-wrap;
+      word-break:break-word;
+    }
+    @media (min-width: 600px){
+      .flow{padding:12px; border-radius:14px; font-size:12px}
+    }
+    footer{
+      margin-top:18px;
+      color: var(--muted);
+      font-size:12px;
+      text-align:center;
+    }
+    .small{font-size:12px}
+    .hr{height:1px; background: var(--line); margin:12px 0}
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div class="hgroup">
+        <h1>Reporte Ejecutivo — Viabilidad preliminar</h1>
+        <p class="subtitle">App de reporte ciudadano de faltas al reglamento de tránsito (Puebla) · Modelo: “Ciudadano reporta → Autoridad valida → Autoridad decide multa”</p>
+      </div>
+      <div class="meta">
+        <span class="pill"><span class="dot"></span><span><strong>Estado:</strong> Borrador ejecutivo</span></span>
+        <span class="pill"><span class="dot" style="background:var(--warn)"></span><span><strong>Riesgo dominante:</strong> Operación</span></span>
+        <span class="pill"><span class="dot" style="background:var(--accent2)"></span><span><strong>Enfoque:</strong> Viabilidad + riesgos</span></span>
+      </div>
+    </header>
+
+    <div class="grid">
+      <!-- LEFT: Narrative -->
+      <section class="card">
+        <h2>Objetivo</h2>
+        <p>Habilitar un canal estructurado para que ciudadanos envíen evidencia (foto/video) de posibles infracciones viales, de modo que <strong>la autoridad</strong> evalúe suficiencia probatoria y, en su caso, emita una sanción administrativa conforme al marco vigente.</p>
+
+        <div class="callout">
+          <strong>Definición operativa del modelo:</strong> la app <u>no multa</u>; solo captura y transmite evidencia con metadatos, y soporta el flujo administrativo de revisión, determinación y notificación.
+        </div>
+
+        <div class="hr"></div>
+
+        <h2>Antecedentes y referencia internacional</h2>
+        <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Jurisdicción</th>
+              <th>Modelo</th>
+              <th>Lecciones aplicables</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Reino Unido</td>
+              <td>Envío de evidencia (dashcam/portal) a policía</td>
+              <td>Revisión humana + declaración del denunciante; catálogo acotado; trazabilidad.</td>
+            </tr>
+            <tr>
+              <td>India (varias ciudades)</td>
+              <td>Apps de reporte ciudadano</td>
+              <td>Riesgo de saturación; calidad irregular de evidencia; necesidad de filtros previos.</td>
+            </tr>
+            <tr>
+              <td>Singapur</td>
+              <td>Reporte preventivo / enforcement focalizado</td>
+              <td>Marco legal claro + comunicación pública; alto cumplimiento social.</td>
+            </tr>
+            <tr>
+              <td>Nueva York (casos específicos)</td>
+              <td>Reporte con sanción tras revisión</td>
+              <td>Alta participación; controversia si no hay controles anti-abuso y criterios públicos.</td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+
+        <div class="hr"></div>
+
+        <h2>Pilares clave de viabilidad</h2>
+        <div class="cols">
+          <div>
+            <h3>Legal y regulatorio</h3>
+            <ul>
+              <li>Fundamento explícito para aceptar evidencia ciudadana como insumo sancionable.</li>
+              <li>Debido proceso: notificación, derecho de audiencia/impugnación.</li>
+              <li>Protección de datos personales (rostros, placas, ubicación).</li>
+              <li>Reglas frente a denuncias falsas o maliciosas.</li>
+            </ul>
+          </div>
+          <div>
+            <h3>Operación y gobernanza</h3>
+            <ul>
+              <li>Quién revisa, en qué plazo, y con qué estándar probatorio.</li>
+              <li>Capacidad diaria real de revisión (SLA) + escalamiento.</li>
+              <li>Auditoría y trazabilidad de decisiones (logs, roles, control interno).</li>
+              <li>Políticas públicas: catálogo de faltas reportables y criterios de descarte.</li>
+            </ul>
+          </div>
+          <div>
+            <h3>Técnico</h3>
+            <ul>
+              <li>Metadatos mínimos: timestamp, GPS, integridad (hash/firma).</li>
+              <li>Prevención básica de manipulación (subidas editadas, re-encodes).</li>
+              <li>Preclasificación IA como filtro (no como juez).</li>
+              <li>Interoperabilidad con sistemas de multas y padrón vehicular.</li>
+            </ul>
+          </div>
+          <div>
+            <h3>Ético, social y abuso</h3>
+            <ul>
+              <li>Riesgo de “vigilantismo” y conflictos vecinales trasladados a la app.</li>
+              <li>Sesgos de uso por zonas/perfiles; revisión humana como contención.</li>
+              <li>Identidad verificada para reducir abuso (sin castigar denuncias legítimas).</li>
+              <li>Comunicación pública: “la app no multa; la autoridad decide”.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="hr"></div>
+
+        <h2>Flujo propuesto</h2>
+        <div class="flow">
+          Ciudadano captura evidencia
+            → Validación automática (metadatos mínimos)
+            → Preclasificación IA (tipo de falta, calidad, placa visible)
+            → Moderación / revisión humana
+            → Determinación administrativa (multa / advertencia / descarte)
+            → Notificación + canal de impugnación
+        </div>
+      </section>
+
+      <!-- RIGHT: KPI / Summary -->
+      <aside class="card">
+        <h2>Resumen ejecutivo</h2>
+
+        <div class="kpi">
+          <div class="box">
+            <div class="label">Viabilidad preliminar</div>
+            <div class="value">MEDIA–ALTA</div>
+            <div class="note">Condicionada a operación + marco legal.</div>
+          </div>
+          <div class="box">
+            <div class="label">Riesgo dominante</div>
+            <div class="value">Operación</div>
+            <div class="note">Revisión humana / SLA / saturación.</div>
+          </div>
+          <div class="box">
+            <div class="label">Costo dominante</div>
+            <div class="value">OPEX</div>
+            <div class="note">Moderación + gestión administrativa.</div>
+          </div>
+        </div>
+
+        <div class="barwrap">
+          <div class="barlabel"><span>Indicador de viabilidad</span><span>≈ 78%</span></div>
+          <div class="bar"><div class="fill medhigh"></div></div>
+        </div>
+
+        <div class="hr"></div>
+
+        <h2>Matriz rápida</h2>
+        <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Pilar</th>
+              <th>Complejidad</th>
+              <th>Riesgo</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Legal</td>
+              <td><span class="tag warn">Media</span></td>
+              <td><span class="tag warn">Medio</span></td>
+            </tr>
+            <tr>
+              <td>Político / reputacional</td>
+              <td><span class="tag warn">Media</span></td>
+              <td><span class="tag warn">Medio</span></td>
+            </tr>
+            <tr>
+              <td>Técnico</td>
+              <td><span class="tag ok">Media</span></td>
+              <td><span class="tag ok">Bajo</span></td>
+            </tr>
+            <tr>
+              <td>Operación</td>
+              <td><span class="tag risk">Alta</span></td>
+              <td><span class="tag risk">Alto</span></td>
+            </tr>
+            <tr>
+              <td>Ético / social</td>
+              <td><span class="tag warn">Media</span></td>
+              <td><span class="tag warn">Medio</span></td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+
+        <div class="hr"></div>
+
+        <h2>Principales generadores de costo</h2>
+        <p class="muted small">Estimación cualitativa: qué componentes consumen la mayor parte del presupuesto.</p>
+
+        <div class="barwrap">
+          <div class="barlabel"><span>Moderación humana</span><span>Alta</span></div>
+          <div class="bar"><div class="fill high"></div></div>
+          <p class="muted small" style="margin-top:4px">Personal dedicado a revisar cada reporte, validar evidencia y tomar decisiones administrativas. Es el costo recurrente más significativo.</p>
+        </div>
+        <div class="barwrap">
+          <div class="barlabel"><span>Infraestructura cloud</span><span>Media</span></div>
+          <div class="bar"><div class="fill med"></div></div>
+          <p class="muted small" style="margin-top:4px">Servidores, procesamiento de datos, APIs de geolocalización y servicios de IA para preclasificación automática.</p>
+        </div>
+        <div class="barwrap">
+          <div class="barlabel"><span>Almacenamiento de video</span><span>Media</span></div>
+          <div class="bar"><div class="fill med"></div></div>
+          <p class="muted small" style="margin-top:4px">Espacio para guardar fotos y videos de evidencia. Crece con el volumen de reportes y los tiempos de retención legal.</p>
+        </div>
+        <div class="barwrap">
+          <div class="barlabel"><span>Desarrollo inicial</span><span>Baja–Media</span></div>
+          <div class="bar"><div class="fill low"></div></div>
+          <p class="muted small" style="margin-top:4px">Diseño, programación y pruebas de la aplicación móvil y panel administrativo. Es un costo único al inicio del proyecto.</p>
+        </div>
+
+        <div class="hr"></div>
+
+        <h2>Qué falta revisar ya</h2>
+        <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Área</th>
+              <th>Decisión / verificación necesaria</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Normativa</strong></td>
+              <td>Base legal para que evidencia ciudadana sustente sanción; estándar mínimo (placa visible, contexto, ubicación).</td>
+            </tr>
+            <tr>
+              <td><strong>Capacidad operativa</strong></td>
+              <td>Volumen esperado vs capacidad de revisión diaria; SLA; criterios de descarte automático.</td>
+            </tr>
+            <tr>
+              <td><strong>Privacidad</strong></td>
+              <td>Retención/borrado; tratamiento de rostros/terceros; control de acceso y auditoría.</td>
+            </tr>
+            <tr>
+              <td><strong>Interoperabilidad</strong></td>
+              <td>Integración con sistemas de multas y padrón; modelo de datos; rutas de notificación.</td>
+            </tr>
+            <tr>
+              <td><strong>Mitigación de abuso</strong></td>
+              <td>Verificación de identidad; límites por usuario; sanción por reportes maliciosos reiterados; transparencia de métricas.</td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+
+        <div class="callout">
+          <strong>Recomendación de implementación:</strong> iniciar con <u>piloto acotado</u> (zona + catálogo limitado de faltas objetivas) y medir tasa de evidencia útil, saturación y tiempos de resolución antes de escalar.
+        </div>
+      </aside>
+    </div>
+
+    <footer>
+      Documento ejecutivo (HTML) — listo para copiar/pegar en un portal interno o convertir a PDF.
+    </footer>
+  </div>
+</body>
+</html>

@@ -1,0 +1,944 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sesión 2 — HTMLs interactivos: presentar resultados sin PowerPoint</title>
+  <style>
+    :root{--ey-yellow:#FFCD00;--ey-dark:#242424;--ey-gray:#6B6B6B;--ey-light:#F7F7F7;--ey-accent:#0F62FE}
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--ey-dark);background:#fff;line-height:1.6}
+    a{color:var(--ey-accent);text-decoration:none}
+    a:hover{text-decoration:underline}
+    .wrap{max-width:1000px;margin:0 auto;padding:24px}
+    .hero-sm{background:linear-gradient(135deg,var(--ey-yellow) 0%,#ffe77a 60%,#fff3b0 100%);padding:40px 24px;display:flex;align-items:center;gap:24px}
+    .hero-sm img{width:100px}
+    .hero-sm h1{margin:0;font-size:clamp(22px,4vw,36px);font-weight:800}
+    .hero-sm p{margin:6px 0 0;color:#333}
+    .badge{display:inline-block;padding:4px 10px;border-radius:999px;background:#fff8d6;border:1px solid #ffe68a;font-size:12px;margin-right:6px}
+    section{padding:32px 0;border-bottom:1px solid #f0f0f0}
+    h2{font-size:24px;margin:0 0 10px}
+    h3{margin:16px 0 8px}
+    .grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+    .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+    .box{background:#fff;border:1px solid #eee;border-radius:12px;padding:18px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+    ul,ol{margin:8px 0 0 16px}
+    .activity{background:var(--ey-light);border-left:4px solid var(--ey-yellow);padding:14px 18px;border-radius:8px;margin:12px 0}
+    .prompt-example{background:#f0f4ff;border:1px solid #d0dcff;border-radius:10px;padding:16px;margin:10px 0;font-family:'Cascadia Code',Consolas,monospace;font-size:14px;line-height:1.5;white-space:pre-wrap}
+    .block-header{background:var(--ey-accent);color:#fff;padding:10px 18px;border-radius:10px 10px 0 0;font-weight:700;font-size:16px;margin-top:24px}
+    .block-body{border:1px solid #d0dcff;border-top:0;border-radius:0 0 10px 10px;padding:18px}
+    table{width:100%;border-collapse:collapse;margin-top:10px}
+    th,td{border:1px solid #eee;padding:10px;text-align:left;vertical-align:top}
+    th{background:#fffaf0}
+    .limitation-card{background:#fff8e1;border:1px solid #ffcc80;border-radius:10px;padding:16px;margin:12px 0}
+    .limitation-card b{color:#e65100}
+    .plan-b{background:#e8f5e9;border:1px solid #a5d6a7;border-radius:10px;padding:14px;margin:8px 0;font-size:13px}
+    .plan-b b{color:#2e7d32}
+    .check-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:12px}
+    .check-item{background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:12px;display:flex;align-items:flex-start;gap:8px}
+    .check-item input{margin-top:3px}
+    .code-block{background:#1e1e1e;color:#d4d4d4;border-radius:10px;padding:16px;margin:10px 0;font-family:'Cascadia Code',Consolas,monospace;font-size:13px;line-height:1.5;overflow-x:auto;white-space:pre-wrap}
+    .code-block .tag{color:#569cd6}
+    .code-block .attr{color:#9cdcfe}
+    .code-block .val{color:#ce9178}
+    .code-block .comment{color:#6a9955}
+    .vs-ppt{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:start;margin:16px 0}
+    .vs-ppt .vs{display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;color:var(--ey-accent);padding-top:40px}
+    footer{padding:28px 0;text-align:center;color:#999}
+    @media(max-width:800px){.grid-2,.grid-3{grid-template-columns:1fr}.hero-sm{flex-direction:column;align-items:flex-start}.check-grid{grid-template-columns:1fr}.vs-ppt{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+
+  <header class="hero-sm">
+    <img src="https://companieslogo.com/img/orig/ernst-and-young-6c5de5ba.svg?t=1720244494&download=true" alt="EY Logo">
+    <div>
+      <h1>Sesión 2 — HTMLs interactivos para presentar resultados</h1>
+      <p>POC Thinking con Microsoft 365 Copilot · Para PMs y profesionales financieros</p>
+      <span class="badge">Sesión 2 de 3</span>
+      <span class="badge">Duración: 3 horas</span>
+      <span class="badge">Herramientas: Copilot Chat + HTML + navegador</span>
+    </div>
+  </header>
+
+  <main class="wrap">
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- AGENDA -->
+    <!-- ═══════════════════════════════════════════ -->
+    <section>
+      <h2>📋 Agenda de la sesión</h2>
+      <table>
+        <thead><tr><th style="width:120px">Bloque</th><th>Contenido</th><th style="width:100px">Duración</th></tr></thead>
+        <tbody>
+          <tr><td><b>Bloque 1</b></td><td>Teoría: ¿Por qué HTML y no PPT? · Anatomía de una página HTML · Tipos de entregables HTML · Prompt engineering para generar HTML</td><td style="text-align:center"><b>50 min</b></td></tr>
+          <tr><td><b>Bloque 2</b></td><td>Lab práctico: Generar con Copilot Chat un reporte de resultados HTML + una presentación HTML tipo slides + un dashboard interactivo</td><td style="text-align:center"><b>70 min</b></td></tr>
+          <tr><td><b>Bloque 3</b></td><td>Trabajo en célula: cada equipo genera sus propios HTMLs con sus datos · Revisión cruzada · Mini-POC final</td><td style="text-align:center"><b>60 min</b></td></tr>
+        </tbody>
+      </table>
+
+      <h3 style="margin-top:20px">⏱️ Cronograma minuto a minuto</h3>
+      <table style="font-size:13px">
+        <thead><tr><th style="width:110px">Minuto</th><th>Actividad</th></tr></thead>
+        <tbody>
+          <tr><td>0:00 – 0:05</td><td>Bienvenida, recap de Sesión 1, objetivos de hoy</td></tr>
+          <tr><td>0:05 – 0:20</td><td>¿Por qué HTML? Ventajas sobre Word/PPT. Ejemplos en vivo.</td></tr>
+          <tr><td>0:20 – 0:35</td><td>Anatomía de un HTML: lo que necesitan entender (sin programar)</td></tr>
+          <tr><td>0:35 – 0:50</td><td>3 tipos de entregables HTML: Reporte · Presentación · Dashboard</td></tr>
+          <tr><td>0:50 – 0:55</td><td>Pausa + abrir Copilot Chat</td></tr>
+          <tr><td>0:55 – 1:20</td><td>Lab 1: Reporte de resultados HTML (25 min)</td></tr>
+          <tr><td>1:20 – 1:45</td><td>Lab 2: Presentación estilo slides en HTML (25 min)</td></tr>
+          <tr><td>1:45 – 2:05</td><td>Lab 3: Dashboard interactivo HTML (20 min)</td></tr>
+          <tr><td>2:05 – 2:10</td><td>Pausa + distribución de datasets personalizados</td></tr>
+          <tr><td>2:10 – 2:35</td><td>Trabajo en célula: HTMLs propios con datos del equipo</td></tr>
+          <tr><td>2:35 – 2:50</td><td>Revisión cruzada en navegador</td></tr>
+          <tr><td>2:50 – 3:00</td><td>Cierre, entregables y preview Sesión 3</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- CHECKLIST -->
+    <!-- ═══════════════════════════════════════════ -->
+    <section>
+      <h2>⚠️ Antes de empezar — Checklist de preparación</h2>
+      <p>Hoy NO necesitamos Word ni PowerPoint. Todo se hace con el <b>navegador</b> y <b>Copilot Chat</b>.</p>
+      <div class="check-grid">
+        <label class="check-item"><input type="checkbox"> <span><b>Navegador web abierto</b> — Chrome, Edge o Firefox. Serán su "lienzo" para ver los HTMLs.</span></label>
+        <label class="check-item"><input type="checkbox"> <span><b>Copilot 365 Chat</b> — Abrir <a href="https://copilot.microsoft.com" target="_blank">copilot.microsoft.com</a>. Es el "motor" que genera el HTML.</span></label>
+        <label class="check-item"><input type="checkbox"> <span><b>Editor de texto simple</b> — Bloc de notas (Notepad) es suficiente. Para pegar el HTML y guardarlo como .html</span></label>
+        <label class="check-item"><input type="checkbox"> <span><b>Archivo Excel de Sesión 1</b> — <code>gastos_departamentales.xlsx</code> o el dataset personalizado de su equipo.</span></label>
+        <label class="check-item"><input type="checkbox"> <span><b>Ficha de Problema</b> — Del equipo, para personalizar los HTMLs.</span></label>
+        <label class="check-item"><input type="checkbox"> <span><b>Carpeta de trabajo</b> — Crear una carpeta en su escritorio llamada <code>mi_poc_html</code> para guardar los archivos.</span></label>
+      </div>
+      <div class="limitation-card" style="margin-top:16px">
+        <b>💡 Lo más importante de hoy:</b> No necesitan <b>saber programar</b>. Copilot escribe TODO el HTML. Ustedes solo:
+        <ol style="margin:8px 0 0">
+          <li>Escriben un prompt describiendo lo que quieren ver</li>
+          <li>Copilot genera el código HTML completo</li>
+          <li>Copian el código → lo pegan en Notepad → lo guardan como <code>.html</code></li>
+          <li>Hacen doble-click en el archivo → se abre en el navegador ✨</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- RECAP SESIÓN 1 -->
+    <!-- ═══════════════════════════════════════════ -->
+    <section>
+      <h2>🔄 Recap de la Sesión 1</h2>
+      <div class="grid-2">
+        <div class="box" style="border-left:4px solid #22c55e">
+          <h3>✅ Lo que hicimos</h3>
+          <ol>
+            <li>Definimos qué es un POC y su tipología</li>
+            <li>Usamos Copilot en Excel: resúmenes, fórmulas, tablas dinámicas, gráficos</li>
+            <li>Creamos un dashboard en Power BI con Q&A</li>
+            <li>Identificamos un problema REAL por equipo</li>
+            <li>Mini-POC: Briefing Ejecutivo en 5 min</li>
+          </ol>
+        </div>
+        <div class="box" style="border-left:4px solid var(--ey-accent)">
+          <h3>🎯 Lo que haremos hoy</h3>
+          <ol>
+            <li>Generar <b>páginas HTML interactivas</b> con Copilot</li>
+            <li>Crear un <b>reporte de resultados</b> visual en HTML</li>
+            <li>Crear una <b>presentación estilo slides</b> en HTML</li>
+            <li>Crear un <b>mini-dashboard</b> interactivo</li>
+            <li>Todo <b>sin programar</b> — Copilot escribe el código</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- BLOQUE 1 — TEORÍA -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div class="block-header">🎓 Bloque 1 — Teoría: ¿Por qué HTML? (50 min)</div>
+    <div class="block-body">
+
+      <!-- ¿Por qué HTML y no PPT/Word? -->
+      <section style="border:none;padding:20px 0">
+        <h2>🚀 ¿Por qué HTML en vez de PowerPoint y Word?</h2>
+        <p>En la Sesión 1 usaron Excel y Power BI. Normalmente el siguiente paso sería Word (documento) y PowerPoint (presentación). Pero hay algo <b>mucho más potente</b>:</p>
+
+        <div class="vs-ppt">
+          <div class="box" style="border-left:4px solid #ef4444">
+            <h3>📽️ PowerPoint / Word</h3>
+            <ul>
+              <li>Estático — una vez exportado, no cambia</li>
+              <li>Requiere licencia de Office</li>
+              <li>Difícil de compartir sin adjuntos</li>
+              <li>Sin interactividad (no filtra, no calcula)</li>
+              <li>Diseño limitado al template</li>
+              <li>No funciona offline sin Office</li>
+              <li>Versionado difícil</li>
+            </ul>
+          </div>
+          <div class="vs">vs</div>
+          <div class="box" style="border-left:4px solid #22c55e">
+            <h3>🌐 HTML (lo que haremos hoy)</h3>
+            <ul>
+              <li><b>Interactivo</b> — filtros, colapsables, checkboxes</li>
+              <li><b>Gratis</b> — se abre en cualquier navegador</li>
+              <li><b>Un link</b> y todo el mundo lo ve (SharePoint, Teams, correo)</li>
+              <li><b>Responsivo</b> — se adapta a celular, tablet, pantalla grande</li>
+              <li><b>Diseño libre</b> — colores, grids, tarjetas, gráficos</li>
+              <li><b>Funciona offline</b> — un .html en tu USB y listo</li>
+              <li><b>Versionado con Git</b> — control total de cambios</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="limitation-card">
+          <b>💡 La clave:</b> Ustedes no van a "programar" HTML. Van a <b>pedirle a Copilot que lo genere</b>. Copilot es EXCELENTE generando HTML porque es uno de los lenguajes con más ejemplos en su entrenamiento. El resultado suele ser de calidad profesional <b>al primer intento</b>.
+        </div>
+
+        <!-- Prueba viviente -->
+        <div style="background:linear-gradient(135deg,#0F62FE 0%,#4589FF 100%);color:#fff;border-radius:12px;padding:24px;margin-top:16px">
+          <h3 style="margin:0 0 8px;color:#fff">🎯 Prueba viviente: ¿qué están viendo ahora mismo?</h3>
+          <p style="margin:0;opacity:.9">Esta página — <code>sesion2.html</code> — es un HTML. Lo mismo con <code>sesion1.html</code>, <code>intro.html</code> y el <code>prompts_cheatsheet.html</code>. Todo lo que han usado como material del curso es HTML. Sin PowerPoint. Sin Word. Abren el archivo y funciona.</p>
+        </div>
+      </section>
+
+      <!-- Anatomía de un HTML -->
+      <section style="border:none;padding:20px 0">
+        <h2>🧬 Anatomía de un HTML (lo que necesitan entender — sin programar)</h2>
+        <p>No van a escribir código. Pero entender <b>3 conceptos</b> les permite dar mejores instrucciones a Copilot:</p>
+
+        <div class="grid-3">
+          <div class="box" style="border-top:4px solid #569cd6">
+            <h3>1. Estructura (HTML)</h3>
+            <p>Las "piezas" de la página: títulos, párrafos, tablas, listas, tarjetas.</p>
+            <p style="font-size:13px;color:var(--ey-gray)">Piensen en HTML como los <b>ladrillos</b> de una casa.</p>
+            <div class="code-block" style="font-size:11px">&lt;h1&gt;Mi reporte&lt;/h1&gt;
+&lt;p&gt;Hallazgos del análisis...&lt;/p&gt;
+&lt;table&gt;...datos...&lt;/table&gt;</div>
+          </div>
+          <div class="box" style="border-top:4px solid #ce9178">
+            <h3>2. Estilo (CSS)</h3>
+            <p>Los colores, tamaños, espaciados, diseño visual.</p>
+            <p style="font-size:13px;color:var(--ey-gray)">CSS es la <b>pintura y decoración</b> de la casa.</p>
+            <div class="code-block" style="font-size:11px">body { font-family: Inter; }
+.card { background: #fff;
+        border-radius: 12px;
+        padding: 20px; }</div>
+          </div>
+          <div class="box" style="border-top:4px solid #dcdcaa">
+            <h3>3. Interactividad (JS)</h3>
+            <p>Lo que hace que la página <b>responda</b>: filtros, botones, cálculos.</p>
+            <p style="font-size:13px;color:var(--ey-gray)">JavaScript es la <b>electricidad</b> de la casa.</p>
+            <div class="code-block" style="font-size:11px">// Al hacer click, filtra datos
+btn.onclick = () =&gt; {
+  filtrar(datos, "Q1");
+}</div>
+          </div>
+        </div>
+
+        <div class="plan-b" style="margin-top:16px">
+          <b>🎯 Lo que ustedes hacen:</b> Describen en un prompt qué quieren ver → Copilot genera los 3 (HTML + CSS + JS) en un solo archivo → Copian → pegan en Notepad → guardan como <code>.html</code> → doble click → ¡listo!
+        </div>
+
+        <div class="activity" style="margin-top:16px">
+          <b>⚡ Demo en vivo — El flujo completo en 60 segundos:</b>
+          <ol>
+            <li>Abrir <b>copilot.microsoft.com</b></li>
+            <li>Escribir: <code>"Genera un HTML con una tarjeta que muestre: Total de gastos $4,500,000 MXN con fondo azul y texto blanco"</code></li>
+            <li>Copilot genera el código → click en <b>"Copiar"</b></li>
+            <li>Abrir <b>Notepad</b> → <b>Ctrl+V</b> → Guardar como <code>tarjeta.html</code> (cambiar tipo a "Todos los archivos")</li>
+            <li>Doble click en el archivo → se abre en el navegador ✨</li>
+          </ol>
+          <p style="margin-top:8px;font-size:13px;color:var(--ey-gray)">⏱️ Todo el proceso toma < 60 segundos. Y el resultado es profesional.</p>
+        </div>
+      </section>
+
+      <!-- 3 Tipos de entregables HTML -->
+      <section style="border:none;padding:20px 0">
+        <h2>📦 3 tipos de entregables HTML que van a crear hoy</h2>
+
+        <div class="grid-3">
+          <div class="box" style="border-left:4px solid #2B579A">
+            <h3>📄 Tipo 1: Reporte de resultados</h3>
+            <p>Reemplaza al <b>documento Word</b>. Una página que presenta hallazgos, métricas, riesgos y recomendaciones.</p>
+            <ul>
+              <li>Executive Summary</li>
+              <li>KPIs con tarjetas visuales</li>
+              <li>Tablas de datos</li>
+              <li>Secciones con headers</li>
+              <li>Semáforos de riesgo</li>
+            </ul>
+            <p style="font-size:12px;margin-top:8px;color:var(--ey-gray)">Ejemplo: <code>sesion1.html</code> que ya usaron</p>
+          </div>
+          <div class="box" style="border-left:4px solid #D24726">
+            <h3>📽️ Tipo 2: Presentación HTML</h3>
+            <p>Reemplaza a <b>PowerPoint</b>. Secciones tipo slides que se navegan con scroll o botones.</p>
+            <ul>
+              <li>Slides con fondo completo</li>
+              <li>Antes vs Después</li>
+              <li>Pipeline visuales</li>
+              <li>Timeline/cronograma</li>
+              <li>Call to Action</li>
+            </ul>
+            <p style="font-size:12px;margin-top:8px;color:var(--ey-gray)">Ejemplo: <code>intro.html</code> (brochure del curso)</p>
+          </div>
+          <div class="box" style="border-left:4px solid #217346">
+            <h3>📊 Tipo 3: Dashboard interactivo</h3>
+            <p>Reemplaza a <b>Power BI básico</b>. Página con filtros, gráficos y cálculos en vivo.</p>
+            <ul>
+              <li>KPIs con tarjetas</li>
+              <li>Tablas filtrables</li>
+              <li>Gráficos (barras, líneas)</li>
+              <li>Filtros por categoría</li>
+              <li>Cálculos en tiempo real</li>
+            </ul>
+            <p style="font-size:12px;margin-top:8px;color:var(--ey-gray)">Ejemplo: <code>calculadora_retenciones.html</code></p>
+          </div>
+        </div>
+
+        <div class="limitation-card" style="margin-top:16px">
+          <b>⚡ Ventaja clave:</b> Los 3 tipos se generan con el <b>mismo flujo</b>: prompt a Copilot → copiar código → guardar .html → abrir en navegador. La diferencia está en <b>cómo describes lo que quieres</b> en el prompt.
+        </div>
+      </section>
+
+      <!-- Prompt engineering para HTML -->
+      <section style="border:none;padding:20px 0">
+        <h2>🧠 Cómo pedir HTML a Copilot — Patrón de prompt</h2>
+        <p>Un buen prompt para HTML sigue este patrón de <b>6 componentes</b>:</p>
+
+        <div style="background:var(--ey-light);border:2px solid var(--ey-yellow);border-radius:12px;padding:20px;margin:16px 0">
+          <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-bottom:12px">
+            <span style="background:#0F62FE;color:#fff;padding:6px 12px;border-radius:20px;font-weight:700;font-size:12px">TIPO DE PÁGINA</span>
+            <span style="font-size:18px">+</span>
+            <span style="background:#217346;color:#fff;padding:6px 12px;border-radius:20px;font-weight:700;font-size:12px">CONTENIDO</span>
+            <span style="font-size:18px">+</span>
+            <span style="background:#D24726;color:#fff;padding:6px 12px;border-radius:20px;font-weight:700;font-size:12px">DATOS</span>
+            <span style="font-size:18px">+</span>
+            <span style="background:#6264A7;color:#fff;padding:6px 12px;border-radius:20px;font-weight:700;font-size:12px">ESTILO VISUAL</span>
+            <span style="font-size:18px">+</span>
+            <span style="background:#B8960C;color:#fff;padding:6px 12px;border-radius:20px;font-weight:700;font-size:12px">INTERACTIVIDAD</span>
+            <span style="font-size:18px">+</span>
+            <span style="background:#c62828;color:#fff;padding:6px 12px;border-radius:20px;font-weight:700;font-size:12px">RESTRICCIONES</span>
+          </div>
+          <div class="prompt-example" style="background:#fff;border-color:#e0e0e0"><b>[TIPO]</b> "Genera un HTML de una sola página tipo reporte ejecutivo"
+<b>[CONTENIDO]</b> "que muestre: Executive Summary, 4 KPIs en tarjetas, tabla de riesgos con semáforo, y recomendaciones"
+<b>[DATOS]</b> "Los KPIs son: Gasto Total $4.5M, Presupuesto $4.1M, Variación +9.7%, Departamentos en riesgo: 3"
+<b>[ESTILO]</b> "Estilo profesional corporativo, colores azul oscuro y amarillo (#FFCD00), fuente Inter, tarjetas con sombra"
+<b>[INTERACTIVIDAD]</b> "Agrega checkboxes en las recomendaciones, y que la tabla de riesgos sea ordenable por columna"
+<b>[RESTRICCIONES]</b> "Todo en un solo archivo HTML. Sin dependencias externas. Responsivo para móvil."</div>
+        </div>
+
+        <div class="grid-2" style="margin-top:16px">
+          <div class="box" style="border-left:4px solid #22c55e">
+            <h3>✅ Tips para mejores prompts HTML</h3>
+            <ul>
+              <li><b>Sé específico con los datos:</b> da los números, no digas "datos de ejemplo"</li>
+              <li><b>Describe el layout:</b> "4 tarjetas en fila", "dos columnas", "tabla abajo"</li>
+              <li><b>Pide colores concretos:</b> "#FFCD00", "azul corporativo", "semáforo rojo/amarillo/verde"</li>
+              <li><b>Siempre pide "Todo en UN solo archivo HTML"</b> — sin archivos CSS separados</li>
+              <li><b>Pide responsive:</b> "Que funcione en móvil y desktop"</li>
+              <li><b>Itera:</b> "Ahora cambia el fondo a oscuro" o "Agrega una sección de timeline"</li>
+            </ul>
+          </div>
+          <div class="box" style="border-left:4px solid #ef4444">
+            <h3>❌ Errores comunes</h3>
+            <ul>
+              <li>"Hazme un HTML" (sin decir qué contenido)</li>
+              <li>No especificar los datos (Copilot inventa)</li>
+              <li>Pedir dependencias externas (jQuery, React) — complicación innecesaria</li>
+              <li>No pedir "en un solo archivo"</li>
+              <li>No describir el estilo visual</li>
+              <li>Guardar como .txt en vez de .html</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Cómo guardar y abrir -->
+      <section style="border:none;padding:20px 0">
+        <h2>💾 Flujo: de Copilot al navegador (paso a paso visual)</h2>
+        <div style="display:flex;justify-content:center;align-items:center;gap:8px;flex-wrap:wrap;margin:16px 0;font-weight:700;font-size:14px">
+          <span style="background:#0F62FE;color:#fff;padding:12px 16px;border-radius:12px;text-align:center">🤖 Copilot Chat<br><span style="font-size:11px;font-weight:400">Escribir prompt</span></span>
+          <span style="color:var(--ey-accent);font-size:28px">→</span>
+          <span style="background:#333;color:#fff;padding:12px 16px;border-radius:12px;text-align:center">📋 Copiar código<br><span style="font-size:11px;font-weight:400">Click "Copy"</span></span>
+          <span style="color:var(--ey-accent);font-size:28px">→</span>
+          <span style="background:#217346;color:#fff;padding:12px 16px;border-radius:12px;text-align:center">📝 Notepad<br><span style="font-size:11px;font-weight:400">Ctrl+V → Guardar</span></span>
+          <span style="color:var(--ey-accent);font-size:28px">→</span>
+          <span style="background:var(--ey-yellow);color:#333;padding:12px 16px;border-radius:12px;text-align:center">🌐 Navegador<br><span style="font-size:11px;font-weight:400">Doble click .html</span></span>
+        </div>
+
+        <div class="activity">
+          <b>⚠️ El paso que más falla: guardar como .html</b>
+          <p>En Notepad al guardar, por defecto guarda como <code>.txt</code>. Para guardar como HTML:</p>
+          <ol>
+            <li>Archivo → <b>Guardar como</b></li>
+            <li>En "Tipo" cambiar de "Documentos de texto" a <b>"Todos los archivos (*.*)"</b></li>
+            <li>En el nombre escribir: <code>mi_reporte.html</code> (con la extensión .html)</li>
+            <li>En Codificación elegir <b>UTF-8</b></li>
+            <li>Click en Guardar</li>
+          </ol>
+          <div class="plan-b">💡 <b>Alternativa más fácil:</b> Usar VS Code (si lo tienen instalado). Archivo nuevo → pegar → Ctrl+S → nombrar como <code>.html</code> y listo. VS Code incluso muestra el HTML con colores.</div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- BLOQUE 2 — LAB PRÁCTICO -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div class="block-header">🔬 Bloque 2 — Lab práctico: 3 HTMLs con Copilot (70 min)</div>
+    <div class="block-body">
+
+      <div class="limitation-card">
+        <b>⚠️ Antes de empezar:</b>
+        <ol style="margin:8px 0 0">
+          <li>Abrir <a href="https://copilot.microsoft.com" target="_blank"><b>copilot.microsoft.com</b></a> en una pestaña</li>
+          <li>Abrir <b>Notepad</b> (Bloc de notas) — búscalo en menú Windows</li>
+          <li>Crear carpeta <code>mi_poc_html</code> en el Escritorio</li>
+          <li>Tener a la mano el archivo <code>gastos_departamentales.xlsx</code></li>
+        </ol>
+      </div>
+
+      <!-- ══ LAB 1: REPORTE ══ -->
+      <section style="border:none;padding:20px 0">
+        <h2>📄 Lab 1 — Reporte de resultados (reemplaza Word) — 25 min</h2>
+        <p>Vamos a generar un HTML que sea el <b>documento formal de su POC</b> — con KPIs, tablas, riesgos y executive summary. Es lo que enviarían a un directivo.</p>
+
+        <div class="activity">
+          <b>Paso 1 — Adjuntar el Excel y pedir el reporte (5 min)</b>
+          <p>En Copilot Chat, adjuntar <code>gastos_departamentales.xlsx</code> (click en 📎) y escribir:</p>
+          <div class="prompt-example">🤖 "Analiza este archivo Excel de gastos departamentales.
+
+Genera un HTML COMPLETO de una sola página tipo reporte ejecutivo con:
+
+1. HEADER con logo de EY (usa la URL: https://companieslogo.com/img/orig/ernst-and-young-6c5de5ba.svg), título 'Reporte de Ejecución Presupuestal 2025' y fecha de hoy
+
+2. EXECUTIVE SUMMARY — 5 bullets con los hallazgos más importantes (usa números reales del archivo)
+
+3. 4 TARJETAS KPI en fila: 
+   - Gasto Total (suma de Gasto_Real_MXN)
+   - Presupuesto Total (suma de Presupuesto_MXN)
+   - Variación Promedio (promedio de Variacion_Pct, con color rojo si > 10%)
+   - Registros con variación > 20% (conteo)
+
+4. TABLA de gastos por departamento: Departamento, Total Presupuesto, Total Gasto Real, Variación %, con semáforo (🟢 < 10%, 🟡 10-20%, 🔴 > 20%)
+
+5. TABLA DE RIESGOS con 5 riesgos: Riesgo, Probabilidad, Impacto, Mitigación
+
+6. SECCIÓN DE RECOMENDACIONES con 4 recomendaciones específicas basadas en los datos, con checkboxes interactivos
+
+Estilo: profesional corporativo. Colores: fondo blanco, acentos en azul (#0F62FE) y amarillo (#FFCD00). Fuente: Inter o system-ui. Tarjetas con sombra y bordes redondeados. Responsivo.
+
+TODO en un solo archivo HTML, sin dependencias externas. Incluye CSS y JavaScript inline."</div>
+        </div>
+
+        <div class="activity">
+          <b>Paso 2 — Copiar, guardar y abrir (3 min)</b>
+          <ol>
+            <li>Copilot genera el código HTML completo</li>
+            <li>Click en <b>"Copiar"</b> (o seleccionar todo el código)</li>
+            <li>Abrir <b>Notepad</b> → <b>Ctrl+V</b></li>
+            <li>Guardar como: <code>reporte_presupuestal.html</code> (Tipo: Todos los archivos, Codificación: UTF-8)</li>
+            <li><b>Doble click</b> en el archivo → se abre en el navegador</li>
+          </ol>
+        </div>
+
+        <div class="activity">
+          <b>Paso 3 — Iterar y mejorar (7 min)</b>
+          <p>Vuelve a Copilot Chat y pide mejoras. No empieces de cero — <b>itera</b>:</p>
+          <div class="prompt-example">🤖 "Modifica el HTML anterior:
+- Agrega una sección de 'Cronograma del POC' con 3 fases en un timeline visual horizontal
+- En la tabla de departamentos, agrega una columna de 'Tendencia' con flechas ↑ ↗ → ↘ ↓
+- Haz que las tarjetas KPI cambien de color si la variación supera el 10%
+- Agrega un footer con 'POC Thinking — EY · Confidencial'"</div>
+          <div class="plan-b">🔄 <b>Plan B (si Copilot da solo el fragmento modificado):</b> Pide: "Dame el HTML COMPLETO con todas las modificaciones, no solo el fragmento."</div>
+        </div>
+
+        <div class="activity">
+          <b>Paso 4 — Personalizar con datos de tu equipo (10 min)</b>
+          <p>Adjunta el <b>dataset personalizado</b> de tu equipo (o describe tu problema) y pide:</p>
+          <div class="prompt-example">🤖 "Adapta este reporte HTML para nuestro POC:
+- Título: 'Reporte del POC: [NOMBRE DE TU POC]'
+- El problema es: [DESCRIPCIÓN DE TU FICHA DE PROBLEMA]
+- Cambia los KPIs a los que son relevantes para nuestro caso: [LISTA TUS KPIS]
+- En los riesgos, incluye: [TUS RIESGOS ESPECÍFICOS]
+- Mantén el mismo estilo visual
+
+Dame el HTML completo."</div>
+        </div>
+      </section>
+
+      <!-- ══ LAB 2: PRESENTACIÓN ══ -->
+      <section style="border:none;padding:20px 0">
+        <h2>📽️ Lab 2 — Presentación tipo slides (reemplaza PPT) — 25 min</h2>
+        <p>Ahora vamos a generar una <b>presentación HTML</b> — secciones a pantalla completa que funcionan como slides. Se navegan con scroll o con botones.</p>
+
+        <div class="activity">
+          <b>Paso 1 — Generar la presentación base (5 min)</b>
+          <p>En Copilot Chat (puedes seguir en la misma conversación):</p>
+          <div class="prompt-example">🤖 "Genera un HTML de presentación estilo slides para un POC ejecutivo.
+
+Cada 'slide' es una sección a pantalla completa (100vh) con navegación por scroll suave.
+
+SLIDES:
+1. PORTADA — fondo degradado azul oscuro (#0F62FE → #4589FF), título grande 'POC: Automatización del Control Presupuestal', subtítulo 'Equipo [NOMBRE]', logo EY (url: https://companieslogo.com/img/orig/ernst-and-young-6c5de5ba.svg)
+
+2. EL PROBLEMA — fondo blanco, dos columnas: izquierda con íconos y bullets del problema, derecha con un número grande '6 días-persona/mes' en rojo
+
+3. LA SOLUCIÓN — diagrama de flujo visual: Datos Excel → Copilot procesa → Reporte automático → Revisión humana → Aprobación. Usar cajas con flechas.
+
+4. ANTES vs DESPUÉS — dos columnas lado a lado:
+   ANTES: 6 días, 3 revisiones, 2 personas dedicadas, errores frecuentes
+   DESPUÉS: 4 horas, 1 revisión, cualquier analista, 0 errores
+   Con un badge grande: '92% menos tiempo'
+
+5. MÉTRICAS DE ÉXITO — 4 tarjetas grandes en grid: Tiempo (de 6 días a 4 hrs), Errores (de 15% a < 1%), Costo (ahorro de $X/mes), Satisfacción del equipo
+
+6. RIESGOS — 3 tarjetas con semáforo: Riesgo técnico (🟡), Riesgo de datos (🟡), Resistencia al cambio (🔴). Cada una con mitigación.
+
+7. TIMELINE — línea horizontal visual: Sesión 1 ✅ (datos + análisis) → Sesión 2 🔄 (documentación + HTML) → Sesión 3 ⏳ (demo final + pitch)
+
+8. CALL TO ACTION — fondo amarillo (#FFCD00), texto grande '¿Aprobamos este POC?', botones visuales 'Sí, avancemos' y 'Necesito más información'
+
+Estilo: moderno, limpio, profesional. Fuente Inter. Animaciones sutiles al hacer scroll. Responsive.
+
+Agrega una barra de navegación fija arriba con puntos o números para saltar entre slides. 
+
+TODO en un solo archivo HTML."</div>
+        </div>
+
+        <div class="activity">
+          <b>Paso 2 — Guardar y ver (2 min)</b>
+          <p>Mismo flujo: Copiar → Notepad → Guardar como <code>presentacion_poc.html</code> → Doble click</p>
+        </div>
+
+        <div class="activity">
+          <b>Paso 3 — Mejorar slides específicos (8 min)</b>
+          <div class="grid-2" style="margin-top:8px">
+            <div class="prompt-example" style="font-size:12px">🤖 "En el slide de 'Antes vs Después', agrega una animación donde al hacer click se revele el lado 'Después' con un efecto de deslizamiento."</div>
+            <div class="prompt-example" style="font-size:12px">🤖 "En el slide de Timeline, agrega debajo de cada fase los entregables específicos: Sesión 1 = Análisis Excel + Dashboard PBI, Sesión 2 = Reporte HTML + Presentación HTML, Sesión 3 = Demo en vivo + Pitch."</div>
+            <div class="prompt-example" style="font-size:12px">🤖 "Agrega un slide después de 'El Problema' con una cita textual del usuario: '—Cada mes paso 3 días enteros conciliando manualmente. Es frustrante.' — Ana López, Analista de Tesorería. Estilo: fondo gris claro, cita grande en itálica."</div>
+            <div class="prompt-example" style="font-size:12px">🤖 "Cambia la paleta de colores de toda la presentación a tonos oscuros (dark mode): fondo #0b0f14, texto blanco, acentos amarillo #FFCD00 y verde #22c55e."</div>
+          </div>
+        </div>
+
+        <div class="activity">
+          <b>Paso 4 — Personalizar para tu equipo (10 min)</b>
+          <div class="prompt-example">🤖 "Adapta esta presentación HTML para nuestro POC:
+- Nombre del POC: [TU NOMBRE]
+- El problema: [DESCRIPCIÓN EN 2-3 LÍNEAS]
+- Datos del análisis de Excel: [PEGA TUS HALLAZGOS CLAVE]
+- Equipo: [NOMBRES Y ROLES]
+- Métricas esperadas: [TUS MÉTRICAS]
+- Riesgos: [TUS RIESGOS]
+
+Dame el HTML completo actualizado."</div>
+        </div>
+      </section>
+
+      <!-- ══ LAB 3: DASHBOARD ══ -->
+      <section style="border:none;padding:20px 0">
+        <h2>📊 Lab 3 — Dashboard interactivo (nivel avanzado) — 20 min</h2>
+        <p>El más impresionante: un <b>mini-dashboard con datos reales, filtros y gráficos</b> que funciona 100% offline en el navegador.</p>
+
+        <div class="activity">
+          <b>Paso 1 — Generar el dashboard con datos del Excel (8 min)</b>
+          <p>Adjunta <code>gastos_departamentales.xlsx</code> a Copilot Chat:</p>
+          <div class="prompt-example">🤖 "Analiza este archivo Excel. Extrae los datos y genera un HTML tipo dashboard ejecutivo con los datos reales embebidos en JavaScript.
+
+El dashboard debe tener:
+
+1. HEADER con título 'Dashboard de Control Presupuestal 2025' y filtro dropdown para seleccionar Departamento (opción 'Todos' + cada departamento del archivo)
+
+2. FILA DE KPIs (4 tarjetas): Gasto Total, Presupuesto Total, Variación Promedio, Total Registros. Los valores deben ACTUALIZARSE cuando se filtra por departamento.
+
+3. TABLA de datos con columnas: Departamento, Categoría, Mes, Presupuesto, Gasto Real, Variación %. La tabla debe:
+   - Filtrarse cuando se selecciona un departamento
+   - Tener filas coloreadas: verde si variación < 10%, amarillo 10-20%, rojo > 20%
+   - Ser ordenable por click en el header de columna
+
+4. GRÁFICO de barras horizontales mostrando Gasto Real por Departamento (usar divs con CSS como barras, no necesita librería externa). Las barras deben tener el valor numérico a la derecha.
+
+Incluye los datos REALES del archivo directamente en un array de JavaScript dentro del HTML.
+
+Estilo: profesional, colores azul (#0F62FE), amarillo (#FFCD00), fondo blanco. Cards con sombra. Fuente Inter.
+
+TODO en un solo archivo HTML, sin dependencias externas. Responsive."</div>
+        </div>
+
+        <div class="activity">
+          <b>Paso 2 — Guardar y probar interactividad (3 min)</b>
+          <p>Guardar como <code>dashboard_presupuestal.html</code>. Abrir y probar:</p>
+          <ul>
+            <li>¿El filtro de departamento funciona?</li>
+            <li>¿Los KPIs cambian al filtrar?</li>
+            <li>¿La tabla se colorea por semáforo?</li>
+            <li>¿Las barras del gráfico se ven correctas?</li>
+          </ul>
+        </div>
+
+        <div class="activity">
+          <b>Paso 3 — Agregar más interactividad (9 min)</b>
+          <div class="prompt-example">🤖 "Mejora el dashboard:
+1. Agrega un segundo filtro por Mes (dropdown)
+2. Agrega una barra de búsqueda que filtre la tabla en tiempo real
+3. En los KPIs, muestra una flecha ↑ o ↓ y el porcentaje de cambio respecto al mes anterior
+4. Agrega un resumen en texto debajo de los KPIs: 'Se encontraron X registros con variación > 20% en [Departamento seleccionado]'
+5. Agrega un botón 'Exportar tabla' que copie al portapapeles los datos filtrados
+
+Dame el HTML completo."</div>
+        </div>
+
+        <div class="limitation-card" style="margin-top:12px">
+          <b>⚠️ Nota sobre datos reales:</b> Copilot embebe los datos directamente en el HTML como un array de JavaScript. Esto funciona perfecto para datasets < 1000 filas. Para datos confidenciales: pide a Copilot que genere <b>datos sintéticos que se parezcan a los tuyos</b> en vez de usar los reales.
+        </div>
+      </section>
+
+      <!-- Resumen del Bloque 2 -->
+      <section style="border:none;padding:20px 0">
+        <h2>📦 Lo que ya tienen: 3 archivos HTML</h2>
+        <div class="grid-3">
+          <div class="box" style="text-align:center;border-top:4px solid #2B579A">
+            <div style="font-size:36px">📄</div>
+            <h3><code>reporte_presupuestal.html</code></h3>
+            <p>Reporte formal con KPIs, tablas de riesgos y recomendaciones</p>
+            <span style="font-size:12px;color:var(--ey-gray)">Reemplaza → documento Word</span>
+          </div>
+          <div class="box" style="text-align:center;border-top:4px solid #D24726">
+            <div style="font-size:36px">📽️</div>
+            <h3><code>presentacion_poc.html</code></h3>
+            <p>Presentación tipo slides con scroll y navegación</p>
+            <span style="font-size:12px;color:var(--ey-gray)">Reemplaza → PowerPoint</span>
+          </div>
+          <div class="box" style="text-align:center;border-top:4px solid #217346">
+            <div style="font-size:36px">📊</div>
+            <h3><code>dashboard_presupuestal.html</code></h3>
+            <p>Dashboard con filtros, semáforos y gráficos interactivos</p>
+            <span style="font-size:12px;color:var(--ey-gray)">Complementa → Power BI</span>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- BLOQUE 3 — TRABAJO EN CÉLULA -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div class="block-header">🏗️ Bloque 3 — Trabajo en célula + Mini-POC (60 min)</div>
+    <div class="block-body">
+
+      <section style="border:none;padding:20px 0">
+        <h2>⚙️ Ejercicio final — HTMLs personalizados para tu POC</h2>
+        <p>Cada célula usa su <b>dataset personalizado</b> y su <b>Ficha de Problema</b> para generar sus propios HTMLs.</p>
+
+        <div class="activity">
+          <b>Parte A (25 min) — Generar al menos 2 HTMLs:</b>
+          <ol>
+            <li><b>Reporte de Estructura del POC</b> (HTML tipo reporte) — con KPIs de su caso, riesgos reales, métricas propias</li>
+            <li><b>Presentación del POC</b> (HTML tipo slides) — para el pitch de la Sesión 3</li>
+            <li><b>Bonus:</b> Dashboard interactivo con datos de su equipo</li>
+          </ol>
+          <div class="limitation-card">
+            <b>💡 Tip:</b> Adjunten su dataset personalizado a Copilot Chat para que use datos REALES en las tablas, KPIs y gráficos. Entre más datos le den, mejor queda el resultado.
+          </div>
+        </div>
+
+        <div class="activity">
+          <b>Parte B (15 min) — Revisión cruzada en navegador:</b>
+          <p>Cada equipo <b>comparte su archivo .html</b> (por Teams/email/USB) con el equipo de al lado. Los revisores abren el HTML en su navegador y dan feedback:</p>
+          <table style="font-size:13px">
+            <thead><tr><th>Criterio</th><th>Pregunta</th></tr></thead>
+            <tbody>
+              <tr><td><b>Claridad</b></td><td>¿Se entiende el problema y la solución en 30 segundos?</td></tr>
+              <tr><td><b>Datos reales</b></td><td>¿Tiene números concretos o es genérico?</td></tr>
+              <tr><td><b>Impacto visual</b></td><td>¿Impresionaría a un directivo? ¿Es profesional?</td></tr>
+              <tr><td><b>Interactividad</b></td><td>¿Los filtros/checkboxes/semáforos funcionan?</td></tr>
+              <tr><td><b>Call to Action</b></td><td>¿Queda claro qué debe hacer el stakeholder?</td></tr>
+            </tbody>
+          </table>
+          <p style="margin-top:10px;font-size:13px">Cada equipo revisor da <b>1 fortaleza</b> + <b>1 mejora concreta</b> (ej: "falta el dato de ahorro en pesos" o "el gráfico no filtra correcto").</p>
+        </div>
+      </section>
+
+      <!-- MINI-POC -->
+      <section style="border:none;padding:20px 0">
+        <h2 style="margin-bottom:0">🚀 Mini-POC: Del CSV al Executive Website en 5 minutos</h2>
+        <p>Pipeline completo que demuestra el poder de HTML + Copilot:</p>
+
+        <div style="background:linear-gradient(135deg,#0F62FE 0%,#4589FF 100%);border-radius:16px;padding:24px;color:#fff;margin:16px 0">
+          <div style="display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap;font-weight:700;font-size:14px">
+            <span style="background:#217346;padding:8px 16px;border-radius:20px">📊 Excel + Copilot</span>
+            <span style="font-size:22px">→</span>
+            <span style="background:rgba(255,255,255,.2);padding:8px 16px;border-radius:20px">🤖 Copilot Chat</span>
+            <span style="font-size:22px">→</span>
+            <span style="background:rgba(255,255,255,.2);padding:8px 16px;border-radius:20px">📄 HTML Reporte</span>
+            <span style="font-size:22px">→</span>
+            <span style="background:rgba(255,255,255,.2);padding:8px 16px;border-radius:20px">📽️ HTML Presentación</span>
+            <span style="font-size:22px">→</span>
+            <span style="background:var(--ey-yellow);color:#333;padding:8px 16px;border-radius:20px">📊 HTML Dashboard</span>
+          </div>
+          <p style="text-align:center;margin:12px 0 0;opacity:.8;font-size:13px">5 pasos · 5 minutos · 3 entregables profesionales · 0 líneas de código escritas por ti</p>
+        </div>
+
+        <div style="background:#fff;border:2px solid #0F62FE;border-radius:12px;overflow:hidden">
+          <!-- Paso 1 -->
+          <div style="padding:18px 20px;border-bottom:1px solid #f0f0f0">
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+              <span style="background:#217346;color:#fff;font-weight:800;padding:4px 12px;border-radius:20px;font-size:13px">Paso 1</span>
+              <b>Excel Copilot — Enriquecer datos (30s)</b>
+            </div>
+            <div class="prompt-example" style="margin:0">📊 "Agrega columnas: Semaforo (🟢🟡🔴 según Variacion_Pct), Tendencia (Creciente/Estable/Decreciente), Riesgo_Score (Alto/Medio/Bajo basado en variación acumulada). Genera un nuevo archivo."</div>
+          </div>
+
+          <!-- Paso 2 -->
+          <div style="padding:18px 20px;border-bottom:1px solid #f0f0f0">
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+              <span style="background:#0F62FE;color:#fff;font-weight:800;padding:4px 12px;border-radius:20px;font-size:13px">Paso 2</span>
+              <b>Copilot Chat — Analizar + generar HTML reporte (1.5 min)</b>
+            </div>
+            <div class="prompt-example" style="margin:0">🤖 "Analiza este archivo Excel enriquecido. Genera un HTML de reporte ejecutivo con:
+- Executive Summary con 5 hallazgos clave (números reales)
+- 4 KPIs en tarjetas
+- Tabla con semáforos por departamento
+- Top 3 riesgos
+- 4 recomendaciones con checkboxes
+Estilo corporativo EY (azul #0F62FE, amarillo #FFCD00). Todo en un archivo HTML."</div>
+            <p style="font-size:12px;color:#555;margin:8px 0 0">→ Guardar como <code>reporte_ejecutivo.html</code></p>
+          </div>
+
+          <!-- Paso 3 -->
+          <div style="padding:18px 20px;border-bottom:1px solid #f0f0f0">
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+              <span style="background:#D24726;color:#fff;font-weight:800;padding:4px 12px;border-radius:20px;font-size:13px">Paso 3</span>
+              <b>Copilot Chat — Generar HTML presentación (1.5 min)</b>
+            </div>
+            <div class="prompt-example" style="margin:0">🤖 "Con los mismos datos, genera un HTML tipo presentación de 6 slides (secciones 100vh):
+1. Portada con título y equipo
+2. El problema (con número grande de impacto)
+3. Antes vs Después (dos columnas con ahorro de tiempo)
+4. Pipeline del POC (diagrama visual)
+5. Métricas de éxito (tarjetas grandes)
+6. Call to Action amarillo
+Navegación con puntos fijos arriba. Estilo oscuro elegante. Todo en un archivo HTML."</div>
+            <p style="font-size:12px;color:#555;margin:8px 0 0">→ Guardar como <code>presentacion_poc.html</code></p>
+          </div>
+
+          <!-- Paso 4 -->
+          <div style="padding:18px 20px;border-bottom:1px solid #f0f0f0">
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+              <span style="background:var(--ey-yellow);color:#333;font-weight:800;padding:4px 12px;border-radius:20px;font-size:13px">Paso 4</span>
+              <b>Copilot Chat — Generar HTML dashboard (1 min)</b>
+            </div>
+            <div class="prompt-example" style="margin:0">🤖 "Con los datos reales del Excel, genera un HTML dashboard con:
+- Filtro por departamento y por mes
+- KPIs que se actualizan al filtrar
+- Tabla con semáforos ordenable
+- Gráfico de barras CSS
+Datos embebidos en JavaScript. Todo en un archivo HTML."</div>
+            <p style="font-size:12px;color:#555;margin:8px 0 0">→ Guardar como <code>dashboard_poc.html</code></p>
+          </div>
+
+          <!-- Paso 5 -->
+          <div style="padding:18px 20px">
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+              <span style="background:#22c55e;color:#fff;font-weight:800;padding:4px 12px;border-radius:20px;font-size:13px">Paso 5</span>
+              <b>Abrir los 3 archivos — impacto visual (30s)</b>
+            </div>
+            <p>Abrir <code>reporte_ejecutivo.html</code>, <code>presentacion_poc.html</code> y <code>dashboard_poc.html</code> en 3 pestañas del navegador. Mostrar al grupo:</p>
+            <ul style="font-size:13px">
+              <li>📄 Pestaña 1: Reporte ejecutivo formal → <b>para el CFO que quiere leer</b></li>
+              <li>📽️ Pestaña 2: Presentación visual → <b>para el comité que quiere ver</b></li>
+              <li>📊 Pestaña 3: Dashboard interactivo → <b>para el analista que quiere explorar</b></li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Impacto -->
+        <div style="background:#e8f5e9;border:2px solid #66bb6a;border-radius:12px;padding:20px;margin-top:16px;text-align:center">
+          <div style="font-size:24px;margin-bottom:8px">📊 → 📄 📽️ 📊 → ✅</div>
+          <p style="margin:0;font-size:16px;font-weight:700;color:#2e7d32">"De un archivo Excel a 3 entregables profesionales: un reporte formal, una presentación ejecutiva y un dashboard interactivo. Sin Word. Sin PowerPoint. Sin programar. 5 minutos."</p>
+        </div>
+
+        <div style="background:#f0f4ff;border:1px solid #c8d6f0;border-radius:12px;padding:18px;margin-top:16px">
+          <b>⏱️ Comparación de tiempos</b>
+          <table style="margin-top:10px">
+            <thead><tr><th>Entregable</th><th>Método tradicional</th><th>Tiempo</th><th>Con HTML + Copilot</th><th>Tiempo</th></tr></thead>
+            <tbody>
+              <tr><td>Reporte formal</td><td>Word + formateo manual</td><td>~2 horas</td><td>Prompt → HTML</td><td>~2 min</td></tr>
+              <tr><td>Presentación</td><td>PPT + diseño + contenido</td><td>~3 horas</td><td>Prompt → HTML slides</td><td>~2 min</td></tr>
+              <tr><td>Dashboard</td><td>Power BI + DAX + diseño</td><td>~2 horas</td><td>Prompt → HTML dashboard</td><td>~1.5 min</td></tr>
+              <tr style="font-weight:700;background:#e8f5e9"><td colspan="2">TOTAL</td><td>~7 horas</td><td></td><td>~5 min</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- PIPELINE COMPLETO -->
+    <!-- ═══════════════════════════════════════════ -->
+    <section>
+      <h2>🔗 Pipeline completo del curso: Sesión 1 + Sesión 2</h2>
+      <div style="margin:16px 0;text-align:center">
+        <div style="display:flex;justify-content:center;align-items:stretch;gap:4px;flex-wrap:wrap">
+          <div style="flex:1;min-width:110px;max-width:150px;background:#217346;color:#fff;padding:14px 8px;border-radius:12px;text-align:center">
+            <div style="font-size:12px;font-weight:800">Sesión 1</div>
+            <div style="font-size:24px;margin:4px 0">📊</div>
+            <div style="font-size:11px">Excel + Copilot<br>Análisis de datos</div>
+          </div>
+          <div style="display:flex;align-items:center;color:var(--ey-accent);font-size:24px;font-weight:bold">→</div>
+          <div style="flex:1;min-width:110px;max-width:150px;background:#F2C811;color:#333;padding:14px 8px;border-radius:12px;text-align:center">
+            <div style="font-size:12px;font-weight:800">Sesión 1</div>
+            <div style="font-size:24px;margin:4px 0">📈</div>
+            <div style="font-size:11px">Power BI Q&A<br>Dashboard</div>
+          </div>
+          <div style="display:flex;align-items:center;color:var(--ey-accent);font-size:24px;font-weight:bold">→</div>
+          <div style="flex:1;min-width:110px;max-width:150px;background:#0F62FE;color:#fff;padding:14px 8px;border-radius:12px;text-align:center">
+            <div style="font-size:12px;font-weight:800">Sesión 2</div>
+            <div style="font-size:24px;margin:4px 0">📄</div>
+            <div style="font-size:11px">HTML Reporte<br>Documento formal</div>
+          </div>
+          <div style="display:flex;align-items:center;color:var(--ey-accent);font-size:24px;font-weight:bold">→</div>
+          <div style="flex:1;min-width:110px;max-width:150px;background:#D24726;color:#fff;padding:14px 8px;border-radius:12px;text-align:center">
+            <div style="font-size:12px;font-weight:800">Sesión 2</div>
+            <div style="font-size:24px;margin:4px 0">📽️</div>
+            <div style="font-size:11px">HTML Presentación<br>Slides interactivos</div>
+          </div>
+          <div style="display:flex;align-items:center;color:var(--ey-accent);font-size:24px;font-weight:bold">→</div>
+          <div style="flex:1;min-width:110px;max-width:150px;background:linear-gradient(135deg,var(--ey-yellow),#ffe77a);color:#333;padding:14px 8px;border-radius:12px;text-align:center">
+            <div style="font-size:12px;font-weight:800">Sesión 3</div>
+            <div style="font-size:24px;margin:4px 0">🎯</div>
+            <div style="font-size:11px">Demo final<br>Pitch ejecutivo</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="box">
+          <h3>💡 ¿Por qué HTML es mejor para un POC?</h3>
+          <table style="font-size:13px">
+            <thead><tr><th>Necesidad</th><th>PPT/Word</th><th>HTML</th></tr></thead>
+            <tbody>
+              <tr><td>Compartir con stakeholders</td><td>Adjuntar archivo</td><td><b>Un link</b> (SharePoint/Teams)</td></tr>
+              <tr><td>Actualizar datos</td><td>Rehacer desde cero</td><td><b>Cambiar datos en el array</b></td></tr>
+              <tr><td>Interactividad</td><td>❌ Ninguna</td><td><b>✅ Filtros, gráficos, búsqueda</b></td></tr>
+              <tr><td>Funciona en celular</td><td>Mal</td><td><b>Responsivo nativo</b></td></tr>
+              <tr><td>Tiempo de creación</td><td>Horas</td><td><b>Minutos (con Copilot)</b></td></tr>
+              <tr><td>Impresiona al comité</td><td>✅ Esperado</td><td><b>🔥 Inesperado = memorable</b></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="box">
+          <h3>🎯 Para la Sesión 3: ¿Qué mostramos?</h3>
+          <p>Cada equipo tendrá mínimo <b>4 artefactos</b> para su demo final:</p>
+          <ol>
+            <li>📊 <b>Excel enriquecido</b> — datos analizados con Copilot</li>
+            <li>📈 <b>Dashboard Power BI</b> — visualización ejecutiva</li>
+            <li>📄 <b>Reporte HTML</b> — documento formal interactivo</li>
+            <li>📽️ <b>Presentación HTML</b> — pitch visual para el comité</li>
+          </ol>
+          <p style="font-size:13px;color:var(--ey-gray);margin-top:8px">Bonus: 📊 Dashboard HTML interactivo como quinto artefacto.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- ENTREGABLE -->
+    <!-- ═══════════════════════════════════════════ -->
+    <section>
+      <h2>📦 Entregable de la Sesión 2</h2>
+      <div class="box" style="background:#f9fafb;border-left:4px solid var(--ey-yellow)">
+        <ol>
+          <li><b>Reporte HTML del POC</b> — personalizado con datos de su equipo. KPIs, riesgos, métricas, recomendaciones.</li>
+          <li><b>Presentación HTML del POC</b> — mínimo 6 slides con problema, solución, antes/después, timeline, Call to Action.</li>
+          <li><b>(Bonus) Dashboard HTML</b> — con datos reales/simulados, filtros y semáforos.</li>
+        </ol>
+        <p style="margin-top:12px;padding:10px;background:#e8f5e9;border-radius:8px;font-size:14px">💡 <b>Guardar todos los .html en la carpeta <code>mi_poc_html</code>.</b> En la Sesión 3 los abrirán en el navegador frente al grupo para el pitch final.</p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- PREPARACIÓN SESIÓN 3 -->
+    <!-- ═══════════════════════════════════════════ -->
+    <section>
+      <h2>📋 Preparación para la Sesión 3</h2>
+      <div class="box">
+        <h3>Sesión 3: Demo Final y Pitch</h3>
+        <p>Cada equipo presentará su POC completo ante el grupo (simulando un comité directivo).</p>
+
+        <h3 style="margin-top:16px">Lo que deben preparar:</h3>
+        <ol>
+          <li><b>Incorporar feedback</b> de la revisión cruzada en sus HTMLs.</li>
+          <li><b>Practicar la demo en vivo</b> (5-7 min): abrir la presentación HTML → mostrar slides → cambiar a dashboard → mostrar interactividad → mostrar reporte.</li>
+          <li><b>Ensayar la narrativa:</b> ¿cómo convencerían a un directivo en 5 minutos?</li>
+          <li><b>Preparar el "wow moment":</b> un filtro que revela algo sorprendente, un antes/después impactante, un número que cambia todo.</li>
+          <li><b>Tener backup:</b> Si algo falla, tener screenshots de los HTMLs listos.</li>
+        </ol>
+
+        <h3 style="margin-top:16px">Formato de la Sesión 3:</h3>
+        <table style="font-size:13px">
+          <thead><tr><th>Bloque</th><th>Actividad</th><th>Duración</th></tr></thead>
+          <tbody>
+            <tr><td><b>Bloque 1</b></td><td>Últimos ajustes + ensayo del pitch</td><td>45 min</td></tr>
+            <tr><td><b>Bloque 2</b></td><td>Demo + Pitch por equipo (5-7 min) + Q&A del "comité"</td><td>90 min</td></tr>
+            <tr><td><b>Bloque 3</b></td><td>Feedback, lecciones aprendidas, próximos pasos reales</td><td>45 min</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- TROUBLESHOOTING -->
+    <!-- ═══════════════════════════════════════════ -->
+    <section>
+      <h2>🚨 Troubleshooting — Problemas comunes</h2>
+      <table style="font-size:13px">
+        <thead><tr><th>Problema</th><th>Solución</th></tr></thead>
+        <tbody>
+          <tr><td>El archivo se abre como texto, no como página</td><td>Verificar que la extensión sea <code>.html</code> y no <code>.html.txt</code>. En Notepad, guardar con Tipo = "Todos los archivos".</td></tr>
+          <tr><td>Se ven caracteres raros (ñ, acentos)</td><td>En Notepad al guardar, cambiar Codificación a <b>UTF-8</b>. Verificar que el HTML tenga <code>&lt;meta charset="utf-8"&gt;</code>.</td></tr>
+          <tr><td>Copilot no da el HTML completo</td><td>Pedir: "Dame el código HTML COMPLETO desde &lt;!doctype html&gt; hasta &lt;/html&gt;, todo en un bloque de código."</td></tr>
+          <tr><td>Copilot da solo el fragmento modificado</td><td>"Dame el HTML COMPLETO con todas las modificaciones incorporadas, no solo el fragmento."</td></tr>
+          <tr><td>Los filtros del dashboard no funcionan</td><td>Pedirle a Copilot: "Los filtros no funcionan. Revisa el JavaScript y corrige. Dame el HTML completo corregido."</td></tr>
+          <tr><td>Los datos del Excel no aparecen en el HTML</td><td>Asegurarse de adjuntar el archivo Excel en Copilot Chat. Si no lo toma, copiar 20-30 filas y pegarlas en el prompt.</td></tr>
+          <tr><td>El HTML se ve mal en el celular</td><td>Agregar al prompt: "Hazlo responsivo con media queries para pantallas pequeñas."</td></tr>
+          <tr><td>Quiero cambiar colores o layout</td><td>No hace falta empezar de cero: "Cambia la paleta de colores a [X]. El layout de las tarjetas debe ser 2x2 en vez de 4 en fila."</td></tr>
+          <tr><td>El HTML es muy largo para Copilot</td><td>Dividir en partes: "Primero genera el header y los KPIs. En el siguiente mensaje te pido el resto."</td></tr>
+          <tr><td>Quiero usar Chart.js u otra librería</td><td>Pedir: "Incluye Chart.js vía CDN y genera un gráfico de barras con los datos." Funciona, pero requiere internet para cargar la librería.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- CHEATSHEET RÁPIDO -->
+    <!-- ═══════════════════════════════════════════ -->
+    <section>
+      <h2>⚡ Cheatsheet — Prompts clave para generar HTML</h2>
+
+      <h3>📄 Reportes</h3>
+      <div class="prompt-example" style="font-size:12px">"Genera un HTML de reporte ejecutivo con: header corporativo, executive summary, [N] tarjetas KPI, tabla de [datos] con semáforos, sección de riesgos, recomendaciones con checkboxes. Estilo: [colores]. Todo en un archivo."</div>
+
+      <h3>📽️ Presentaciones</h3>
+      <div class="prompt-example" style="font-size:12px">"Genera un HTML de presentación con [N] slides (secciones 100vh). Slide 1: portada. Slide 2: problema. Slide 3: solución. [...]. Navegación con puntos fijos. Scroll suave. Estilo: [colores]. Todo en un archivo."</div>
+
+      <h3>📊 Dashboards</h3>
+      <div class="prompt-example" style="font-size:12px">"Genera un HTML tipo dashboard con filtro por [campo], KPIs que se actualicen al filtrar, tabla con semáforos, gráfico de barras CSS. Datos embebidos en JavaScript: [pegar datos o adjuntar Excel]. Todo en un archivo."</div>
+
+      <h3>🔄 Iteraciones comunes</h3>
+      <div class="grid-2">
+        <div class="prompt-example" style="font-size:12px">"Cambia la paleta de colores a dark mode."</div>
+        <div class="prompt-example" style="font-size:12px">"Agrega una sección de timeline horizontal."</div>
+        <div class="prompt-example" style="font-size:12px">"Haz las tarjetas más grandes con íconos."</div>
+        <div class="prompt-example" style="font-size:12px">"Agrega un botón para exportar la tabla a CSV."</div>
+        <div class="prompt-example" style="font-size:12px">"Pon una barra de búsqueda que filtre la tabla."</div>
+        <div class="prompt-example" style="font-size:12px">"Dame el HTML completo con todos los cambios."</div>
+      </div>
+    </section>
+
+    <footer>
+      <a href="sesion1.html">← Sesión 1</a> &nbsp;|&nbsp;
+      <a href="prompts_cheatsheet.html">Cheatsheet de Prompts</a> &nbsp;|&nbsp;
+      <a href="intro.html">Brochure</a> &nbsp;|&nbsp;
+      POC Thinking con Microsoft 365 Copilot — EY
+    </footer>
+
+  </main>
+</body>
+</html>

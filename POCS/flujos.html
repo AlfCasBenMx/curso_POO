@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Flujos de Entrevista — State Machine + Rule Engine</title>
+
+  <!-- Mermaid (diagrams) -->
+  <script src="https://unpkg.com/mermaid@10.9.0/dist/mermaid.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <style>
+    :root{
+      --bg:#0b0f14;
+      --panel:#111826;
+      --panel2:#0f172a;
+      --text:#e5e7eb;
+      --muted:#9ca3af;
+      --border:#243244;
+      --accent:#22c55e;
+      --warn:#f59e0b;
+      --danger:#ef4444;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      background: var(--bg);
+      color: var(--text);
+    }
+    header{
+      padding:16px 18px;
+      border-bottom:1px solid var(--border);
+      background: linear-gradient(180deg, rgba(17,24,38,.9), rgba(11,15,20,.9));
+      position: sticky;
+      top:0;
+      z-index:10;
+    }
+    h1{
+      margin:0 0 6px 0;
+      font-size:16px;
+      letter-spacing:.2px;
+    }
+    .sub{
+      margin:0;
+      font-size:13px;
+      color: var(--muted);
+      line-height:1.35;
+    }
+    .wrap{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:14px;
+      padding:14px;
+      max-width: 1300px;
+      margin:0 auto;
+    }
+    .toolbar{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+      justify-content:space-between;
+      padding:12px;
+      border:1px solid var(--border);
+      background: var(--panel);
+      border-radius:12px;
+    }
+    .seg{
+      display:flex;
+      gap:6px;
+      padding:6px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.03);
+      border-radius:12px;
+    }
+    .seg button{
+      border:0;
+      background: transparent;
+      color: var(--muted);
+      padding:8px 10px;
+      border-radius:10px;
+      cursor:pointer;
+      font-size:13px;
+      transition: .15s ease;
+    }
+    .seg button.active{
+      background: rgba(255,255,255,.08);
+      color: var(--text);
+      outline:1px solid rgba(255,255,255,.08);
+    }
+    .chips{
+      display:flex; gap:8px; flex-wrap:wrap; align-items:center;
+      font-size:12px; color: var(--muted);
+    }
+    .chip{
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.03);
+      padding:6px 8px;
+      border-radius:999px;
+      white-space:nowrap;
+    }
+    .chip b{color:var(--text); font-weight:600}
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:14px;
+    }
+    @media (min-width: 980px){
+      .grid.two{ grid-template-columns: 1fr 1fr; }
+    }
+    .card{
+      border:1px solid var(--border);
+      background: var(--panel2);
+      border-radius:12px;
+      padding:12px;
+      overflow:auto;
+      min-height: 340px;
+    }
+    .card h2{
+      margin:0 0 10px 0;
+      font-size:14px;
+      color: var(--text);
+    }
+    .note{
+      font-size:12px;
+      color: var(--muted);
+      line-height:1.45;
+      margin-top:8px;
+    }
+    .note ul{ margin:8px 0 0 18px; }
+    .note code{
+      color: var(--text);
+      background: rgba(255,255,255,.06);
+      padding:2px 6px;
+      border-radius:6px;
+    }
+    .hidden{ display:none !important; }
+    .mermaid{
+      background: transparent;
+    }
+  </style>
+
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: "dark",
+      securityLevel: "loose",
+      flowchart: { curve: "basis" }
+    });
+
+    function setView(mode){
+      // mode: "both" | "state" | "rules"
+      const state = document.getElementById("card-state");
+      const rules = document.getElementById("card-rules");
+
+      state.classList.toggle("hidden", mode === "rules");
+      rules.classList.toggle("hidden", mode === "state");
+
+      document.querySelectorAll(".seg button").forEach(b => b.classList.remove("active"));
+      document.getElementById("btn-"+mode).classList.add("active");
+
+      const grid = document.getElementById("grid");
+      grid.classList.toggle("two", mode === "both");
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      setView("both");
+    });
+  </script>
+</head>
+
+<body>
+<header>
+  <h1>Flujos de entrevista — Máquina de estados + Motor de decisiones</h1>
+  <p class="sub">
+    <b>session_type</b> = intención lógica (qué debe pasar) · <b>status</b> = fase operativa (en qué paso está).
+    El flujo real de <code>db_get_interview_user()</code> se rige por <b>prioridades</b>, no por flechas secuenciales.
+  </p>
+</header>
+
+<main class="wrap">
+  <div class="toolbar">
+    <div class="seg">
+      <button id="btn-both" class="active" onclick="setView('both')">Ver ambos</button>
+      <button id="btn-state" onclick="setView('state')">Solo estados</button>
+      <button id="btn-rules" onclick="setView('rules')">Solo decisiones</button>
+    </div>
+
+    <div class="chips">
+      <span class="chip"><b>MAX_ATTEMPTS_INTERVIEW</b> = 2</span>
+      <span class="chip"><b>MAX_ATTEMPTS_QUESTION</b> = 3</span>
+      <span class="chip"><b>Incrementa attempts</b>: REINICIO PREGUNTA / COMPLETAR</span>
+      <span class="chip"><b>No incrementa attempts</b>: REINICIO MOTOR</span>
+    </div>
+  </div>
+
+  <div id="grid" class="grid two">
+
+    <!-- State Machine -->
+    <section id="card-state" class="card">
+      <h2>Capa 1 — Máquina de estados (ciclo de vida macro)</h2>
+
+      <div class="mermaid">
+stateDiagram-v2
+  direction TB
+
+  %% Macro estados (session_type / status)
+  state "NUEVA / PENDIENTE" as NUEVA
+  state "EXISTENTE / PENDIENTE" as EXISTENTE
+  state "COMPLETADA / GRABACION COMPLETA" as COMPLETADA
+  state "PROCESANDO / (DESCARGA | EN PROCESO | GENERANDO REPORTE)" as PROCESANDO
+  state "FINALIZADA / FINALIZADO" as FINALIZADA
+
+  state "REINICIO MOTOR / FALLO MOTOR\n(NO incrementa attempts)" as RM
+  state "REINICIO PREGUNTA / PENDIENTE\n(SI incrementa attempts)" as RP
+  state "BLOQUEADA / BLOQUEADA\n(has_attempts_remaining=false)" as BLOQ
+
+  %% Caminos principales (usuario + motor)
+  NUEVA --> EXISTENTE: Usuario inicia/continúa
+  EXISTENTE --> COMPLETADA: Usuario sube último video\n(db_set_status_interview)
+  COMPLETADA --> PROCESANDO: Motor toma entrevista
+  PROCESANDO --> FINALIZADA: Motor termina exitoso
+
+  %% Fallo motor (interrumpe ciclo)
+  PROCESANDO --> RM: Motor falla
+  RM --> EXISTENTE: db_handle_motor_restart()\n+ session_type=EXISTENTE\n+ status=PENDIENTE
+
+  %% Agotamiento por usuario (reinicio preguntas)
+  EXISTENTE --> RP: Pregunta intentos >= 3\n(db_handle_question_attempts_exhausted)
+  RP --> EXISTENTE: Preguntas reemplazadas\n(o frontend las reemplaza)
+
+  %% Bloqueo por attempts entrevista
+  RP --> BLOQ: attempts entrevista >= 2
+  EXISTENTE --> BLOQ: attempts entrevista >= 2
+  COMPLETADA --> BLOQ: acceso denegado
+  FINALIZADA --> BLOQ: acceso denegado
+      </div>
+
+      <div class="note">
+        <b>Qué representa:</b> el “mapa” macro. <br/>
+        <b>Qué NO representa:</b> el orden real de evaluación dentro de <code>db_get_interview_user()</code> (eso está en la Capa 2).
+      </div>
+    </section>
+
+    <!-- Rule Engine / Decision Flow -->
+    <section id="card-rules" class="card">
+      <h2>Capa 2 — Motor de decisiones (prioridad en db_get_interview_user)</h2>
+
+      <div class="mermaid">
+flowchart TB
+  A([Entrada: db_get_interview_user]) --> P1
+
+  %% PRIORIDAD 1: REINICIO MOTOR
+  P1{session_type = REINICIO MOTOR?}
+  P1 -->|Sí| M1[CASO 1: db_handle_motor_restart<br/>Reemplaza 4 preguntas<br/>NO incrementa attempts<br/>session_type = EXISTENTE]
+  M1 --> OUT1([Continuar con nuevas preguntas])
+  P1 -->|No| P2
+
+  %% PRIORIDAD 2: PROCESANDO
+  P2{session_type = PROCESANDO?}
+  P2 -->|Sí| PR[CASO 2: Bloquear acceso<br/>Entrevista siendo procesada]
+  PR --> OUT2([Acceso denegado])
+  P2 -->|No| P3
+
+  %% PRIORIDAD 3: PENDIENTE
+  P3{status = PENDIENTE?}
+  P3 -->|Sí| S3{session_type?}
+  P3 -->|No| P4
+
+  %% 3A: REINICIO PREGUNTA
+  S3 -->|REINICIO PREGUNTA| RPA{Preguntas con intentos agotados?}
+  RPA -->|No| RP1[3A: Preguntas ya reemplazadas]
+  RP1 --> OUT3([Continuar normal])
+  RPA -->|Sí| RP2[3A: Mantener REINICIO PREGUNTA]
+  RP2 --> OUT4([Reinicio controlado])
+
+  %% 3C: BLOQUEADA
+  S3 -->|BLOQUEADA| BLK[3C: Bloqueo<br/>attempts >= 2]
+  BLK --> OUT5([Acceso denegado])
+
+  %% 3B: Normal con verificación
+  S3 -->|EXISTENTE / NUEVA| VQ{Pregunta con intentos >= 3?}
+  VQ -->|Sí| QEX[3B: db_handle_question_attempts_exhausted<br/>Reemplaza preguntas<br/>SI incrementa attempts]
+  QEX --> OUT6([Reinicio de preguntas])
+  VQ -->|No| OK[3B: Continuar normal]
+  OK --> OUT7([Permitir continuar])
+
+  %% PRIORIDAD 4: COMPLETADA
+  P4{status = COMPLETADA / FINALIZADA?}
+  P4 -->|Sí| C4[CASO 4: Bloquear acceso]
+  C4 --> OUT8([Acceso denegado])
+  P4 -->|No| P5
+
+  %% PRIORIDAD 5: CREAR NUEVA
+  P5{Existe entrevista previa?}
+  P5 -->|Sí| OUT9([No crear nueva])
+  P5 -->|No| N5{Campaña activa?}
+  N5 -->|Sí| ADD[CASO 5: db_add_interview<br/>session_type = NUEVA]
+  ADD --> OUT10([Nueva entrevista])
+  N5 -->|No| E6[CASO 6: Error]
+  E6 --> OUT11([Sin campañas activas])
+      </div>
+
+      <div class="note">
+        <b>Qué representa:</b> el orden real por prioridad. <br/>
+        Lo importante: aunque el usuario “esté” en un estado macro, el backend evalúa reglas en este orden:
+        <ul>
+          <li><b>1)</b> REINICIO MOTOR</li>
+          <li><b>2)</b> PROCESANDO</li>
+          <li><b>3)</b> PENDIENTE (+ subcasos)</li>
+          <li><b>4)</b> COMPLETADA / FINALIZADA</li>
+          <li><b>5)</b> CREAR NUEVA</li>
+        </ul>
+      </div>
+    </section>
+
+  </div>
+
+  <section class="card">
+    <h2>Guía rápida: cómo no perderte con session_type vs status</h2>
+    <div class="note">
+      <ul>
+        <li><b>status</b> suele cambiar por el <b>motor</b> (DESCARGA/EN PROCESO/REPORTE, FINALIZADO, etc.).</li>
+        <li><b>session_type</b> suele cambiar por la <b>lógica del backend</b> (REINICIO MOTOR, REINICIO PREGUNTA, BLOQUEADA).</li>
+        <li>Los estados correctivos (<b>REINICIO MOTOR</b>, <b>REINICIO PREGUNTA</b>) son <b>interruptores</b>: no siguen el flujo lineal, se disparan por regla.</li>
+        <li>El diagrama de estados es “qué puede pasar”; el motor de decisiones es “qué se evalúa primero”.</li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+</body>
+</html>

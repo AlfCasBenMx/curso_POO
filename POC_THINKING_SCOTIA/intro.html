@@ -1,0 +1,702 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>POC Thinking con Copilot — Excel, Power BI, SQL y Python — Brochure</title>
+  <style>
+    :root{
+      --ey-yellow:#FFCD00;
+      --ey-dark:#242424;
+      --ey-gray:#6B6B6B;
+      --ey-light:#F7F7F7;
+      --ey-accent:#0F62FE;
+      --scotia-red:#EC111A;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--ey-dark);background:#fff;line-height:1.55}
+    a{color:var(--ey-accent);text-decoration:none}
+    a:hover{text-decoration:underline}
+    .wrap{max-width:1100px;margin:0 auto;padding:24px}
+    /* HERO */
+    .hero{
+      background: linear-gradient(135deg, var(--ey-yellow) 0%, #ffe77a 60%, #fff3b0 100%);
+      padding:64px 24px 72px;
+      position:relative;
+      overflow:hidden;
+      display:flex;align-items:center;gap:40px
+    }
+    .hero img{width:150px;height:auto}
+    .hero .text{max-width:800px}
+    .hero h1{margin:0;font-size:clamp(28px,5vw,44px);font-weight:800;letter-spacing:-0.02em;}
+    .hero p.subtitle{margin:12px 0 0;font-size:clamp(16px,2.5vw,20px);color:#2c2c2c;}
+    .badge{display:inline-block;padding:4px 10px;border-radius:999px;background:#fff8d6;border:1px solid #ffe68a;font-size:12px;margin-right:8px}
+    /* INFO STRIP */
+    .strip{background:#fff;border-bottom:1px solid #eee;}
+    .strip-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+    .card-mini{padding:18px;border-left:4px solid var(--ey-yellow);background:var(--ey-light);border-radius:8px;}
+    .label{font-size:12px;letter-spacing:.08em;color:var(--ey-gray);text-transform:uppercase}
+    .big{font-size:18px;font-weight:700;margin-top:6px}
+    /* SECTIONS */
+    section{padding:40px 0;border-bottom:1px solid #f0f0f0}
+    h2{font-size:26px;margin:0 0 12px;letter-spacing:-.01em}
+    .lead{color:var(--ey-gray);max-width:900px}
+    .grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+    .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+    .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+    .box{background:#fff;border:1px solid #eee;border-radius:12px;padding:20px;box-shadow:0 1px 2px rgba(0,0,0,0.04)}
+    ul{margin:10px 0 0 18px}
+    /* TIMELINE */
+    .timeline{position:relative;margin-top:12px}
+    .tl-item{display:grid;grid-template-columns:120px 1fr;gap:18px;padding:16px 0;border-top:1px dashed #e6e6e6}
+    .tl-item:first-child{border-top:none}
+    .week{font-weight:700}
+    .deliverable{background:#f9fafb;border:1px solid #eee;padding:10px;border-radius:8px;margin-top:8px}
+    /* TABLE */
+    table{width:100%;border-collapse:collapse;margin-top:10px}
+    th, td{border:1px solid #eee;padding:10px;text-align:left;vertical-align:top}
+    th{background:#fffaf0}
+    /* TOOL CARDS */
+    .tool-card{text-align:center;padding:24px 16px;border-radius:12px;background:var(--ey-light);border:1px solid #eee}
+    .tool-card .icon{font-size:42px;margin-bottom:10px}
+    .tool-card h4{margin:0 0 6px}
+    .tool-card p{font-size:13px;color:var(--ey-gray);margin:0}
+    footer{padding:36px 0;color:#777}
+    @media (max-width:900px){
+      .strip-grid{grid-template-columns:1fr}
+      .grid-2, .grid-3, .grid-4{grid-template-columns:1fr}
+      .tl-item{grid-template-columns:1fr}
+      .hero{flex-direction:column;align-items:flex-start}
+    }
+  </style>
+</head>
+<body>
+
+  <div style="background:var(--scotia-red);color:#fff;text-align:center;padding:10px 16px;font-weight:700;font-size:14px;letter-spacing:.1em;text-transform:uppercase">
+    ⚠️ Documento provisional — Sujeto a cambios
+  </div>
+
+  <header class="hero">
+    <!-- Logos EY + Scotia -->
+    <div style="display:flex;align-items:center;gap:20px">
+      <div style="background:#fff;border-radius:12px;padding:16px 20px;display:flex;align-items:center;justify-content:center">
+        <img src="https://companieslogo.com/img/orig/ernst-and-young-6c5de5ba.svg?t=1720244494&download=true" alt="EY Logo" style="width:130px;height:auto">
+      </div>
+      <div style="background:#fff;border-radius:12px;padding:16px 20px;display:flex;align-items:center;justify-content:center">
+        <img src="https://www.vhv.rs/dpng/d/227-2279755_tech-mahindra-logo-png-transparent-background-download-vector.png" alt="Scotiabank Logo" style="width:130px;height:auto">
+      </div>
+    </div>
+    <div class="text">
+      <h1>POC Thinking con Copilot</h1>
+      <p class="subtitle">Brochure del programa — Diseñado para <b>Project Managers</b> y <b>profesionales financieros</b>: de la idea al caso viable, con <b>Excel, Power BI, SQL y Python</b> potenciados por Copilot.</p>
+      <div style="margin-top:10px">
+        <span class="badge">3 sesiones intensivas · 3 horas cada una</span>
+        <span class="badge">9 horas totales</span>
+        <span class="badge" style="background:#e0f2fe;border-color:#7dd3fc">70 % Excel &amp; Power BI</span>
+        <span class="badge">10 % SQL · 10 % Python · 10 % Office</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="strip">
+    <div class="wrap strip-grid">
+      <div class="card-mini">
+        <div class="label">Duración</div>
+        <div class="big">3 sesiones · 3 horas c/u · 9 horas totales</div>
+      </div>
+      <div class="card-mini">
+        <div class="label">Herramientas</div>
+        <div class="big">Excel + Power BI (70 %) · SQL (10 %) · Python (10 %) · Office (10 %)</div>
+      </div>
+      <div class="card-mini">
+        <div class="label">Audiencia</div>
+        <div class="big">PMs y financieros — desde análisis conversacional hasta automatización básica</div>
+      </div>
+    </div>
+  </div>
+
+  <main class="wrap">
+
+    <!-- ═══════════════════ OBJETIVO ═══════════════════ -->
+    <section>
+      <h2>Objetivo del programa</h2>
+      <p class="lead">Capacitar a <b>Project Managers</b> y <b>profesionales financieros</b> para crear <b>Pruebas de Concepto (POCs)</b> con un stack completo de productividad con IA. El <b>70 %</b> del curso se enfoca en <b>Excel y Power BI conversacional</b> con Copilot; el resto introduce <b>SQL</b> para consultar datos, <b>Python</b> para automatización básica y <b>Office</b> (Word, PowerPoint, Teams) para documentación y presentación.</p>
+    </section>
+
+    <!-- ═══════════════════ PAIN POINTS ═══════════════════ -->
+    <section>
+      <h2>¿Te suena familiar?</h2>
+      <div class="grid-2" style="margin-top:16px">
+        <div class="box" style="border-left:4px solid var(--scotia-red)">
+          <h3 style="margin:0 0 12px">😩 El día a día sin Copilot</h3>
+          <ul>
+            <li>"Paso <b>3 horas</b> en Excel limpiando datos y armando tablas dinámicas para el reporte mensual."</li>
+            <li>"Me toma <b>un día entero</b> sintetizar 20 páginas de análisis en un resumen ejecutivo para el CFO."</li>
+            <li>"Preparar la presentación para el comité de inversión me lleva <b>dos días</b> entre diseño y narrativa."</li>
+            <li>"Después de cada junta de 1 hora, paso <b>30 minutos</b> escribiendo las minutas y action items."</li>
+          </ul>
+        </div>
+        <div class="box" style="border-left:4px solid #22c55e">
+          <h3 style="margin:0 0 12px">🚀 Con Copilot</h3>
+          <ul>
+            <li>"Le pedí a Copilot que analizara el dataset y en <b>2 minutos</b> tenía la tabla dinámica con gráficos."</li>
+            <li>"Con un prompt en Word, el resumen ejecutivo quedó listo en <b>15 minutos</b>."</li>
+            <li>"Copilot convirtió mi documento de Word en una presentación de <b>8 slides en 3 minutos</b>."</li>
+            <li>"Al terminar la junta, Teams Copilot ya tenía las minutas y los action items <b>listos</b>."</li>
+          </ul>
+        </div>
+      </div>
+      <p style="text-align:center;margin-top:18px;color:var(--ey-gray);font-style:italic;font-size:15px">
+        💡 <b>Ana, analista financiera:</b> <i>"Antes pasaba 4 horas preparando el reporte mensual de variaciones presupuestales. Ahora, con un prompt en Excel Copilot, lo tengo en 15 minutos y dedico el resto a análisis estratégico."</i>
+      </p>
+    </section>
+
+    <!-- ═══════════════════ HERRAMIENTAS ═══════════════════ -->
+    <section>
+      <h2>Ecosistema de herramientas</h2>
+      <p class="lead">Un stack completo de productividad con IA — desde análisis conversacional hasta automatización.</p>
+
+      <!-- Barra visual de distribución -->
+      <div style="display:flex;border-radius:10px;overflow:hidden;height:36px;margin:18px 0 8px;font-size:12px;font-weight:700;color:#fff;text-align:center;line-height:36px">
+        <div style="width:70%;background:var(--ey-accent)">Excel &amp; Power BI — 70 %</div>
+        <div style="width:10%;background:#f59e0b;color:#000">SQL 10 %</div>
+        <div style="width:10%;background:#10b981">Py 10 %</div>
+        <div style="width:10%;background:#8b5cf6">Office 10 %</div>
+      </div>
+
+      <div class="grid-3" style="margin-top:18px">
+        <div class="tool-card" style="border:2px solid var(--ey-accent);grid-column:span 2">
+          <div class="icon">📊</div>
+          <h4>Excel + Copilot &nbsp;&amp;&nbsp; Power BI Conversacional</h4>
+          <p><b>70 % del curso.</b> Análisis financiero, fórmulas con IA, tablas dinámicas, gráficos automáticos, dashboards interactivos, Q&amp;A en lenguaje natural en Power BI, reportes visuales.</p>
+        </div>
+        <div class="tool-card">
+          <div class="icon">🗃️</div>
+          <h4>SQL + Copilot</h4>
+          <p><b>10 %.</b> Consultas básicas, JOINs, filtros y agregaciones asistidas por Copilot para extraer datos de bases relacionales.</p>
+        </div>
+      </div>
+      <div class="grid-3" style="margin-top:12px">
+        <div class="tool-card">
+          <div class="icon">🐍</div>
+          <h4>Python + Copilot</h4>
+          <p><b>10 %.</b> Automatización básica con pandas, lectura de archivos, scripts simples asistidos por Copilot — sin experiencia previa requerida.</p>
+        </div>
+        <div class="tool-card" style="grid-column:span 2">
+          <div class="icon">📝 📽️ 💬</div>
+          <h4>Office: Word + PowerPoint + Teams</h4>
+          <p><b>10 %.</b> Documentación ejecutiva en Word, presentaciones para C-suite en PowerPoint, minutas y action items automáticos en Teams — todo con Copilot.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════ MÉTODO ═══════════════════ -->
+    <section>
+      <h2>Método de trabajo</h2>
+      <div class="grid-3">
+        <div class="box">
+          <h3>Formato de cada sesión (3 h)</h3>
+          <ul>
+            <li><b>Bloque 1 (1 h):</b> explicación conceptual + demo en vivo con Copilot</li>
+            <li><b>Bloque 2 (1 h):</b> laboratorio práctico guiado — prompts en Excel, Power BI, SQL o Python</li>
+            <li><b>Bloque 3 (1 h):</b> trabajo en equipo + revisión de avances y entregable</li>
+          </ul>
+        </div>
+        <div class="box">
+          <h3>Estructura de equipos de trabajo</h3>
+          <ul>
+            <li>1–2 Product Owners (negocio/finanzas)</li>
+            <li>1 PM / líder del equipo</li>
+            <li>Resto: analistas financieros e ideadores</li>
+          </ul>
+        </div>
+        <div class="box">
+          <h3>Resultados esperados</h3>
+          <ul>
+            <li>Análisis financiero en Excel + Copilot</li>
+            <li>Dashboard interactivo en Power BI</li>
+            <li>Consultas SQL básicas para extracción de datos</li>
+            <li>Script Python básico de automatización</li>
+            <li>Presentación ejecutiva + Demo Day</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════ BENEFICIOS ═══════════════════ -->
+    <section>
+      <h2>¿Qué ganas al terminar?</h2>
+      <p class="lead">Beneficios tangibles que verás desde la primera sesión.</p>
+      <div class="grid-3" style="margin-top:16px">
+        <div class="box" style="text-align:center">
+          <div style="font-size:40px;margin-bottom:8px">⏱️</div>
+          <h3 style="margin:0 0 8px">Tiempo recuperado</h3>
+          <p style="color:var(--ey-gray);margin:0">Reduce tareas manuales de <b>horas a minutos</b>: reportes, análisis, presentaciones y documentos que antes consumían tu día.</p>
+        </div>
+        <div class="box" style="text-align:center">
+          <div style="font-size:40px;margin-bottom:8px">🎯</div>
+          <h3 style="margin:0 0 8px">Mejor análisis</h3>
+          <p style="color:var(--ey-gray);margin:0">Copilot detecta <b>patrones y anomalías</b> en tus datos que el ojo humano pierde. Decisiones basadas en evidencia, no en intuición.</p>
+        </div>
+        <div class="box" style="text-align:center">
+          <div style="font-size:40px;margin-bottom:8px">👔</div>
+          <h3 style="margin:0 0 8px">Impacto ejecutivo</h3>
+          <p style="color:var(--ey-gray);margin:0">Presenta ante C-suite con <b>claridad y confianza</b>: narrativas pulidas, datos respaldados y presentaciones profesionales generadas con IA.</p>
+        </div>
+      </div>
+      <div class="grid-2" style="margin-top:16px">
+        <div class="box" style="text-align:center">
+          <div style="font-size:40px;margin-bottom:8px">🔗</div>
+          <h3 style="margin:0 0 8px">Flujo integrado Excel → Word → PPT</h3>
+          <p style="color:var(--ey-gray);margin:0">Aprende a <b>encadenar herramientas</b>: analiza en Excel, documenta en Word, presenta en PowerPoint — todo potenciado por Copilot.</p>
+        </div>
+        <div class="box" style="text-align:center">
+          <div style="font-size:40px;margin-bottom:8px">💼</div>
+          <h3 style="margin:0 0 8px">Habilidad transferible</h3>
+          <p style="color:var(--ey-gray);margin:0">El <b>prompt engineering</b> que aprendes aquí se aplica a cualquier proyecto, cliente o área — es la habilidad profesional del futuro.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════ PLAN 3 SESIONES ═══════════════════ -->
+    <section>
+      <h2>Plan de 3 sesiones intensivas (3 h cada una)</h2>
+      <div class="timeline">
+
+        <!-- SESIÓN 1 -->
+        <div class="tl-item">
+          <div class="week">Sesión 1<br><small style="font-weight:400;color:#6B6B6B">3 horas</small></div>
+          <div>
+            <h3 style="margin:0 0 8px;color:var(--ey-accent)">Excel + Copilot — Análisis financiero intensivo</h3>
+            <span class="badge" style="background:#e0f2fe;border-color:#7dd3fc;margin-bottom:10px">100 % Excel + Copilot</span><br>
+            <b>Bloque 1 — Teoría (1 h):</b> Qué es un POC y por qué importa para finanzas y gestión de proyectos. Introducción a Copilot: qué puede hacer en Excel, Power BI, SQL y Python. Tipología de POCs. Formación de equipos de trabajo.<br><br>
+            <b>Bloque 2 — Lab Excel + Copilot (1 h):</b> Análisis de un dataset financiero real: limpieza de datos con prompts, fórmulas generadas por IA, tablas dinámicas automáticas, detección de anomalías, reglas de negocio (aging de cartera, variaciones presupuestales), gráficos financieros.<br><br>
+            <b>Bloque 3 — Lab Excel avanzado + Propuesta (1 h):</b> Copilot para consolidación de múltiples hojas, análisis de escenarios (what-if), proyección de flujo de caja. Brainstorming de ideas de POC y redacción de propuesta inicial.
+            <div class="deliverable"><b>Entregable:</b> Propuesta de POC (problema, valor, impacto) + dataset financiero analizado en Excel con Copilot (tablas dinámicas, gráficos, reglas).</div>
+          </div>
+        </div>
+
+        <!-- SESIÓN 2 -->
+        <div class="tl-item">
+          <div class="week">Sesión 2<br><small style="font-weight:400;color:#6B6B6B">3 horas</small></div>
+          <div>
+            <h3 style="margin:0 0 8px;color:var(--ey-accent)">Power BI Conversacional + SQL con Copilot</h3>
+            <span class="badge" style="background:#e0f2fe;border-color:#7dd3fc;margin-bottom:10px">~70 % Power BI · ~30 % SQL</span><br>
+            <b>Bloque 1 — Power BI Conversacional (1 h):</b> Qué es Power BI y cómo Copilot lo transforma. Q&amp;A en lenguaje natural: hacer preguntas a tus datos sin fórmulas. Crear dashboards interactivos con prompts. Conectar datos de Excel a Power BI. Visualizaciones automáticas y narrativas de datos.<br><br>
+            <b>Bloque 2 — Lab Power BI + SQL (1 h):</b> Construir un dashboard financiero en Power BI con Copilot (KPIs, tendencias, filtros dinámicos). Introducción a SQL: consultas SELECT, WHERE, JOIN y GROUP BY asistidas por Copilot. Extraer datos de una base relacional para alimentar análisis.<br><br>
+            <b>Bloque 3 — Trabajo en equipo (1 h):</b> Conectar el análisis de Excel (Sesión 1) con Power BI. Escribir consultas SQL para su caso de POC. Clasificación académica del POC, roles y documento de estructura.
+            <div class="deliverable"><b>Entregable:</b> Dashboard interactivo en Power BI + consultas SQL documentadas + Documento de Estructura del POC con tipo, roles, métricas y riesgos.</div>
+          </div>
+        </div>
+
+        <!-- SESIÓN 3 -->
+        <div class="tl-item">
+          <div class="week">Sesión 3<br><small style="font-weight:400;color:#6B6B6B">3 horas</small></div>
+          <div>
+            <h3 style="margin:0 0 8px;color:var(--ey-accent)">Office, Python y Demo Day</h3>
+            <span class="badge" style="background:#e0f2fe;border-color:#7dd3fc;margin-bottom:10px">Python + Office + Storytelling + Demo</span><br>
+            <b>Bloque 1 — Python básico + Office con Copilot (1 h):</b> Introducción a Python con Copilot: leer archivos con pandas, automatizar limpieza de datos, scripts básicos — sin experiencia previa requerida. Office con Copilot: documentación ejecutiva en Word, presentaciones en PowerPoint, minutas automáticas en Teams.<br><br>
+            <b>Bloque 2 — Lab integrado + Storytelling (1 h):</b> Construir la presentación ejecutiva final del POC en PowerPoint con Copilot. Generar documentación en Word. Script Python básico que automatice una tarea del POC. Práctica de pitch y narrativa financiera entre equipos.<br><br>
+            <b>Bloque 3 — Demo Day (1 h):</b> Presentación final de cada equipo ante el grupo: Excel → Power BI → SQL → Python → PPT. Retroalimentación y votación. Próximos pasos y cierre.
+            <div class="deliverable"><b>Entregable:</b> Presentación ejecutiva (PPT + Copilot) + script Python básico + demo / pitch en vivo con el flujo completo del POC.</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ═══════════════════ TIPOLOGÍA ═══════════════════ -->
+    <section>
+      <h2>Tipología de POCs (marco académico)</h2>
+      <p class="lead">Clasificación adaptada para PMs y financieros, inspirada en marcos de gestión de proyectos y estrategia (PMI/PMBOK, MIT Sloan, Harvard Business Review, Lean Startup / MVP).</p>
+      <div class="box">
+        <table>
+          <thead>
+            <tr>
+              <th>Tipo de POC</th>
+              <th>Propósito</th>
+              <th>Qué valida</th>
+              <th>Ejemplo financiero</th>
+              <th>Herramienta principal</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><b>Automatización financiera</b></td>
+              <td>Validar que un proceso manual se puede agilizar</td>
+              <td>Tiempo ahorrado, precisión, escalabilidad</td>
+              <td>Conciliación bancaria automática con reglas en Excel</td>
+              <td>Excel + Copilot</td>
+            </tr>
+            <tr>
+              <td><b>De Datos / Analítica</b></td>
+              <td>Validar disponibilidad, calidad y valor de datos</td>
+              <td>Estructura, patrones, métricas clave</td>
+              <td>Dashboard de variaciones presupuestales con lenguaje natural</td>
+              <td>Power BI Conversacional</td>
+            </tr>
+            <tr>
+              <td><b>De Extracción / Consulta</b></td>
+              <td>Validar acceso y transformación de datos desde fuentes</td>
+              <td>Calidad del query, performance, integridad</td>
+              <td>Query de conciliación entre estado de cuenta y libro contable</td>
+              <td>SQL + Copilot</td>
+            </tr>
+            <tr>
+              <td><b>De Automatización / Script</b></td>
+              <td>Validar automatización de tareas repetitivas con código</td>
+              <td>Reproducibilidad, ahorro de tiempo, escalabilidad</td>
+              <td>Script que consolida 10 archivos Excel de avance y genera reporte</td>
+              <td>Python + Copilot</td>
+            </tr>
+            <tr>
+              <td><b>De Texto / IA</b></td>
+              <td>Validar generación o análisis semántico</td>
+              <td>Coherencia, calidad del output, utilidad</td>
+              <td>Resumen automático de contratos o notas de auditoría</td>
+              <td>Word + Copilot</td>
+            </tr>
+            <tr>
+              <td><b>De Experiencia / Negocio</b></td>
+              <td>Validar valor percibido y usabilidad</td>
+              <td>Storytelling, claridad de la solución</td>
+              <td>Presentación ejecutiva de KPIs con narrativa de valor</td>
+              <td>PowerPoint + Copilot</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ═══════════════════ ROL DE COPILOT ═══════════════════ -->
+    <section>
+      <h2>Rol de Copilot durante el curso</h2>
+      <div class="grid-2">
+        <div class="box">
+          <h3>Copilot como copiloto integral</h3>
+          <ul>
+            <li><b>Analista de datos (Excel):</b> resume, transforma, limpia y visualiza datos financieros con fórmulas y tablas dinámicas.</li>
+            <li><b>Asistente de dashboards (Power BI):</b> responde preguntas en lenguaje natural, genera gráficos y KPIs interactivos.</li>
+            <li><b>Generador de queries (SQL):</b> escribe consultas SELECT, JOIN, GROUP BY a partir de descripciones en español.</li>
+            <li><b>Automatizador (Python):</b> genera scripts de consolidación, limpieza y reporteo con pandas y matplotlib.</li>
+            <li><b>Redactor ejecutivo (Word):</b> genera business cases, memos, reportes y resúmenes de auditoría.</li>
+            <li><b>Diseñador de presentaciones (PPT):</b> crea slides profesionales a partir de datos y documentos.</li>
+            <li><b>Asistente de reuniones (Teams):</b> resume juntas, genera minutas y action items automáticamente.</li>
+          </ul>
+        </div>
+        <div class="box">
+          <h3>Criterios de evaluación</h3>
+          <ul>
+            <li>Claridad y relevancia del problema financiero/PM (20 %)</li>
+            <li>Uso efectivo de Excel + Power BI y calidad de análisis (25 %)</li>
+            <li>Integración de SQL y/o Python en el flujo (15 %)</li>
+            <li>Calidad de prompts y dominio de Copilot (20 %)</li>
+            <li>Storytelling, presentación ejecutiva y aplicabilidad (20 %)</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════ PROMPT ENGINEERING ═══════════════════ -->
+    <section>
+      <h2>Prompt Engineering — Ejemplos por herramienta</h2>
+      <p class="lead">El <b>prompting</b> es la habilidad central de este curso. Aprenderás a escribir instrucciones claras y estructuradas para cada herramienta del stack — con ejemplos reales del día a día de <b>PMs</b> y <b>financieros</b>.</p>
+
+      <!-- Excel + Copilot (70%) -->
+      <div style="margin-bottom:18px">
+        <h3 style="margin-bottom:6px">📊 Excel + Copilot <span class="badge" style="background:var(--ey-accent);color:#fff;border:0">70 % del curso</span></h3>
+      </div>
+      <div class="grid-2">
+        <div class="box">
+          <h4 style="margin:0 0 8px;color:var(--ey-dark)">Para financieros</h4>
+          <ul>
+            <li>"Compara el presupuesto vs el gasto real de Q3 por centro de costos y resalta las variaciones mayores al 10 %"</li>
+            <li>"Genera un aging de cartera con categorías 30, 60 y 90 días y calcula la provisión estimada para cuentas incobrables"</li>
+            <li>"Proyecta el flujo de caja mensual de los próximos 6 meses usando la tendencia de ingresos y egresos de este año"</li>
+            <li>"Identifica las 10 partidas con mayor desviación presupuestal y clasifícalas por nivel de riesgo: Alto, Medio, Bajo"</li>
+            <li>"Crea una tabla dinámica con ventas mensuales por región, agrega columnas de % de participación y variación MoM"</li>
+          </ul>
+        </div>
+        <div class="box">
+          <h4 style="margin:0 0 8px;color:var(--ey-dark)">Para PMs</h4>
+          <ul>
+            <li>"Crea un tracker de proyecto con % avance, fecha compromiso, responsable y semáforo de estatus (verde/amarillo/rojo)"</li>
+            <li>"Consolida estas 4 hojas de avance de diferentes workstreams en una sola tabla resumen con totales y variaciones"</li>
+            <li>"Analiza esta tabla de horas reportadas por recurso y muestra quién está sobre-asignado (&gt;40 h/semana)"</li>
+            <li>"Calcula el EVM (Earned Value Management): CPI y SPI de este proyecto con los datos de costo planeado vs real"</li>
+            <li>"Genera un análisis de ruta crítica a partir de esta tabla de actividades con dependencias y duraciones"</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Power BI Conversacional (parte del 70%) -->
+      <div style="margin:28px 0 18px">
+        <h3 style="margin-bottom:6px">📈 Power BI Conversacional <span class="badge" style="background:var(--ey-accent);color:#fff;border:0">Incluido en el 70 %</span></h3>
+      </div>
+      <div class="grid-2">
+        <div class="box">
+          <h4 style="margin:0 0 8px;color:var(--ey-dark)">Para financieros</h4>
+          <ul>
+            <li>"¿Cuál fue la variación de ingresos por línea de negocio entre Q2 y Q3?"</li>
+            <li>"Muéstrame un gráfico de tendencia del gasto operativo mensual de los últimos 12 meses"</li>
+            <li>"¿Qué centros de costos superaron el presupuesto en más de 15 % este trimestre?"</li>
+            <li>"Desglosa la cartera vencida por antigüedad y cliente, ordena de mayor a menor"</li>
+          </ul>
+        </div>
+        <div class="box">
+          <h4 style="margin:0 0 8px;color:var(--ey-dark)">Para PMs</h4>
+          <ul>
+            <li>"Muestra el avance real vs planeado de todos los proyectos activos en un gráfico de barras"</li>
+            <li>"¿Qué proyectos tienen SPI menor a 0.9 y CPI menor a 0.95?"</li>
+            <li>"Genera un dashboard con horas consumidas por fase y recurso para el proyecto X"</li>
+            <li>"¿Cuál es la tendencia de incidencias abiertas vs cerradas por sprint en los últimos 6 meses?"</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- SQL + Copilot (10%) -->
+      <div style="margin:28px 0 18px">
+        <h3 style="margin-bottom:6px">🗄️ SQL + Copilot <span class="badge" style="background:#7c3aed;color:#fff;border:0">10 % del curso</span></h3>
+      </div>
+      <div class="grid-2">
+        <div class="box">
+          <h4 style="margin:0 0 8px;color:var(--ey-dark)">Para financieros</h4>
+          <ul>
+            <li>"Escribe un SELECT que traiga el total de facturas vencidas agrupadas por cliente y ordenadas por monto descendente"</li>
+            <li>"Genera un query con JOIN entre la tabla de transacciones y el catálogo de cuentas para obtener el saldo por cuenta contable"</li>
+            <li>"Crea una consulta que identifique pagos duplicados comparando monto, fecha y beneficiario"</li>
+          </ul>
+        </div>
+        <div class="box">
+          <h4 style="margin:0 0 8px;color:var(--ey-dark)">Para PMs</h4>
+          <ul>
+            <li>"Escribe un query que muestre las horas registradas por recurso y proyecto, con totales por semana"</li>
+            <li>"Genera una consulta SQL que cruce la tabla de entregables con la de aprobaciones para encontrar los pendientes"</li>
+            <li>"Crea un query que calcule el costo acumulado por fase del proyecto usando las tablas de facturación"</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Python + Copilot (10%) -->
+      <div style="margin:28px 0 18px">
+        <h3 style="margin-bottom:6px">🐍 Python + Copilot <span class="badge" style="background:#059669;color:#fff;border:0">10 % del curso</span></h3>
+      </div>
+      <div class="grid-2">
+        <div class="box">
+          <h4 style="margin:0 0 8px;color:var(--ey-dark)">Para financieros</h4>
+          <ul>
+            <li>"Escribe un script en Python que lea un CSV de transacciones bancarias, identifique duplicados y genere un reporte de excepciones"</li>
+            <li>"Crea un script con pandas que calcule el aging de cartera a partir del archivo de cuentas por cobrar"</li>
+            <li>"Genera un script que automatice la conciliación entre dos archivos: el estado de cuenta del banco y el libro contable"</li>
+          </ul>
+        </div>
+        <div class="box">
+          <h4 style="margin:0 0 8px;color:var(--ey-dark)">Para PMs</h4>
+          <ul>
+            <li>"Escribe un script que lea el Excel de timesheet y genere un resumen de utilización por recurso en formato CSV"</li>
+            <li>"Crea un script que automatice el merge de 5 archivos Excel de avance de diferentes equipos en un solo consolidado"</li>
+            <li>"Genera un script con matplotlib que grafique el burndown chart del proyecto a partir de los datos del tracker"</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Office: Word, PPT, Teams (10%) -->
+      <div style="margin:28px 0 18px">
+        <h3 style="margin-bottom:6px">📝 Office: Word · PPT · Teams <span class="badge" style="background:var(--ey-gray);color:#fff;border:0">10 % del curso</span></h3>
+      </div>
+      <div class="grid-2">
+        <div class="box">
+          <h4 style="margin:0 0 8px;color:var(--ey-dark)">Word + PowerPoint</h4>
+          <ul>
+            <li>"Redacta un business case ejecutivo con: problema, solución propuesta, beneficios cuantificados, cronograma e inversión"</li>
+            <li>"Resume este reporte de auditoría de 25 páginas en un executive summary de 1 página para el CFO"</li>
+            <li>"Crea una presentación de 6 slides para el comité de finanzas: cierre trimestral, variaciones, tendencias y recomendaciones"</li>
+            <li>"Transforma este documento Word del business case en una presentación ejecutiva para pedir aprobación de inversión"</li>
+          </ul>
+        </div>
+        <div class="box">
+          <h4 style="margin:0 0 8px;color:var(--ey-dark)">Teams + Outlook</h4>
+          <ul>
+            <li>"Resume los puntos clave de esta junta y lista los action items con responsable y fecha compromiso"</li>
+            <li>"¿Qué decisiones se tomaron en las últimas 3 reuniones sobre el presupuesto del proyecto X?"</li>
+            <li>"Genera un borrador de correo al sponsor con el estatus ejecutivo basado en la conversación de hoy"</li>
+            <li>"Identifica los temas pendientes de las últimas reuniones que aún no tienen cierre"</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════ CALENDARIO ═══════════════════ -->
+    <section>
+      <h2>Calendario de sesiones</h2>
+      <div class="box">
+        <table>
+          <thead>
+            <tr>
+              <th>Sesión</th>
+              <th>Tema</th>
+              <th>Duración</th>
+              <th>Bloques</th>
+              <th>Herramientas + Copilot</th>
+              <th>Entregable</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><b>Sesión 1</b>
+                <a href="sesion1.html" class="badge" style="background:var(--ey-accent);color:#fff;border:0;display:inline-block;padding:6px 10px;margin-left:4px;text-decoration:none;font-size:12px">Ver detalle</a>
+              </td>
+              <td><b>Excel + Copilot — Análisis financiero intensivo</b><br>Qué es un POC · Intro a Copilot · Tipología · Lab Excel (limpieza, fórmulas, tablas dinámicas, gráficos)</td>
+              <td>3 horas</td>
+              <td>Teoría (45 min) · Lab Excel (1.5 h) · Trabajo en equipo (45 min)</td>
+              <td>Excel + Copilot</td>
+              <td>Propuesta de POC + análisis de datos financieros en Excel</td>
+            </tr>
+            <tr>
+              <td><b>Sesión 2</b>
+                <a href="sesion2.html" class="badge" style="background:var(--ey-accent);color:#fff;border:0;display:inline-block;padding:6px 10px;margin-left:4px;text-decoration:none;font-size:12px">Ver detalle</a>
+              </td>
+              <td><b>Power BI Conversacional + SQL con Copilot</b><br>Dashboards con lenguaje natural · Q&A interactivo · Consultas SQL asistidas · Lab integrado Excel → PBI → SQL</td>
+              <td>3 horas</td>
+              <td>Power BI Conversacional (1.5 h) · SQL + Copilot (45 min) · Lab integrado (45 min)</td>
+              <td>Power BI + Copilot · SQL + Copilot</td>
+              <td>Dashboard interactivo + queries SQL funcionales</td>
+            </tr>
+            <tr>
+              <td><b>Sesión 3</b>
+                <a href="sesion3.html" class="badge" style="background:var(--ey-accent);color:#fff;border:0;display:inline-block;padding:6px 10px;margin-left:4px;text-decoration:none;font-size:12px">Ver detalle</a>
+              </td>
+              <td><b>Office, Python y Demo Day</b><br>Python + pandas · Word + PPT con Copilot · Storytelling · Presentaciones finales</td>
+              <td>3 horas</td>
+              <td>Python + Office (1 h) · Lab entregable final (1 h) · Demo Day (1 h)</td>
+              <td>Python + Copilot · Word · PPT · Teams</td>
+              <td>Script Python + Presentación ejecutiva + Demo en vivo</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ═══════════════════ HISTORIA ═══════════════════ -->
+    <section style="background:linear-gradient(135deg,#f8fafc,#eef2ff);margin:0 -24px;padding:40px 24px;border-radius:12px">
+      <h2>Una historia real: el antes y el después</h2>
+      <div class="grid-2" style="margin-top:16px">
+        <div class="box" style="border-top:4px solid var(--scotia-red)">
+          <h3 style="color:var(--scotia-red);margin-top:0">📅 Antes del curso</h3>
+          <p><b>Carlos</b>, PM de un proyecto de implementación bancaria, preparaba el reporte mensual para el steering committee así:</p>
+          <ul>
+            <li>⏰ <b>3 horas</b> consolidando 4 archivos Excel de diferentes áreas</li>
+            <li>⏰ <b>1.5 horas</b> pidiendo al equipo de BI un dashboard actualizado</li>
+            <li>⏰ <b>1 hora</b> esperando que DBA le extraiga datos del sistema contable</li>
+            <li>⏰ <b>1.5 horas</b> redactando el informe ejecutivo en Word</li>
+            <li>⏰ <b>1.5 horas</b> armando la presentación de 15 slides</li>
+            <li>⏰ <b>0.5 horas</b> escribiendo minutas de la junta previa</li>
+            <li style="font-weight:700;color:var(--scotia-red)">Total: ~9 horas (más de un día de trabajo)</li>
+          </ul>
+        </div>
+        <div class="box" style="border-top:4px solid #22c55e">
+          <h3 style="color:#16a34a;margin-top:0">🚀 Después del curso</h3>
+          <p><b>Carlos</b> ahora usa Copilot en todo su stack y su flujo cambió radicalmente:</p>
+          <ul>
+            <li>⚡ <b>15 min</b> — Copilot en Excel consolida y analiza los 4 archivos automáticamente</li>
+            <li>⚡ <b>10 min</b> — Pregunta en Power BI: "¿Qué proyectos tienen SPI &lt; 0.9?" y obtiene el dashboard</li>
+            <li>⚡ <b>5 min</b> — SQL + Copilot genera el query de extracción contable que antes pedía al DBA</li>
+            <li>⚡ <b>5 min</b> — Python + Copilot automatiza la conciliación con un script reutilizable</li>
+            <li>⚡ <b>10 min</b> — Copilot en Word genera el informe ejecutivo desde los datos</li>
+            <li>⚡ <b>5 min</b> — Copilot en PowerPoint transforma el informe en presentación</li>
+            <li>⚡ <b>0 min</b> — Teams Copilot genera las minutas automáticamente</li>
+            <li style="font-weight:700;color:#16a34a">Total: ~50 minutos (ahorra 8+ horas)</li>
+          </ul>
+        </div>
+      </div>
+      <p style="text-align:center;margin-top:20px;font-size:18px;font-weight:600;color:var(--ey-dark)">
+        🎯 En este curso aprenderás exactamente cómo Carlos logró esa transformación — Excel, Power BI, SQL, Python y Office, paso a paso, con prompts reales.
+      </p>
+    </section>
+
+    <!-- ═══════════════════ DIFERENCIAS ═══════════════════ -->
+    <section>
+      <h2>¿Cómo difiere este curso del enfoque técnico?</h2>
+      <div class="box">
+        <table>
+          <thead>
+            <tr>
+              <th>Aspecto</th>
+              <th>Curso técnico (Python + GitHub Copilot)</th>
+              <th>Este curso (Copilot para PMs y Financieros)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><b>Herramienta principal</b></td>
+              <td>VSCode + Python + GitHub Copilot</td>
+              <td>Excel, Power BI, SQL, Python, Word, PPT, Teams + Copilot</td>
+            </tr>
+            <tr>
+              <td><b>Nivel de código</b></td>
+              <td>Alto — scripts Python, Flask, APIs</td>
+              <td>Bajo — 70 % prompts e interfaz gráfica, 20 % SQL/Python asistido por Copilot</td>
+            </tr>
+            <tr>
+              <td><b>Audiencia</b></td>
+              <td>Analistas técnicos, desarrolladores, Data & AI</td>
+              <td>Project Managers, financieros, analistas de negocio</td>
+            </tr>
+            <tr>
+              <td><b>Formato</b></td>
+              <td>4 semanas · 12 sesiones · Labs Python semanales</td>
+              <td>3 sesiones intensivas de 3 h · Lab Copilot integrado</td>
+            </tr>
+            <tr>
+              <td><b>Enfoque principal</b></td>
+              <td>70 % Excel & Power BI conversacional</td>
+              <td>Análisis financiero, dashboards y toma de decisiones con datos</td>
+            </tr>
+            <tr>
+              <td><b>SQL y Python</b></td>
+              <td>Core del curso — código avanzado</td>
+              <td>Introducción asistida (10 % + 10 %) — Copilot genera el código por ti</td>
+            </tr>
+            <tr>
+              <td><b>Entregables</b></td>
+              <td>Código fuente + documentación técnica</td>
+              <td>Hojas Excel + Dashboards PBI + Queries SQL + Script Python + PPT ejecutiva</td>
+            </tr>
+            <tr>
+              <td><b>Enfoque del POC</b></td>
+              <td>Viabilidad técnica, prototipo funcional</td>
+              <td>Viabilidad de negocio, análisis financiero, storytelling</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ═══════════════════ FOOTER ═══════════════════ -->
+    <footer>
+      <div class="grid-2">
+        <div>
+          <h3>Contacto</h3>
+          <p><b>Alfredo Castañeda</b><br>Manager — Technology & Data Analytics<br><a href="mailto:luis.a.castaneda@mx.ey.com">luis.a.castaneda@mx.ey.com</a></p>
+        </div>
+        <div>
+          <h3>Requisitos previos</h3>
+          <ul>
+            <li>Licencia de Microsoft 365 con Copilot habilitado</li>
+            <li>Acceso a Excel, Word, PowerPoint y Teams</li>
+            <li>Power BI Desktop instalado (o acceso a Power BI Service)</li>
+            <li>Acceso a un entorno SQL (SQL Server, Azure SQL o similar)</li>
+            <li>Python 3.x instalado + VS Code con extensión de Copilot</li>
+            <li>Laptop con conexión a internet</li>
+            <li><b>No se requiere experiencia previa en código</b> — Copilot te asiste</li>
+          </ul>
+        </div>
+      </div>
+      <div style="text-align:center;margin:28px 0">
+        <a href="sesion1.html" class="badge" style="background:var(--ey-accent);color:#fff;border:0;display:inline-block;padding:10px 16px;text-decoration:none">Ir a Sesión 1</a>
+      </div>
+    </footer>
+
+  </main>
+</body>
+</html>

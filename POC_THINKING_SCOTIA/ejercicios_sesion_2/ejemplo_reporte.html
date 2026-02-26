@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reporte Ejecutivo — Scotiabank</title>
+  <style>
+    :root {
+      --scotia-red: #EC111A;
+      --scotia-dark-red: #AD0B13;
+      --scotia-dark: #1A1A1A;
+      --scotia-gray: #6B6B6B;
+      --scotia-light: #F5F5F5;
+      --scotia-white: #FFFFFF;
+      --scotia-green: #00874E;
+      --scotia-yellow: #F4B400;
+      --scotia-blue: #0072CE;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0 }
+    html, body {
+      font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, system-ui, Roboto, Helvetica, Arial, sans-serif;
+      color: var(--scotia-dark);
+      background: var(--scotia-light);
+      line-height: 1.6;
+    }
+    a { color: var(--scotia-red); text-decoration: none }
+    a:hover { text-decoration: underline }
+
+    /* ── HEADER ─────────────────────────────────── */
+    .topbar {
+      background: var(--scotia-red);
+      height: 4px;
+    }
+    .header {
+      background: var(--scotia-white);
+      padding: 24px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .header img { height: 36px }
+    .header h1 { font-size: 22px; font-weight: 700; color: var(--scotia-dark) }
+    .header-meta { font-size: 13px; color: var(--scotia-gray) }
+
+    /* ── MAIN ──────────────────────────────────── */
+    .wrap { max-width: 1080px; margin: 0 auto; padding: 32px 24px }
+
+    /* ── KPI CARDS ─────────────────────────────── */
+    .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 32px }
+    .kpi {
+      background: var(--scotia-white);
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 1px 4px rgba(0,0,0,.06);
+      position: relative;
+      overflow: hidden;
+    }
+    .kpi::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      background: var(--scotia-red);
+    }
+    .kpi-label { font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: var(--scotia-gray) }
+    .kpi-value { font-size: 32px; font-weight: 800; margin: 6px 0 4px; color: var(--scotia-dark) }
+    .kpi-change { font-size: 13px; font-weight: 600 }
+    .kpi-change.up { color: var(--scotia-green) }
+    .kpi-change.down { color: var(--scotia-red) }
+
+    /* ── SECTIONS ──────────────────────────────── */
+    .section-card {
+      background: var(--scotia-white);
+      border-radius: 12px;
+      box-shadow: 0 1px 4px rgba(0,0,0,.06);
+      margin-bottom: 24px;
+      overflow: hidden;
+    }
+    .section-header {
+      padding: 16px 24px;
+      font-weight: 700;
+      font-size: 16px;
+      border-bottom: 1px solid #f0f0f0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .section-body { padding: 24px }
+    h2 { font-size: 20px; margin-bottom: 12px }
+
+    /* ── TABLE ─────────────────────────────────── */
+    table { width: 100%; border-collapse: collapse }
+    th, td { padding: 12px 16px; text-align: left; border-bottom: 1px solid #f0f0f0; font-size: 14px }
+    th { background: var(--scotia-light); font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--scotia-gray) }
+    tr:hover { background: #fafafa }
+
+    /* ── SEMÁFORO ──────────────────────────────── */
+    .badge-risk {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .risk-alto { background: #fde8e8; color: #c62828 }
+    .risk-medio { background: #fff3cd; color: #a66b00 }
+    .risk-bajo { background: #d4edda; color: #1b5e20 }
+
+    /* ── EXECUTIVE SUMMARY ─────────────────────── */
+    .summary-list { list-style: none; padding: 0 }
+    .summary-list li {
+      padding: 12px 16px;
+      border-left: 4px solid var(--scotia-red);
+      background: #fef7f7;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+    .summary-list li b { color: var(--scotia-dark) }
+
+    /* ── RECOMMENDATIONS ───────────────────────── */
+    .rec-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 14px 0;
+      border-bottom: 1px solid #f5f5f5;
+    }
+    .rec-item:last-child { border-bottom: none }
+    .rec-item input { margin-top: 4px; accent-color: var(--scotia-red); width: 18px; height: 18px }
+    .rec-title { font-weight: 700; font-size: 14px }
+    .rec-desc { font-size: 13px; color: var(--scotia-gray); margin-top: 2px }
+
+    /* ── FOOTER ─────────────────────────────────── */
+    .footer {
+      text-align: center;
+      padding: 24px;
+      font-size: 12px;
+      color: var(--scotia-gray);
+      border-top: 1px solid #e0e0e0;
+      margin-top: 32px;
+    }
+
+    @media (max-width: 800px) {
+      .kpi-row { grid-template-columns: repeat(2, 1fr) }
+      .header { flex-direction: column; align-items: flex-start; gap: 8px }
+    }
+    @media (max-width: 500px) {
+      .kpi-row { grid-template-columns: 1fr }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="topbar"></div>
+
+  <header class="header">
+    <div class="header-left">
+      <img src="https://cdn.aglty.io/scotia-bank-mexico/images/logo-scotiabank-rojo.png" alt="Scotiabank">
+      <h1>Reporte de Ejecución Presupuestal 2025</h1>
+    </div>
+    <div class="header-meta">
+      Generado: 25 de febrero de 2026 · Confidencial
+    </div>
+  </header>
+
+  <main class="wrap">
+
+    <!-- KPIs -->
+    <div class="kpi-row">
+      <div class="kpi">
+        <div class="kpi-label">Gasto Total</div>
+        <div class="kpi-value">$4.5M</div>
+        <div class="kpi-change down">↑ 9.7% vs presupuesto</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Presupuesto Total</div>
+        <div class="kpi-value">$4.1M</div>
+        <div class="kpi-change up">Aprobado Q1–Q4</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Variación Promedio</div>
+        <div class="kpi-value">12.3%</div>
+        <div class="kpi-change down">↑ 2.3pp vs meta (10%)</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Departamentos en Riesgo</div>
+        <div class="kpi-value" style="color:var(--scotia-red)">3</div>
+        <div class="kpi-change down">Variación > 20%</div>
+      </div>
+    </div>
+
+    <!-- Executive Summary -->
+    <div class="section-card">
+      <div class="section-header"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg> Resumen Ejecutivo</div>
+      <div class="section-body">
+        <ul class="summary-list">
+          <li><b>Sobregiro del 9.7%:</b> El gasto real acumulado excede el presupuesto aprobado en $400K MXN, concentrado en Q3 y Q4.</li>
+          <li><b>3 departamentos críticos:</b> Operaciones (+24%), TI (+22%) y Marketing (+18%) presentan las variaciones más altas.</li>
+          <li><b>Tendencia creciente:</b> La variación mensual ha crecido 1.5pp en promedio durante los últimos 4 meses.</li>
+          <li><b>Categoría más impactada:</b> Servicios profesionales representan el 38% del sobregiro total.</li>
+          <li><b>Oportunidad de ahorro:</b> La renegociación de 3 contratos clave podría reducir la variación a < 5%.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Tabla de departamentos -->
+    <div class="section-card">
+      <div class="section-header"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg> Gasto por Departamento</div>
+      <div class="section-body" style="padding:0">
+        <table>
+          <thead>
+            <tr>
+              <th>Departamento</th>
+              <th>Presupuesto</th>
+              <th>Gasto Real</th>
+              <th>Variación %</th>
+              <th>Riesgo</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><b>Operaciones</b></td>
+              <td>$1,200,000</td>
+              <td>$1,488,000</td>
+              <td style="color:#c62828;font-weight:700">+24.0%</td>
+              <td><span class="badge-risk risk-alto"><svg viewBox="0 0 24 24" width="12" height="12"><circle cx="12" cy="12" r="8" fill="#c62828"/></svg> Alto</span></td>
+            </tr>
+            <tr>
+              <td><b>Tecnología</b></td>
+              <td>$980,000</td>
+              <td>$1,195,600</td>
+              <td style="color:#c62828;font-weight:700">+22.0%</td>
+              <td><span class="badge-risk risk-alto"><svg viewBox="0 0 24 24" width="12" height="12"><circle cx="12" cy="12" r="8" fill="#c62828"/></svg> Alto</span></td>
+            </tr>
+            <tr>
+              <td><b>Marketing</b></td>
+              <td>$650,000</td>
+              <td>$767,000</td>
+              <td style="color:#a66b00;font-weight:700">+18.0%</td>
+              <td><span class="badge-risk risk-medio"><svg viewBox="0 0 24 24" width="12" height="12"><circle cx="12" cy="12" r="8" fill="#F4B400"/></svg> Medio</span></td>
+            </tr>
+            <tr>
+              <td><b>Legal</b></td>
+              <td>$520,000</td>
+              <td>$556,400</td>
+              <td style="color:#a66b00;font-weight:700">+7.0%</td>
+              <td><span class="badge-risk risk-bajo"><svg viewBox="0 0 24 24" width="12" height="12"><circle cx="12" cy="12" r="8" fill="#1b5e20"/></svg> Bajo</span></td>
+            </tr>
+            <tr>
+              <td><b>Recursos Humanos</b></td>
+              <td>$450,000</td>
+              <td>$463,500</td>
+              <td style="font-weight:700">+3.0%</td>
+              <td><span class="badge-risk risk-bajo"><svg viewBox="0 0 24 24" width="12" height="12"><circle cx="12" cy="12" r="8" fill="#1b5e20"/></svg> Bajo</span></td>
+            </tr>
+            <tr>
+              <td><b>Finanzas</b></td>
+              <td>$300,000</td>
+              <td>$306,000</td>
+              <td style="font-weight:700">+2.0%</td>
+              <td><span class="badge-risk risk-bajo"><svg viewBox="0 0 24 24" width="12" height="12"><circle cx="12" cy="12" r="8" fill="#1b5e20"/></svg> Bajo</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Tabla de riesgos -->
+    <div class="section-card">
+      <div class="section-header"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Matriz de Riesgos</div>
+      <div class="section-body" style="padding:0">
+        <table>
+          <thead>
+            <tr><th>Riesgo</th><th>Probabilidad</th><th>Impacto</th><th>Mitigación</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Sobregiro continuo en Operaciones</td>
+              <td><span class="badge-risk risk-alto">Alta</span></td>
+              <td><span class="badge-risk risk-alto">Alto</span></td>
+              <td>Auditoría de contratos de servicios profesionales en Q1 2026</td>
+            </tr>
+            <tr>
+              <td>Dependencia de proveedores únicos en TI</td>
+              <td><span class="badge-risk risk-medio">Media</span></td>
+              <td><span class="badge-risk risk-alto">Alto</span></td>
+              <td>RFP para al menos 2 proveedores alternativos</td>
+            </tr>
+            <tr>
+              <td>Licencias de software sin renovación definida</td>
+              <td><span class="badge-risk risk-medio">Media</span></td>
+              <td><span class="badge-risk risk-medio">Medio</span></td>
+              <td>Inventario de licencias y negociación enterprise</td>
+            </tr>
+            <tr>
+              <td>Resistencia al cambio en adopción de Copilot</td>
+              <td><span class="badge-risk risk-medio">Media</span></td>
+              <td><span class="badge-risk risk-bajo">Bajo</span></td>
+              <td>Plan de capacitación por fases con champions internos</td>
+            </tr>
+            <tr>
+              <td>Fuga de datos en procesos manuales</td>
+              <td><span class="badge-risk risk-bajo">Baja</span></td>
+              <td><span class="badge-risk risk-alto">Alto</span></td>
+              <td>Automatización de flujos con controles de acceso</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Recomendaciones -->
+    <div class="section-card">
+      <div class="section-header"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> Recomendaciones</div>
+      <div class="section-body">
+        <div class="rec-item">
+          <input type="checkbox">
+          <div>
+            <div class="rec-title">Renegociar top 3 contratos de servicios profesionales</div>
+            <div class="rec-desc">Operaciones y TI concentran el 72% del sobregiro. Renegociar tarifas podría ahorrar ~$200K/año.</div>
+          </div>
+        </div>
+        <div class="rec-item">
+          <input type="checkbox">
+          <div>
+            <div class="rec-title">Implementar alertas automáticas al 80% del presupuesto</div>
+            <div class="rec-desc">Configurar notificaciones cuando un departamento alcance el 80% para intervención temprana.</div>
+          </div>
+        </div>
+        <div class="rec-item">
+          <input type="checkbox">
+          <div>
+            <div class="rec-title">Consolidar licencias de software (TI)</div>
+            <div class="rec-desc">Migrar a contratos enterprise en herramientas clave: reducción estimada del 15% en costos de licenciamiento.</div>
+          </div>
+        </div>
+        <div class="rec-item">
+          <input type="checkbox">
+          <div>
+            <div class="rec-title">Revisión mensual obligatoria con dashboard en vivo</div>
+            <div class="rec-desc">Reemplazar el reporte Excel mensual por un dashboard HTML interactivo actualizado en tiempo real.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <div class="footer">
+    Scotiabank · POC Thinking con Copilot · Documento generado con IA — Verificar datos antes de tomar decisiones.<br>
+    Confidencial — Solo para uso interno.
+  </div>
+
+</body>
+</html>

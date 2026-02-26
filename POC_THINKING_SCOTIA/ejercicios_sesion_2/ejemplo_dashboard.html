@@ -1,0 +1,487 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dashboard Presupuestal — Scotiabank</title>
+  <style>
+    :root {
+      --scotia-red: #EC111A;
+      --scotia-dark-red: #AD0B13;
+      --scotia-dark: #1A1A1A;
+      --scotia-gray: #6B6B6B;
+      --scotia-light: #F5F5F5;
+      --scotia-white: #FFFFFF;
+      --scotia-green: #00874E;
+      --scotia-yellow: #F4B400;
+      --scotia-blue: #0072CE;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0 }
+    body {
+      font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, system-ui, Roboto, Helvetica, Arial, sans-serif;
+      color: var(--scotia-dark);
+      background: var(--scotia-light);
+      line-height: 1.6;
+    }
+
+    /* ── HEADER ─────────────────────────────────── */
+    .topbar { background: var(--scotia-red); height: 4px }
+    .header {
+      background: var(--scotia-white);
+      padding: 16px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #e0e0e0;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .header-left { display: flex; align-items: center; gap: 14px }
+    .header img { height: 30px }
+    .header h1 { font-size: 18px; font-weight: 700 }
+
+    /* ── FILTERS ────────────────────────────────── */
+    .filters {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .filters label { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--scotia-gray) }
+    .filters select, .filters input {
+      padding: 8px 14px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: inherit;
+      background: var(--scotia-white);
+      outline: none;
+      transition: border-color .2s;
+    }
+    .filters select:focus, .filters input:focus { border-color: var(--scotia-red) }
+
+    /* ── MAIN ──────────────────────────────────── */
+    .wrap { max-width: 1200px; margin: 0 auto; padding: 24px }
+
+    /* ── KPI CARDS ─────────────────────────────── */
+    .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px }
+    .kpi {
+      background: var(--scotia-white);
+      border-radius: 12px;
+      padding: 20px 24px;
+      box-shadow: 0 1px 4px rgba(0,0,0,.05);
+      border-left: 4px solid var(--scotia-red);
+    }
+    .kpi-label { font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--scotia-gray) }
+    .kpi-value { font-size: 28px; font-weight: 800; margin: 4px 0 2px }
+    .kpi-change { font-size: 12px; font-weight: 600 }
+    .kpi-change.up { color: var(--scotia-green) }
+    .kpi-change.down { color: var(--scotia-red) }
+
+    /* ── SUMMARY TEXT ──────────────────────────── */
+    .summary-text {
+      background: var(--scotia-white);
+      border-radius: 10px;
+      padding: 14px 20px;
+      margin-bottom: 20px;
+      font-size: 14px;
+      border-left: 4px solid var(--scotia-yellow);
+      box-shadow: 0 1px 3px rgba(0,0,0,.04);
+    }
+    .summary-text b { color: var(--scotia-red) }
+
+    /* ── GRID LAYOUT ──────────────────────────── */
+    .grid-2 { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; margin-bottom: 24px }
+
+    /* ── TABLE ─────────────────────────────────── */
+    .card {
+      background: var(--scotia-white);
+      border-radius: 12px;
+      box-shadow: 0 1px 4px rgba(0,0,0,.05);
+      overflow: hidden;
+    }
+    .card-header {
+      padding: 14px 20px;
+      font-weight: 700;
+      font-size: 14px;
+      border-bottom: 1px solid #f0f0f0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    table { width: 100%; border-collapse: collapse }
+    th, td { padding: 10px 16px; text-align: left; font-size: 13px; border-bottom: 1px solid #f5f5f5 }
+    th {
+      background: var(--scotia-light);
+      font-weight: 700;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      color: var(--scotia-gray);
+      cursor: pointer;
+      user-select: none;
+    }
+    th:hover { background: #eaeaea }
+    th .sort-arrow { font-size: 10px; margin-left: 4px; opacity: .4 }
+    tr:hover { background: #fafafa }
+    .row-green { border-left: 3px solid var(--scotia-green) }
+    .row-yellow { border-left: 3px solid var(--scotia-yellow) }
+    .row-red { border-left: 3px solid var(--scotia-red) }
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .badge-green { background: #d4edda; color: #1b5e20 }
+    .badge-yellow { background: #fff3cd; color: #a66b00 }
+    .badge-red { background: #fde8e8; color: #c62828 }
+
+    /* ── BAR CHART ─────────────────────────────── */
+    .bar-chart { padding: 20px }
+    .bar-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+    .bar-label { width: 110px; font-size: 12px; font-weight: 600; text-align: right; flex-shrink: 0 }
+    .bar-track {
+      flex: 1;
+      height: 28px;
+      background: #f0f0f0;
+      border-radius: 6px;
+      overflow: hidden;
+      position: relative;
+    }
+    .bar-fill {
+      height: 100%;
+      border-radius: 6px;
+      background: linear-gradient(90deg, var(--scotia-red), var(--scotia-dark-red));
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-right: 8px;
+      font-size: 11px;
+      color: #fff;
+      font-weight: 700;
+      transition: width .5s ease;
+    }
+
+    /* ── EXPORT BUTTON ─────────────────────────── */
+    .btn-export {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: var(--scotia-red);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background .2s;
+    }
+    .btn-export:hover { background: var(--scotia-dark-red) }
+
+    /* ── FOOTER ─────────────────────────────────── */
+    .footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 11px;
+      color: var(--scotia-gray);
+      border-top: 1px solid #e0e0e0;
+      margin-top: 20px;
+    }
+
+    @media (max-width: 900px) {
+      .kpi-row { grid-template-columns: repeat(2, 1fr) }
+      .grid-2 { grid-template-columns: 1fr }
+      .header { flex-direction: column; align-items: flex-start }
+    }
+    @media (max-width: 500px) {
+      .kpi-row { grid-template-columns: 1fr }
+      .filters { flex-direction: column; align-items: stretch }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="topbar"></div>
+
+  <header class="header">
+    <div class="header-left">
+      <img src="https://cdn.aglty.io/scotia-bank-mexico/images/logo-scotiabank-rojo.png" alt="Scotiabank">
+      <h1>Dashboard de Control Presupuestal 2025</h1>
+    </div>
+    <div class="filters">
+      <div>
+        <label>Departamento</label><br>
+        <select id="filterDept" onchange="applyFilters()">
+          <option value="all">Todos</option>
+        </select>
+      </div>
+      <div>
+        <label>Mes</label><br>
+        <select id="filterMonth" onchange="applyFilters()">
+          <option value="all">Todos</option>
+        </select>
+      </div>
+      <div>
+        <label>Buscar</label><br>
+        <input id="searchBox" type="text" placeholder="Filtrar tabla..." oninput="applyFilters()">
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+
+    <!-- KPIs -->
+    <div class="kpi-row">
+      <div class="kpi" id="kpiGasto">
+        <div class="kpi-label">Gasto Total</div>
+        <div class="kpi-value">-</div>
+        <div class="kpi-change">-</div>
+      </div>
+      <div class="kpi" id="kpiPresupuesto">
+        <div class="kpi-label">Presupuesto Total</div>
+        <div class="kpi-value">-</div>
+        <div class="kpi-change">-</div>
+      </div>
+      <div class="kpi" id="kpiVariacion">
+        <div class="kpi-label">Variación Promedio</div>
+        <div class="kpi-value">-</div>
+        <div class="kpi-change">-</div>
+      </div>
+      <div class="kpi" id="kpiRegistros">
+        <div class="kpi-label">Registros</div>
+        <div class="kpi-value">-</div>
+        <div class="kpi-change">-</div>
+      </div>
+    </div>
+
+    <!-- Summary -->
+    <div class="summary-text" id="summaryText">Cargando resumen...</div>
+
+    <div class="grid-2">
+
+      <!-- TABLE -->
+      <div class="card">
+        <div class="card-header">
+          📊 Detalle de gastos
+          <span style="flex:1"></span>
+          <button class="btn-export" onclick="exportTable()">📋 Copiar datos</button>
+        </div>
+        <div style="overflow-x:auto">
+          <table>
+            <thead>
+              <tr>
+                <th onclick="sortTable(0)">Departamento <span class="sort-arrow">⇅</span></th>
+                <th onclick="sortTable(1)">Categoría <span class="sort-arrow">⇅</span></th>
+                <th onclick="sortTable(2)">Mes <span class="sort-arrow">⇅</span></th>
+                <th onclick="sortTable(3)">Presupuesto <span class="sort-arrow">⇅</span></th>
+                <th onclick="sortTable(4)">Gasto Real <span class="sort-arrow">⇅</span></th>
+                <th onclick="sortTable(5)">Variación % <span class="sort-arrow">⇅</span></th>
+                <th>Riesgo</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- BAR CHART -->
+      <div class="card">
+        <div class="card-header">📊 Gasto Real por Departamento</div>
+        <div class="bar-chart" id="barChart"></div>
+      </div>
+
+    </div>
+  </main>
+
+  <div class="footer">
+    Scotiabank · Dashboard generado con IA — Verificar datos antes de tomar decisiones · Confidencial
+  </div>
+
+  <script>
+    // ══════════════════════════════════════════════════
+    // DATOS (reemplazar con datos reales del Excel)
+    // ══════════════════════════════════════════════════
+    const DATA = [
+      { dept: "Operaciones",   cat: "Servicios Prof.",  mes: "Ene", presupuesto: 100000, gasto: 112000 },
+      { dept: "Operaciones",   cat: "Logística",        mes: "Ene", presupuesto: 80000,  gasto: 95000 },
+      { dept: "Operaciones",   cat: "Servicios Prof.",  mes: "Feb", presupuesto: 100000, gasto: 118000 },
+      { dept: "Operaciones",   cat: "Mantenimiento",    mes: "Feb", presupuesto: 60000,  gasto: 72000 },
+      { dept: "Operaciones",   cat: "Logística",        mes: "Mar", presupuesto: 80000,  gasto: 104000 },
+      { dept: "Tecnología",    cat: "Licencias",        mes: "Ene", presupuesto: 90000,  gasto: 108000 },
+      { dept: "Tecnología",    cat: "Infraestructura",  mes: "Ene", presupuesto: 75000,  gasto: 82000 },
+      { dept: "Tecnología",    cat: "Licencias",        mes: "Feb", presupuesto: 90000,  gasto: 115000 },
+      { dept: "Tecnología",    cat: "Consultoría",      mes: "Feb", presupuesto: 60000,  gasto: 74000 },
+      { dept: "Tecnología",    cat: "Infraestructura",  mes: "Mar", presupuesto: 75000,  gasto: 91000 },
+      { dept: "Marketing",     cat: "Campañas",         mes: "Ene", presupuesto: 70000,  gasto: 78000 },
+      { dept: "Marketing",     cat: "Eventos",          mes: "Ene", presupuesto: 40000,  gasto: 48000 },
+      { dept: "Marketing",     cat: "Campañas",         mes: "Feb", presupuesto: 70000,  gasto: 84000 },
+      { dept: "Marketing",     cat: "Digital",          mes: "Mar", presupuesto: 55000,  gasto: 62000 },
+      { dept: "Legal",         cat: "Litigios",         mes: "Ene", presupuesto: 50000,  gasto: 52000 },
+      { dept: "Legal",         cat: "Regulatorio",      mes: "Feb", presupuesto: 45000,  gasto: 48000 },
+      { dept: "Legal",         cat: "Contratos",        mes: "Mar", presupuesto: 40000,  gasto: 42000 },
+      { dept: "RRHH",          cat: "Nómina extra",     mes: "Ene", presupuesto: 55000,  gasto: 56000 },
+      { dept: "RRHH",          cat: "Capacitación",     mes: "Feb", presupuesto: 30000,  gasto: 31000 },
+      { dept: "RRHH",          cat: "Beneficios",       mes: "Mar", presupuesto: 35000,  gasto: 35500 },
+      { dept: "Finanzas",      cat: "Auditoría",        mes: "Ene", presupuesto: 40000,  gasto: 40500 },
+      { dept: "Finanzas",      cat: "Sistemas",         mes: "Feb", presupuesto: 35000,  gasto: 36000 },
+      { dept: "Finanzas",      cat: "Reporting",        mes: "Mar", presupuesto: 30000,  gasto: 30500 },
+    ];
+
+    // Add computed fields
+    DATA.forEach(d => {
+      d.variacion = ((d.gasto - d.presupuesto) / d.presupuesto * 100);
+    });
+
+    // Populate filters
+    const depts = [...new Set(DATA.map(d => d.dept))];
+    const months = [...new Set(DATA.map(d => d.mes))];
+    const deptSel = document.getElementById('filterDept');
+    const monthSel = document.getElementById('filterMonth');
+    depts.forEach(d => { const o = document.createElement('option'); o.value = d; o.textContent = d; deptSel.appendChild(o) });
+    months.forEach(m => { const o = document.createElement('option'); o.value = m; o.textContent = m; monthSel.appendChild(o) });
+
+    let sortCol = -1, sortAsc = true;
+
+    function applyFilters() {
+      const dept = deptSel.value;
+      const month = monthSel.value;
+      const search = document.getElementById('searchBox').value.toLowerCase();
+
+      let filtered = DATA.filter(d => {
+        if (dept !== 'all' && d.dept !== dept) return false;
+        if (month !== 'all' && d.mes !== month) return false;
+        if (search && !(d.dept + d.cat + d.mes).toLowerCase().includes(search)) return false;
+        return true;
+      });
+
+      if (sortCol >= 0) {
+        const keys = ['dept', 'cat', 'mes', 'presupuesto', 'gasto', 'variacion'];
+        const key = keys[sortCol];
+        filtered.sort((a, b) => {
+          const va = a[key], vb = b[key];
+          if (typeof va === 'number') return sortAsc ? va - vb : vb - va;
+          return sortAsc ? String(va).localeCompare(String(vb)) : String(vb).localeCompare(String(va));
+        });
+      }
+
+      updateKPIs(filtered);
+      updateTable(filtered);
+      updateChart(filtered);
+      updateSummary(filtered, dept);
+    }
+
+    function fmt(n) { return '$' + n.toLocaleString('es-MX', { maximumFractionDigits: 0 }) }
+
+    function updateKPIs(data) {
+      const totalGasto = data.reduce((s, d) => s + d.gasto, 0);
+      const totalPres = data.reduce((s, d) => s + d.presupuesto, 0);
+      const avgVar = data.length ? data.reduce((s, d) => s + d.variacion, 0) / data.length : 0;
+      const highRisk = data.filter(d => d.variacion > 20).length;
+
+      const kpiG = document.getElementById('kpiGasto');
+      kpiG.querySelector('.kpi-value').textContent = fmt(totalGasto);
+      kpiG.querySelector('.kpi-change').textContent = data.length + ' registros';
+      kpiG.querySelector('.kpi-change').className = 'kpi-change';
+
+      const kpiP = document.getElementById('kpiPresupuesto');
+      kpiP.querySelector('.kpi-value').textContent = fmt(totalPres);
+      const diff = totalGasto - totalPres;
+      kpiP.querySelector('.kpi-change').textContent = (diff > 0 ? '↑ Sobregiro: ' : '↓ Ahorro: ') + fmt(Math.abs(diff));
+      kpiP.querySelector('.kpi-change').className = 'kpi-change ' + (diff > 0 ? 'down' : 'up');
+
+      const kpiV = document.getElementById('kpiVariacion');
+      kpiV.querySelector('.kpi-value').textContent = avgVar.toFixed(1) + '%';
+      kpiV.querySelector('.kpi-change').textContent = avgVar > 10 ? '⚠️ Sobre meta del 10%' : '✅ Dentro de meta';
+      kpiV.querySelector('.kpi-change').className = 'kpi-change ' + (avgVar > 10 ? 'down' : 'up');
+
+      const kpiR = document.getElementById('kpiRegistros');
+      kpiR.querySelector('.kpi-value').textContent = data.length;
+      kpiR.querySelector('.kpi-change').textContent = highRisk + ' con variación > 20%';
+      kpiR.querySelector('.kpi-change').className = 'kpi-change ' + (highRisk > 0 ? 'down' : 'up');
+    }
+
+    function updateTable(data) {
+      const tbody = document.getElementById('tableBody');
+      tbody.innerHTML = data.map(d => {
+        const v = d.variacion;
+        const cls = v > 20 ? 'row-red' : v > 10 ? 'row-yellow' : 'row-green';
+        const badge = v > 20 ? '<span class="badge badge-red">🔴 Alto</span>'
+                    : v > 10 ? '<span class="badge badge-yellow">🟡 Medio</span>'
+                    : '<span class="badge badge-green">🟢 Bajo</span>';
+        const varColor = v > 20 ? 'color:#c62828' : v > 10 ? 'color:#a66b00' : 'color:#1b5e20';
+        return `<tr class="${cls}">
+          <td><b>${d.dept}</b></td>
+          <td>${d.cat}</td>
+          <td>${d.mes}</td>
+          <td>${fmt(d.presupuesto)}</td>
+          <td>${fmt(d.gasto)}</td>
+          <td style="${varColor};font-weight:700">+${v.toFixed(1)}%</td>
+          <td>${badge}</td>
+        </tr>`;
+      }).join('');
+    }
+
+    function updateChart(data) {
+      // Aggregate by department
+      const byDept = {};
+      data.forEach(d => { byDept[d.dept] = (byDept[d.dept] || 0) + d.gasto });
+      const maxVal = Math.max(...Object.values(byDept), 1);
+      const chart = document.getElementById('barChart');
+
+      chart.innerHTML = Object.entries(byDept)
+        .sort((a, b) => b[1] - a[1])
+        .map(([dept, val]) => {
+          const pct = (val / maxVal * 100).toFixed(1);
+          return `<div class="bar-row">
+            <div class="bar-label">${dept}</div>
+            <div class="bar-track">
+              <div class="bar-fill" style="width:${pct}%">${fmt(val)}</div>
+            </div>
+          </div>`;
+        }).join('');
+    }
+
+    function updateSummary(data, dept) {
+      const highRisk = data.filter(d => d.variacion > 20).length;
+      const label = dept === 'all' ? 'todos los departamentos' : dept;
+      document.getElementById('summaryText').innerHTML =
+        `Se encontraron <b>${highRisk} registros</b> con variación > 20% en <b>${label}</b>. ` +
+        `Total de registros mostrados: <b>${data.length}</b>.`;
+    }
+
+    function sortTable(col) {
+      if (sortCol === col) sortAsc = !sortAsc;
+      else { sortCol = col; sortAsc = true }
+      applyFilters();
+    }
+
+    function exportTable() {
+      const rows = document.querySelectorAll('#tableBody tr');
+      let text = 'Departamento\tCategoría\tMes\tPresupuesto\tGasto Real\tVariación %\n';
+      rows.forEach(r => {
+        const cells = r.querySelectorAll('td');
+        text += Array.from(cells).slice(0, 6).map(c => c.textContent.trim()).join('\t') + '\n';
+      });
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = document.querySelector('.btn-export');
+        const original = btn.innerHTML;
+        btn.innerHTML = '✅ Copiado!';
+        setTimeout(() => btn.innerHTML = original, 2000);
+      });
+    }
+
+    // Initial render
+    applyFilters();
+  </script>
+
+</body>
+</html>

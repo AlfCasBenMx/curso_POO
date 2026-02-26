@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Sesión 3 — Laboratorio Python I (instalación y entorno)</title>
+  <title>Sesión 3 — Lab Copilot I: Excel con IA | Copilot 365</title>
   <style>
     :root{
       --ey-yellow:#FFCD00;
@@ -17,7 +17,7 @@
     a{color:var(--ey-accent);text-decoration:none}
     a:hover{text-decoration:underline}
     .wrap{max-width:1100px;margin:0 auto;padding:24px}
-    .hero{background: linear-gradient(135deg, var(--ey-yellow) 0%, #ffe77a 60%, #fff3b0 100%);padding:48px 24px 56px;position:relative;overflow:hidden;display:flex;align-items:center;gap:28px;border-radius:8px}
+    .hero{background:linear-gradient(135deg,var(--ey-yellow) 0%,#ffe77a 60%,#fff3b0 100%);padding:48px 24px 56px;position:relative;overflow:hidden;display:flex;align-items:center;gap:28px;border-radius:8px}
     .hero img{width:120px;height:auto}
     .hero .text{max-width:820px}
     .hero h1{margin:0;font-size:clamp(24px,4.5vw,40px);font-weight:800}
@@ -25,11 +25,18 @@
     .badge{display:inline-block;padding:4px 10px;border-radius:999px;background:#fff8d6;border:1px solid #ffe68a;font-size:12px;margin-right:8px}
     section{padding:36px 0;border-bottom:1px solid #f0f0f0}
     h2{font-size:24px;margin:0 0 12px}
+    h3{margin:14px 0 8px}
     .lead{color:var(--ey-gray);max-width:900px}
+    .grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
     .card{background:#fff;border:1px solid #eee;border-radius:12px;padding:18px;box-shadow:0 1px 2px rgba(0,0,0,0.04)}
-    pre{background:#fbfbfb;border:1px solid #eee;padding:12px;border-radius:8px;overflow:auto}
+    pre{background:#fbfbfb;border:1px solid #eee;padding:12px;border-radius:8px;overflow:auto;font-size:13px}
+    ul{margin:10px 0 0 18px}
     footer{padding:36px 0;color:#777}
-    @media (max-width:900px){.hero{flex-direction:column;align-items:flex-start}}
+    .limitation-card{background:#fff3cd;border:1px solid #ffc107;border-radius:8px;padding:14px;margin:10px 0;font-size:14px}
+    .limitation-card b{color:#856404}
+    .step-num{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;background:var(--ey-accent);color:#fff;border-radius:50%;font-weight:bold;font-size:14px;margin-right:10px;flex-shrink:0}
+    .step-box{display:flex;align-items:flex-start;padding:16px;background:var(--ey-light);border-radius:8px;margin-bottom:12px}
+    @media(max-width:900px){.grid-2{grid-template-columns:1fr}.hero{flex-direction:column;align-items:flex-start}}
   </style>
 </head>
 <body>
@@ -37,8 +44,8 @@
   <header class="hero">
     <img src="https://companieslogo.com/img/orig/ernst-and-young-6c5de5ba.svg?t=1720244494&download=true" alt="EY Logo">
     <div class="text">
-      <h1>Sesión 3 — Laboratorio Python I</h1>
-      <p class="subtitle">Instalación del entorno y primer script — preparar la máquina para los laboratorios.</p>
+      <h1>Sesión 3 — Lab Copilot I: Excel con IA</h1>
+      <p class="subtitle">Primer laboratorio práctico: preparar datos, formatear como Tabla, usar Copilot en Excel para análisis y fórmulas asistidas.</p>
       <div style="margin-top:12px">
         <span class="badge">Sesión C · Laboratorio</span>
         <span class="badge">16-dic-25 · 15:00–16:00 (México)</span>
@@ -51,13 +58,13 @@
     <section>
       <h2>Objetivo del laboratorio</h2>
       <div class="card">
-        <p class="lead">Dejar listo el entorno de desarrollo en Windows para ejecutar los ejemplos del curso: instalar Python, configurar un entorno virtual, instalar dependencias y ejecutar scripts sencillos.</p>
+        <p class="lead">Dejar lista la base para trabajar con Copilot en Excel: abrir datos, formatear como Tabla, escribir tu primer prompt y validar los resultados.</p>
         <ul>
-          <li>Verificar o instalar Python 3.</li>
-          <li>Instalar un editor recomendado (VS Code) y extensiones mínimas.</li>
-          <li>Crear y activar un entorno virtual.</li>
-          <li>Instalar dependencias con pip desde <code>requirements.txt</code> si aplica.</li>
-          <li>Ejecutar un primer script de prueba.</li>
+          <li>Verificar que Copilot está activo en tu Excel (licencia + OneDrive).</li>
+          <li>Abrir un archivo CSV y <b>formatearlo como Tabla</b> (Ctrl+T) — paso obligatorio.</li>
+          <li>Pedir tu primer análisis a Copilot: resumen, fórmula, gráfico.</li>
+          <li>Iterar prompts: refinar la respuesta, pedir alternativas.</li>
+          <li>Validar los resultados contra cálculos manuales.</li>
         </ul>
       </div>
     </section>
@@ -66,57 +73,293 @@
       <h2>Agenda rápida (60 min)</h2>
       <div class="card">
         <ol>
-          <li>Comprobación previa y preguntas (10 min)</li>
-          <li>Instalación y configuración (25 min)</li>
-          <li>Primer script y pruebas (15 min)</li>
-          <li>Preguntas y cierre (10 min)</li>
+          <li>Verificación de licencia y OneDrive (10 min)</li>
+          <li>Preparar datos: abrir CSV y formatear como Tabla (15 min)</li>
+          <li>Primer interacción con Copilot en Excel (20 min)</li>
+          <li>Ejercicios guiados y validación (15 min)</li>
         </ol>
       </div>
     </section>
 
     <section>
-      <h2>Pasos prácticos</h2>
+      <h2>Preparación: pasos obligatorios</h2>
       <div class="card">
-        <h3>1) Verificar Python</h3>
-        <p>Abre una ventana de <code>cmd.exe</code> y ejecuta:</p>
-        <pre><code>python --version</code></pre>
 
-        <h3>2) Crear y activar un entorno virtual (Windows, cmd.exe)</h3>
-        <pre><code>python -m venv .venv
-.venv\Scripts\activate</code></pre>
+        <div class="step-box">
+          <span class="step-num">1</span>
+          <div>
+            <h3 style="margin-top:0">Verificar licencia de Copilot</h3>
+            <p>Abre Excel (escritorio o web). En la barra de herramientas <b>Inicio</b>, debes ver el botón <b>"Copilot"</b> con el ícono de IA. Si no aparece, contacta a IT para activar tu licencia.</p>
+          </div>
+        </div>
 
-        <h3>3) Actualizar pip e instalar dependencias</h3>
-        <pre><code>python -m pip install --upgrade pip
-python -m pip install -r requirements.txt</code></pre>
+        <div class="step-box">
+          <span class="step-num">2</span>
+          <div>
+            <h3 style="margin-top:0">Subir archivos a OneDrive</h3>
+            <p>Copilot solo funciona con archivos guardados en <b>OneDrive o SharePoint</b>. Sube los CSVs del curso a tu OneDrive:</p>
+            <ul>
+              <li><a href="ejercicios/ventas.csv">ventas.csv</a></li>
+              <li><a href="ejercicios/clientes.csv">clientes.csv</a></li>
+              <li><a href="ejercicios/transacciones.csv">transacciones.csv</a></li>
+              <li><a href="ejercicios/tarifas.csv">tarifas.csv</a></li>
+            </ul>
+          </div>
+        </div>
 
-        <h3>4) Ejecutar un script de prueba</h3>
-        <p>Crea un archivo <code>hola.py</code> con este contenido y ejecútalo:</p>
-        <pre><code>print('Hola desde Python - Sesión 3')</code></pre>
-        <pre><code>python hola.py</code></pre>
+        <div class="step-box">
+          <span class="step-num">3</span>
+          <div>
+            <h3 style="margin-top:0">Formatear como Tabla (Ctrl+T)</h3>
+            <p>Este es el <b>paso más importante</b>. Copilot en Excel <u>no funciona</u> con rangos sin formato:</p>
+            <ol>
+              <li>Abre <code>ventas.csv</code> en Excel</li>
+              <li>Selecciona cualquier celda con datos</li>
+              <li>Presiona <b>Ctrl+T</b> (o Insertar → Tabla)</li>
+              <li>Marca "Mi tabla tiene encabezados" → Aceptar</li>
+              <li>Guarda el archivo como <code>.xlsx</code> en OneDrive</li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="limitation-card">
+          <b>⚠️ Sin Ctrl+T, sin Copilot.</b> Este es el error #1 de los usuarios nuevos. Copilot en Excel requiere datos en formato Tabla. Si ves el mensaje "No puedo trabajar con estos datos", revisa que estén como Tabla.
+        </div>
       </div>
     </section>
 
     <section>
-      <h2>Checklist rápido de preparación</h2>
+      <h2>Tu primera interacción con Copilot en Excel</h2>
       <div class="card">
+        <p class="lead">Con los datos ya como Tabla y en OneDrive, vamos a usar Copilot:</p>
+
+        <div class="step-box">
+          <span class="step-num">A</span>
+          <div>
+            <h3 style="margin-top:0">Abrir el panel Copilot</h3>
+            <p>Haz clic en el botón <b>Copilot</b> en la barra de Inicio. Se abre un panel lateral a la derecha.</p>
+          </div>
+        </div>
+
+        <div class="step-box">
+          <span class="step-num">B</span>
+          <div>
+            <h3 style="margin-top:0">Pedir un resumen</h3>
+            <p>Escribe en el panel:</p>
+            <pre>"Resume los datos de esta tabla: ¿cuántas filas hay, cuál es el importe total y cuáles son las categorías?"</pre>
+            <p style="font-size:13px;color:#666">Copilot analizará la tabla y generará un resumen con estadísticas básicas.</p>
+          </div>
+        </div>
+
+        <div class="step-box">
+          <span class="step-num">C</span>
+          <div>
+            <h3 style="margin-top:0">Pedir una fórmula</h3>
+            <p>Escribe:</p>
+            <pre>"Agrega una columna llamada 'impuesto' que calcule el 16% del importe"</pre>
+            <p style="font-size:13px;color:#666">Copilot propondrá la fórmula y te pedirá confirmar antes de insertarla.</p>
+          </div>
+        </div>
+
+        <div class="step-box">
+          <span class="step-num">D</span>
+          <div>
+            <h3 style="margin-top:0">Crear un gráfico</h3>
+            <p>Escribe:</p>
+            <pre>"Crea un gráfico de barras que muestre la suma de importe por categoría"</pre>
+          </div>
+        </div>
+
+        <div class="limitation-card">
+          <b>💡 Plan B — prompts en inglés:</b> Si Copilot no responde bien en español, prueba en inglés:<br>
+          <code style="display:block;margin-top:6px;background:#fff;padding:6px;border-radius:4px">"Add a column called 'tax' that calculates 16% of the 'importe' column"</code>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Prompts de Copilot en Excel: guía rápida</h2>
+      <div class="card">
+        <h3>Fórmulas de Excel asistidas por Copilot</h3>
         <ul>
-          <li>Python 3 instalado y accesible desde la línea de comandos.</li>
-          <li>Editor instalado (VS Code recomendado).</li>
-          <li>Entorno virtual creado y activado.</li>
-          <li>Dependencias instaladas sin errores (si existe <code>requirements.txt</code>).</li>
-          <li>Primer script ejecutado correctamente.</li>
+          <li><strong>SUMIFS por categoría:</strong><br>
+            "Agrega una columna que sume el importe solo para la categoría 'Servicios'"</li>
+          <li><strong>Buscar y devolver nombre:</strong><br>
+            "Busca el nombre del cliente usando id_cliente desde la tabla de clientes y agrégalo como columna"</li>
+          <li><strong>Regla escalonada:</strong><br>
+            "Agrega una columna 'tasa_impuesto': si importe ≤ 1000, tasa 5%; si ≤ 5000, tasa 8%; si mayor, tasa 12%"</li>
+          <li><strong>Análisis de fechas:</strong><br>
+            "Muestra el total de ventas por mes en un resumen"</li>
+        </ul>
+
+        <h3>Análisis y gráficos</h3>
+        <ul>
+          <li>"¿Cuál es la categoría con mayor importe total?"</li>
+          <li>"Muestra un gráfico de líneas con las ventas por fecha"</li>
+          <li>"¿Hay algún patrón o tendencia en los datos?"</li>
+          <li>"Resume los hallazgos principales de esta tabla"</li>
+        </ul>
+
+        <h3>Iteración (refinar la respuesta)</h3>
+        <ul>
+          <li>"La columna que creaste debería redondear a 2 decimales"</li>
+          <li>"Hazlo tolerante a celdas vacías — usa IFERROR"</li>
+          <li>"Dame 2 alternativas: una con IFS y otra con IF anidado"</li>
         </ul>
       </div>
     </section>
 
     <section>
-      <h2>Resolución de problemas comunes</h2>
+      <h2>Ejercicios guiados (10 ejercicios)</h2>
+      <div class="card">
+        <p class="lead">Trabaja cada ejercicio en Excel con Copilot. Usa los prompts sugeridos o escribe los tuyos:</p>
+        <div style="overflow:auto">
+          <table style="width:100%;border-collapse:collapse">
+            <thead>
+              <tr style="background:var(--ey-light)">
+                <th style="text-align:left;padding:8px;border-bottom:2px solid var(--ey-yellow)">#</th>
+                <th style="text-align:left;padding:8px;border-bottom:2px solid var(--ey-yellow)">Ejercicio</th>
+                <th style="text-align:left;padding:8px;border-bottom:2px solid var(--ey-yellow)">Archivo</th>
+                <th style="text-align:left;padding:8px;border-bottom:2px solid var(--ey-yellow)">Prompt para Copilot</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="padding:8px;border-bottom:1px solid #f4f4f4">1</td>
+                <td style="padding:8px;border-bottom:1px solid #f4f4f4"><b>Explorar datos</b></td>
+                <td style="padding:8px;border-bottom:1px solid #f4f4f4">ventas.csv</td>
+                <td style="padding:8px;border-bottom:1px solid #f4f4f4">"Resume esta tabla: ¿cuántas filas, cuántas categorías, cuál es el importe total?"</td>
+              </tr>
+              <tr style="background:#fafafa">
+                <td style="padding:8px;border-bottom:1px solid #f4f4f4">2</td>
+                <td style="padding:8px;border-bottom:1px solid #f4f4f4"><b>Sumar importes</b></td>
+                <td style="padding:8px;border-bottom:1px solid #f4f4f4">transacciones.csv</td>
+                <td style="padding:8px;border-bottom:1px solid #f4f4f4">"¿Cuál es la suma total de la columna importe?"</td>
+              </tr>
+              <tr>
+                <td style="padding:8px;border-bottom:1px solid #f4f4f4">3</td>
+                <td style="padding:8px;border-bottom:1px solid #f4f4f4"><b>Contar operaciones grandes</b></td>
+                <td style="padding:8px;border-bottom:1px solid #f4f4f4">ventas.csv</td>
+                <td style="padding:8px;border-bottom:1px solid #f4f4f4">"¿Cuántas ventas tienen un importe mayor o igual a 1000?"</td>
+              </tr>
+              <tr style="background:#fafafa">
+                <td style="padding:8px;border-bottom:1px solid #f4f4f4">4</td>
+                <td style="padding:8px;border-bottom:1px solid #f4f4f4"><b>Aplicar IVA</b></td>
+                <td style="padding:8px;border-bottom:1px solid #f4f4f4">ventas.csv</td>
+                <td style="padding:8px;border-bottom:1px solid #f4f4f4">"Agrega una columna 'importe_con_iva' que multiplique importe por 1.16"</td>
+              </tr>
+              <tr>
+                <td style="padding:8px;border-bottom:1px solid #f4f4f4">5</td>
+                <td style="padding:8px;border-bottom:1px solid #f4f4f4"><b>Sumar por categoría</b></td>
+                <td style="padding:8px;border-bottom:1px solid #f4f4f4">ventas.csv</td>
+                <td style="padding:8px;border-bottom:1px solid #f4f4f4">"Muestra la suma de importe para cada categoría"</td>
+              </tr>
+              <tr style="background:#fafafa">
+                <td style="padding:8px;border-bottom:1px solid #f4f4f4">6</td>
+                <td style="padding:8px;border-bottom:1px solid #f4f4f4"><b>Tabla dinámica</b></td>
+                <td style="padding:8px;border-bottom:1px solid #f4f4f4">ventas.csv</td>
+                <td style="padding:8px;border-bottom:1px solid #f4f4f4">"Crea un resumen con la suma de importe agrupado por categoría"</td>
+              </tr>
+              <tr>
+                <td style="padding:8px;border-bottom:1px solid #f4f4f4">7</td>
+                <td style="padding:8px;border-bottom:1px solid #f4f4f4"><b>Lookup entre tablas</b></td>
+                <td style="padding:8px;border-bottom:1px solid #f4f4f4">ventas + clientes</td>
+                <td style="padding:8px;border-bottom:1px solid #f4f4f4">"Agrega una columna 'nombre_cliente' buscando el nombre en la tabla de clientes usando id_cliente"</td>
+              </tr>
+              <tr style="background:#fafafa">
+                <td style="padding:8px;border-bottom:1px solid #f4f4f4">8</td>
+                <td style="padding:8px;border-bottom:1px solid #f4f4f4"><b>Regla escalonada</b></td>
+                <td style="padding:8px;border-bottom:1px solid #f4f4f4">ventas.csv</td>
+                <td style="padding:8px;border-bottom:1px solid #f4f4f4">"Agrega columna 'impuesto': si importe ≤ 1000 → 5%, si ≤ 5000 → 8%, si &gt; 5000 → 12%"</td>
+              </tr>
+              <tr>
+                <td style="padding:8px;border-bottom:1px solid #f4f4f4">9</td>
+                <td style="padding:8px;border-bottom:1px solid #f4f4f4"><b>Gráfico de barras</b></td>
+                <td style="padding:8px;border-bottom:1px solid #f4f4f4">ventas.csv</td>
+                <td style="padding:8px;border-bottom:1px solid #f4f4f4">"Crea un gráfico de barras con la suma de importe por categoría"</td>
+              </tr>
+              <tr style="background:#fafafa">
+                <td style="padding:8px;border-bottom:1px solid #f4f4f4">10</td>
+                <td style="padding:8px;border-bottom:1px solid #f4f4f4"><b>Prompt avanzado</b></td>
+                <td style="padding:8px;border-bottom:1px solid #f4f4f4">ventas.csv</td>
+                <td style="padding:8px;border-bottom:1px solid #f4f4f4">"Dame los 3 hallazgos más importantes de estos datos y sugiere qué análisis adicional haría falta"</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Validación de resultados</h2>
+      <div class="card">
+        <p class="lead">Antes de aceptar lo que Copilot genera, sigue esta lista rápida de validación:</p>
+        <ol>
+          <li>Prueba con un subconjunto pequeño (3–5 filas) y calcula manualmente para verificar el total.</li>
+          <li>Comprueba tipos de dato: fechas como fechas, importes como números (sin comas ni símbolos).</li>
+          <li>Verifica que los valores nulos o vacíos no rompen el cálculo (Copilot usa IFERROR automáticamente).</li>
+          <li>Revisa los casos límite: montos 0, fechas limítrofes, categorías desconocidas.</li>
+          <li>Documenta brevemente la lógica usada y los supuestos.</li>
+        </ol>
+
+        <h3>Prompts de verificación</h3>
+        <ul>
+          <li>"Revisa la fórmula que generaste y dime si hay casos donde podría fallar"</li>
+          <li>"Muéstrame el resultado esperado para estas 3 filas de ejemplo"</li>
+          <li>"Genera pasos para convertir este análisis en una tabla dinámica reproducible"</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2>Cómo redactar prompts efectivos</h2>
+      <div class="card">
+        <ol>
+          <li><strong>Sé específico:</strong> indica la tarea concreta — "Agrega una columna que calcule..." es mejor que "Analiza esto".</li>
+          <li><strong>Proporciona contexto:</strong> menciona nombres de columnas — "la columna importe", "la columna categoría".</li>
+          <li><strong>Pide el formato de salida:</strong> "Muestra como tabla", "Crea un gráfico de barras", "Agrega una columna".</li>
+          <li><strong>Itera:</strong> si el primer resultado no es perfecto, refina — "Hazlo tolerante a celdas vacías", "Redondea a 2 decimales".</li>
+          <li><strong>Valida:</strong> siempre verifica con un subconjunto manual antes de confiar en el resultado completo.</li>
+        </ol>
+
+        <h4>Plantilla rápida de prompt</h4>
+        <pre><code>Contexto: Tabla 'ventas' con columnas id_cliente, fecha, importe, categoría.
+Tarea: Agrega una columna 'impuesto' que aplique: 5% si importe ≤ 1000, 8% si ≤ 5000, 12% si mayor.
+Formato: Columna con la fórmula lista.
+Validación: Muestra el resultado para las primeras 3 filas.</code></pre>
+      </div>
+    </section>
+
+    <section>
+      <h2>Checklist de validación (fin del lab)</h2>
       <div class="card">
         <ul>
-          <li>Si <code>python</code> no se reconoce: instala Python y marca "Add to PATH" en el instalador.</li>
-          <li>Si la activación del entorno falla en PowerShell, ejecuta: <code>Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned</code> en PowerShell (admin) o usa cmd.exe.</li>
-          <li>Errores al instalar paquetes: revisa la versión de pip y vuelve a intentarlo; revisa conexión a internet y permisos.</li>
+          <li>✅ Copilot activo en Excel (botón visible en la barra)</li>
+          <li>✅ Archivos de ejercicios en OneDrive (no en disco local)</li>
+          <li>✅ Datos formateados como Tabla (Ctrl+T aplicado)</li>
+          <li>✅ Al menos 3 prompts ejecutados exitosamente</li>
+          <li>✅ Una fórmula generada por Copilot y validada manualmente</li>
+          <li>✅ Un gráfico creado con Copilot</li>
         </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2>Archivos de ejercicios</h2>
+      <div class="card">
+        <p class="lead">Descarga estos archivos, súbelos a OneDrive y ábrelos en Excel:</p>
+        <ul>
+          <li><a href="ejercicios/ventas.csv">ejercicios/ventas.csv</a> — dataset principal de ventas</li>
+          <li><a href="ejercicios/transacciones.csv">ejercicios/transacciones.csv</a> — transacciones financieras</li>
+          <li><a href="ejercicios/clientes.csv">ejercicios/clientes.csv</a> — catálogo de clientes</li>
+          <li><a href="ejercicios/tarifas.csv">ejercicios/tarifas.csv</a> — tarifas por categoría</li>
+          <li><a href="ejercicios/ejercicios_instrucciones.md">ejercicios/ejercicios_instrucciones.md</a> — instrucciones detalladas</li>
+          <li><a href="ejercicios/prompts_cheatsheet.md">ejercicios/prompts_cheatsheet.md</a> — cheatsheet de prompts</li>
+          <li><a href="ejercicios/soluciones.md">ejercicios/soluciones.md</a> — soluciones de referencia</li>
+        </ul>
+        <div class="limitation-card">
+          <b>📌 Recuerda:</b> Los archivos CSV deben abrirse en Excel y formatearse como Tabla (Ctrl+T) antes de usar Copilot. Guárdalos como <code>.xlsx</code> en OneDrive.
+        </div>
       </div>
     </section>
 
@@ -127,173 +370,20 @@ python -m pip install -r requirements.txt</code></pre>
           <li><a href="intro.html">Brochure del curso</a></li>
           <li><a href="sesion1.html">Material Sesión 1</a></li>
           <li><a href="sesion2.html">Material Sesión 2</a></li>
-          <li>Python downloads: <a href="https://www.python.org/downloads/">python.org</a></li>
+          <li><a href="https://support.microsoft.com/copilot-excel" target="_blank">Guía oficial: Copilot en Excel</a></li>
+          <li><a href="https://adoption.microsoft.com/copilot/" target="_blank">Microsoft Copilot Adoption Hub</a></li>
         </ul>
-      </div>
-    </section>
-
-    <section>
-      <h2>Prompts de asistentes de IA (ejemplos prácticos)</h2>
-      <div class="card">
-        <p class="lead">Colección de prompts listos para usar con ChatGPT, Copilot o Copilot en Excel. Úsalos tal cual y ajústalos con datos de tu hoja.</p>
-        <h3>Fórmulas de Excel</h3>
-        <ul>
-          <li><strong>SUMIFS por categoría y rango de fechas</strong><br>
-            "Tengo una hoja con columna Fecha (A), Categoria (B) e Importe (C). Dame la fórmula de Excel que sume Importe solo para Categoria='Honorarios' entre 2025-01-01 y 2025-12-31. Explica cada condición."</li>
-          <li><strong>Buscar y devolver nombre</strong><br>
-            "En la hoja 'Ventas' tengo ID cliente en A y en 'Clientes' tengo ID en A y Nombre en B. Dame la fórmula XLOOKUP que devuelva el nombre del cliente en la misma fila de Ventas. Indica también alternativas con VLOOKUP."</li>
-          <li><strong>IFS para reglas escalonadas</strong><br>
-            "Tengo una columna Monto. Si Monto<=1000 aplicar 5%, si Monto<=5000 aplicar 8%, si es mayor aplicar 12%. Dame la fórmula Excel compacta usando IFS y una versión con IF anidados."</li>
-        </ul>
-
-        <h3>Traducir Python a Excel (útil para contadores)</h3>
-        <ul>
-          <li>"Este snippet en Python hace X (pega el snippet). Explícalo en lenguaje de negocio para un contador y di qué columnas y fórmulas necesitaría en Excel para replicarlo."</li>
-          <li>"Convierte este fragmento de Python que agrupa ventas por categoría en una lista de pasos y fórmulas de Excel (o instrucciones para Power Query)."</li>
-        </ul>
-
-        <h3>Verificación de resultados y control de calidad</h3>
-        <ul>
-          <li>"Genera una lista de pruebas rápidas para validar un total calculado por un script: 1) comparar con suma manual sobre un subconjunto; 2) validar filas nulas; 3) chequear tipos de dato; 4) detectar duplicados."</li>
-          <li>"Explícame cómo construir casos de prueba simples en Python para validar que una función de cálculo de impuesto devuelva los valores esperados."</li>
-        </ul>
-
-        <h3>Prompts para revisar y mejorar la salida del asistente</h3>
-        <ul>
-          <li>"La fórmula propuesta no considera fechas en formato dd/mm/yyyy — reescríbela para que funcione con ese formato y explica por qué cambiaste los criterios."</li>
-          <li>"Dame 3 variantes más cortas y 2 variantes más robustas de la fórmula; indica ventajas y riesgos de cada una."</li>
-        </ul>
-      </div>
-    </section>
-
-    <section>
-      <h2>Revisiones y checklist de validación (para el laboratorio)</h2>
-      <div class="card">
-        <p class="lead">Antes de aceptar resultados (scripts o fórmulas), pide a los participantes que sigan esta lista rápida de validación.</p>
-        <ol>
-          <li>Prueba con un subconjunto pequeño (3–5 filas) y calcula manualmente para verificar el total.</li>
-          <li>Comprueba tipos de dato: fechas como fechas, importes como números (sin comas ni símbolos).</li>
-          <li>Verifica que los valores nulos o vacíos no rompen el cálculo (usa IFERROR o condiciones explicitas).</li>
-          <li>Haz una comparación entre la versión en Python y la versión en Excel: sumar totales y comparar diferencias porcentuales (deben ser 0 o muy pequeñas por redondeo).</li>
-          <li>Revisa los casos límite: montos 0, fechas limítrofes (inicio/fin de periodos), categorías desconocidas.</li>
-          <li>Documenta brevemente (1–2 líneas) la lógica usada y los supuestos (por ejemplo: "Se ignoran importes negativos").</li>
-        </ol>
-        <p class="lead">Prompts de ejemplo para pedir revisiones al asistente de IA:</p>
-        <ul>
-          <li>"Haz una revisión de la fórmula y enumera posibles errores de entrada que la harían fallar."</li>
-          <li>"Explica en lenguaje de negocio por qué el resultado difiere en 0.2% entre Python y Excel y sugiere acciones para corregirlo."</li>
-          <li>"Genera pasos concretos para convertir este cálculo en una tabla dinámica reproducible en Excel."</li>
-        </ul>
-      </div>
-    </section>
-
-    <section>
-      <h2>Ejercicios y archivos de ejemplo</h2>
-      <div class="card">
-        <p class="lead">Descarga los archivos de ejemplo y ábrelos en Excel. Si prefieres, ejecuta el script <code>ejercicios/generate_xlsx.py</code> para generar <code>ejercicios/ejercicios.xlsx</code> con todas las hojas.</p>
-        <ul>
-          <li><a href="ejercicios/transacciones.csv">ejercicios/transacciones.csv</a></li>
-          <li><a href="ejercicios/ventas.csv">ejercicios/ventas.csv</a></li>
-          <li><a href="ejercicios/clientes.csv">ejercicios/clientes.csv</a></li>
-          <li><a href="ejercicios/tarifas.csv">ejercicios/tarifas.csv</a></li>
-          <li><a href="ejercicios/generate_xlsx.py">ejercicios/generate_xlsx.py</a> (script para crear ejercicios/ejercicios.xlsx)</li>
-          <li><a href="ejercicios/soluciones.md">ejercicios/soluciones.md</a></li>
-          <li><a href="ejercicios/prompts_cheatsheet.md">ejercicios/prompts_cheatsheet.md</a></li>
-        </ul>
-        <h3>Lista de ejercicios (los trabajaremos uno a uno)</h3>
-        <ol>
-          <li><strong>Hola</strong> — lectura rápida de un script simple (sin archivo).</li>
-          <li><strong>Sumar importes</strong> — usa <code>transacciones.csv</code> (columna <code>importe</code>): =SUM(...)</li>
-          <li><strong>Contar operaciones grandes</strong> — usa <code>ventas.csv</code> (columna <code>importe</code>): =COUNTIFS(...)</li>
-          <li><strong>Aplicar IVA</strong> — usa <code>ventas.csv</code> o <code>transacciones.csv</code>: crea <code>importe_con_iva</code> =C2*1.16</li>
-          <li><strong>Sumar por categoría</strong> — usa <code>ventas.csv</code> (columnas <code>categoria</code>, <code>importe</code>): =SUMIFS(...)</li>
-          <li><strong>Agrupar y sumar</strong> — <code>ventas.csv</code>: tabla dinámica o SUMIFS por categoría.</li>
-          <li><strong>Lookup entre hojas</strong> — <code>ventas.csv</code> + <code>clientes.csv</code>: añade <code>cliente_nombre</code> con XLOOKUP/VLOOKUP.</li>
-          <li><strong>Regla escalonada</strong> — <code>ventas.csv</code>: columna <code>impuesto</code> con IFS o IF anidados.</li>
-          <li><strong>Verificación Python vs Excel</strong> — <code>ventas.csv</code> + <code>tarifas.csv</code>: calcula impuesto por categoría y compara con el resultado en Python.</li>
-          <li><strong>Asistente IA para fórmula</strong> — usa <code>ventas.csv</code>: pide al asistente la fórmula SUMIFS por categoría y rango de fechas y pruébala.</li>
-        </ol>
-        <h3>Tabla de prompts recomendados para Copilot / ChatGPT</h3>
-        <div style="overflow:auto">
-          <table style="width:100%;border-collapse:collapse">
-            <thead>
-              <tr>
-                <th style="text-align:left;padding:8px;border-bottom:1px solid #e6e6e6">Ejercicio</th>
-                <th style="text-align:left;padding:8px;border-bottom:1px solid #e6e6e6">Prompt recomendado (Copilot / ChatGPT)</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td style="padding:8px;border-bottom:1px solid #f4f4f4">1 — Hola (lectura)</td>
-                <td style="padding:8px;border-bottom:1px solid #f4f4f4">"Explica en una frase qué imprime este script: &lt;pega el snippet de hola.py&gt;"</td>
-              </tr>
-              <tr>
-                <td style="padding:8px;border-bottom:1px solid #f4f4f4">2 — Sumar importes (transacciones)</td>
-                <td style="padding:8px;border-bottom:1px solid #f4f4f4">"Dame la fórmula de Excel que suma todos los valores de la columna 'importe' en la hoja 'transacciones'"</td>
-              </tr>
-              <tr>
-                <td style="padding:8px;border-bottom:1px solid #f4f4f4">3 — Contar operaciones grandes (ventas)</td>
-                <td style="padding:8px;border-bottom:1px solid #f4f4f4">"Escribe una fórmula Excel que cuente filas en 'ventas' donde 'importe' &gt;= 1000 (usa COUNTIFS) y explica brevemente cada argumento"</td>
-              </tr>
-              <tr>
-                <td style="padding:8px;border-bottom:1px solid #f4f4f4">4 — Aplicar IVA (ventas/transacciones)</td>
-                <td style="padding:8px;border-bottom:1px solid #f4f4f4">"Dame la fórmula para calcular 'importe_con_iva' aplicando 16% sobre la columna 'importe' y una versión que evite errores en celdas vacías"</td>
-              </tr>
-              <tr>
-                <td style="padding:8px;border-bottom:1px solid #f4f4f4">5 — Sumar por categoría (ventas)</td>
-                <td style="padding:8px;border-bottom:1px solid #f4f4f4">"Escribe una fórmula SUMIFS que sume 'importe' en 'ventas' solo para Categoria = 'Servicios'"</td>
-              </tr>
-              <tr>
-                <td style="padding:8px;border-bottom:1px solid #f4f4f4">6 — Agrupar y sumar (ventas)</td>
-                <td style="padding:8px;border-bottom:1px solid #f4f4f4">"Indícame los pasos para crear una tabla dinámica que muestre la suma de 'importe' por 'categoria' en Excel; da además la alternativa con SUMIFS"</td>
-              </tr>
-              <tr>
-                <td style="padding:8px;border-bottom:1px solid #f4f4f4">7 — Lookup entre hojas (ventas + clientes)</td>
-                <td style="padding:8px;border-bottom:1px solid #f4f4f4">"Dame la fórmula XLOOKUP para traer el nombre del cliente a partir de 'id_cliente' desde la hoja 'clientes' y una alternativa con VLOOKUP"</td>
-              </tr>
-              <tr>
-                <td style="padding:8px;border-bottom:1px solid #f4f4f4">8 — Regla escalonada (ventas)</td>
-                <td style="padding:8px;border-bottom:1px solid #f4f4f4">"Escribe una fórmula que calcule impuesto: si importe&lt;=1000 → 5%, si importe&lt;=5000 → 8%, si importe&gt;5000 → 12%. Dame versión IFS y versión IF anidado"</td>
-              </tr>
-              <tr>
-                <td style="padding:8px;border-bottom:1px solid #f4f4f4">9 — Verificación Python vs Excel</td>
-                <td style="padding:8px;border-bottom:1px solid #f4f4f4">"Explica cómo verificar que la suma de impuestos calculada en Python coincide con la suma en Excel usando ejemplos y checks básicos (subconjunto manual, tipos de dato)"</td>
-              </tr>
-              <tr>
-                <td style="padding:8px;border-bottom:1px solid #f4f4f4">10 — Asistente IA para fórmula</td>
-                <td style="padding:8px;border-bottom:1px solid #f4f4f4">"Tengo columnas Fecha (A), Categoria (B) e Importe (C). Dame una fórmula SUMIFS que sume Importe para Categoria='Servicios' entre 2025-01-01 y 2025-12-31. Explica cada criterio."</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-      
-      <div class="card" style="margin-top:16px">
-        <h3>Cómo redactar prompts efectivos (recomendaciones rápidas)</h3>
-        <ol>
-          <li><strong>Sé específico y breve:</strong> indica la tarea concreta (p. ej. "Escribe la fórmula SUMIFS...") y pega una fila o un snippet pequeño si es necesario.</li>
-          <li><strong>Proporciona contexto mínimo:</strong> menciona nombres de columnas y hoja (por ejemplo: "Hoja 'ventas' con columnas Fecha, Categoria e Importe").</li>
-          <li><strong>Pide la salida en el formato que necesitas:</strong> fórmula lista para copiar, pasos numerados, o explicación en lenguaje de negocio.
-            <br>Ejemplo: "Devuélveme solo la fórmula lista para pegar en Excel y una breve explicación de 1 línea."</li>
-          <li><strong>Controla la seguridad y supuestos:</strong> pide que indique supuestos (p. ej. manejo de celdas vacías, formatos de fecha) y que sugiera validaciones rápidas.</li>
-          <li><strong>Pide alternativas y explicaciones:</strong> solicita 2 variantes (una compacta, otra robusta) y una breve comparación de pros/cons.</li>
-          <li><strong>Valida la respuesta:</strong> pide un ejemplo numérico pequeño (3 filas) y que muestre el resultado esperado para esas filas.</li>
-          <li><strong>Itera con prompts de revisión:</strong> si la primera respuesta no ajusta, responde al asistente con "Corrige para soportar fechas dd/mm/yyyy" o "Hazlo tolerante a celdas vacías".</li>
-        </ol>
-
-        <h4>Plantilla rápida de prompt</h4>
-        <pre><code>Contexto: Hoja 'ventas' con columnas Fecha (A), Categoria (B), Importe (C).
-Tarea: Dame la fórmula de Excel que sume Importe para Categoria='Servicios' entre 2025-01-01 y 2025-12-31.
-Formato de salida: Solo la fórmula lista para pegar y luego una línea con el porqué.
-Validación: Muestra el resultado esperado para estas 3 filas de ejemplo: [2025-01-05,Servicios,1500],[2025-02-10,Software,3200.5],[2025-03-20,Servicios,450]
-</code></pre>
-
-        <p class="lead">Usa esta plantilla como base y cámbiala por el caso: pega snippets de Python para pedir traducción a Excel, o pega una fórmula y pide que la revise.</p>
       </div>
     </section>
 
     <footer>
-      <div style="text-align:center;margin-top:18px;color:#666;font-size:0.95em">Laboratorio práctico — sin entregable. Si quieres que prepare un script de bootstrap (.bat) para automatizar la creación del entorno, o que añada la carpeta <code>ejercicios/</code> con los CSV y scripts de ejemplo, dímelo y lo creo ahora.</div>
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div style="color:#666;font-size:0.95em">Lab Copilot I — Excel con IA · Sin entregable formal, solo verificación.</div>
+        <div>
+          <a href="sesion2.html" class="badge" style="background:var(--ey-accent);color:#fff;border:0;padding:8px 12px;text-decoration:none">← Sesión 2</a>
+          <a href="sesion4/sesion4.html" class="badge" style="background:var(--ey-accent);color:#fff;border:0;padding:8px 12px;text-decoration:none">Sesión 4 →</a>
+        </div>
+      </div>
     </footer>
 
   </main>

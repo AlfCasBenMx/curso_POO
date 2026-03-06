@@ -1,0 +1,853 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sesi&oacute;n 3 &mdash; Puesta en marcha: m&uacute;ltiples Excels, homologaci&oacute;n y verificaci&oacute;n paso a paso</title>
+  <style>
+    :root{--ey-yellow:#FFCD00;--ey-dark:#242424;--ey-gray:#6B6B6B;--ey-light:#F7F7F7;--ey-accent:#0F62FE}
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--ey-dark);background:#fff;line-height:1.6}
+    a{color:var(--ey-accent);text-decoration:none}
+    a:hover{text-decoration:underline}
+    .wrap{max-width:1060px;margin:0 auto;padding:24px}
+    .hero-sm{background:linear-gradient(135deg,var(--ey-yellow) 0%,#ffe77a 60%,#fff3b0 100%);padding:40px 24px;display:flex;align-items:center;gap:24px}
+    .hero-sm img{width:100px}
+    .hero-sm h1{margin:0;font-size:clamp(22px,4vw,34px);font-weight:800}
+    .hero-sm p{margin:6px 0 0;color:#333}
+    .badge{display:inline-block;padding:4px 10px;border-radius:999px;background:#fff8d6;border:1px solid #ffe68a;font-size:12px;margin-right:6px}
+    section{padding:32px 0;border-bottom:1px solid #f0f0f0}
+    h2{font-size:24px;margin:0 0 10px}
+    h3{margin:16px 0 8px}
+    .grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+    .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+    .box{background:#fff;border:1px solid #eee;border-radius:12px;padding:18px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+    ul,ol{margin:8px 0 0 16px}
+    .activity{background:var(--ey-light);border-left:4px solid var(--ey-yellow);padding:14px 18px;border-radius:8px;margin:12px 0}
+    .prompt-example{background:#f0f4ff;border:1px solid #d0dcff;border-radius:10px;padding:16px;margin:10px 0;font-family:'Cascadia Code',Consolas,monospace;font-size:13px;line-height:1.5;white-space:pre-wrap}
+    .block-header{background:var(--ey-accent);color:#fff;padding:10px 18px;border-radius:10px 10px 0 0;font-weight:700;font-size:16px;margin-top:24px}
+    .block-body{border:1px solid #d0dcff;border-top:0;border-radius:0 0 10px 10px;padding:18px}
+    table{width:100%;border-collapse:collapse;margin-top:10px}
+    th,td{border:1px solid #eee;padding:10px;text-align:left;vertical-align:top}
+    th{background:#fffaf0}
+    .limitation-card{background:#fff8e1;border:1px solid #ffcc80;border-radius:10px;padding:16px;margin:12px 0}
+    .limitation-card b{color:#e65100}
+    .plan-b{background:#e8f5e9;border:1px solid #a5d6a7;border-radius:10px;padding:14px;margin:8px 0;font-size:13px}
+    .plan-b b{color:#2e7d32}
+    .check-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:12px}
+    .check-item{background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:12px;display:flex;align-items:flex-start;gap:8px}
+    .check-item input{margin-top:3px}
+    .code-block{background:#1e1e1e;color:#d4d4d4;border-radius:10px;padding:16px;margin:10px 0;font-family:'Cascadia Code',Consolas,monospace;font-size:13px;line-height:1.5;overflow-x:auto;white-space:pre-wrap}
+    .verify-card{background:#e3f2fd;border:2px solid #42a5f5;border-radius:12px;padding:18px;margin:14px 0}
+    .verify-card b{color:#1565c0}
+    .verify-card h4{margin:0 0 8px;color:#1565c0}
+    .danger-card{background:#fce4ec;border:2px solid #ef5350;border-radius:12px;padding:18px;margin:14px 0}
+    .danger-card b{color:#c62828}
+    .flow-diagram{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:center;margin:20px 0}
+    .flow-box{background:#fff;border:2px solid var(--ey-accent);border-radius:10px;padding:12px 16px;text-align:center;font-size:13px;font-weight:600;min-width:110px}
+    .flow-box.input{border-color:#e65100;background:#fff3e0}
+    .flow-box.process{border-color:#0F62FE;background:#e8f0fe}
+    .flow-box.output{border-color:#2e7d32;background:#e8f5e9}
+    .flow-box.verify{border-color:#1565c0;background:#e3f2fd}
+    .flow-arrow{font-size:24px;color:var(--ey-accent);font-weight:800}
+    footer{padding:28px 0;text-align:center;color:#999}
+    @media(max-width:800px){.grid-2,.grid-3{grid-template-columns:1fr}.hero-sm{flex-direction:column;align-items:flex-start}.check-grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+
+  <header class="hero-sm">
+    <img src="https://companieslogo.com/img/orig/ernst-and-young-6c5de5ba.svg?t=1720244494&download=true" alt="EY Logo">
+    <div>
+      <h1>Sesi&oacute;n 3 &mdash; Puesta en marcha: m&uacute;ltiples Excels, scripts y verificaci&oacute;n paso a paso</h1>
+      <p>POC Thinking con Microsoft 365 Copilot &middot; Para PMs y profesionales financieros</p>
+      <span class="badge">Sesi&oacute;n 3 de 3</span>
+      <span class="badge">Duraci&oacute;n: 3 horas</span>
+      <span class="badge">Herramientas: Copilot 365 Chat + Excel + Python scripts</span>
+    </div>
+  </header>
+
+  <main class="wrap">
+
+    <!-- AGENDA -->
+    <section>
+      <h2>&#x1F4CB; Agenda de la sesi&oacute;n</h2>
+      <table>
+        <thead><tr><th style="width:120px">Bloque</th><th>Contenido</th><th style="width:100px">Duraci&oacute;n</th></tr></thead>
+        <tbody>
+          <tr><td><b>Bloque 1</b></td><td>El problema real: recibir 10+ Excels con columnas distintas &middot; El patr&oacute;n &ldquo;Mapear &rarr; Homologar &rarr; Verificar&rdquo; &middot; La habilidad clave: pedir PRUEBAS a la IA</td><td style="text-align:center"><b>40 min</b></td></tr>
+          <tr><td><b>Bloque 2</b></td><td>Lab pr&aacute;ctico: subir Excels a Copilot &rarr; pedir scripts de homologaci&oacute;n &rarr; pedir pruebas paso a paso &rarr; ejecutar y verificar &rarr; consolidar</td><td style="text-align:center"><b>80 min</b></td></tr>
+          <tr><td><b>Bloque 3</b></td><td>Tu caso real: cada equipo sube sus propios archivos y practica el ciclo completo &ldquo;Script &rarr; Prueba &rarr; Verifico &rarr; Siguiente paso&rdquo;</td><td style="text-align:center"><b>60 min</b></td></tr>
+        </tbody>
+      </table>
+
+      <h3 style="margin-top:20px">&#9201;&#65039; Cronograma minuto a minuto</h3>
+      <table style="font-size:13px">
+        <thead><tr><th style="width:110px">Minuto</th><th>Actividad</th></tr></thead>
+        <tbody>
+          <tr><td>0:00 &ndash; 0:05</td><td>Bienvenida, recap r&aacute;pido (Sesi&oacute;n 1 = datos + an&aacute;lisis, Sesi&oacute;n 2 = HTMLs)</td></tr>
+          <tr><td>0:05 &ndash; 0:20</td><td>El problema: 10 archivos, cada uno con columnas distintas. &iquest;C&oacute;mo homologar?</td></tr>
+          <tr><td>0:20 &ndash; 0:30</td><td>LA HABILIDAD CLAVE: pedir pruebas paso a paso a la IA</td></tr>
+          <tr><td>0:30 &ndash; 0:40</td><td>Demo en vivo: el ciclo &ldquo;pido script &rarr; pido prueba &rarr; verifico &rarr; siguiente paso&rdquo;</td></tr>
+          <tr><td>0:40 &ndash; 0:45</td><td>Pausa + abrir Copilot Chat + carpeta de Excels</td></tr>
+          <tr><td>0:45 &ndash; 1:05</td><td>Lab 1: Subir archivos y explorar estructura (20 min)</td></tr>
+          <tr><td>1:05 &ndash; 1:30</td><td>Lab 2: Pedir script de homologaci&oacute;n + pruebas de verificaci&oacute;n (25 min)</td></tr>
+          <tr><td>1:30 &ndash; 1:50</td><td>Lab 3: Consolidar todo en un solo archivo + verificar totales (20 min)</td></tr>
+          <tr><td>1:50 &ndash; 2:00</td><td>Lab 4: Generar reporte HTML del resultado (10 min)</td></tr>
+          <tr><td>2:00 &ndash; 2:05</td><td>Pausa</td></tr>
+          <tr><td>2:05 &ndash; 2:40</td><td>Trabajo en c&eacute;lula: ciclo completo con archivos propios del equipo</td></tr>
+          <tr><td>2:40 &ndash; 2:55</td><td>Show &amp; Tell: cada equipo muestra 1 verificaci&oacute;n que evit&oacute; un error</td></tr>
+          <tr><td>2:55 &ndash; 3:00</td><td>Cierre: qu&eacute; aprendimos, qu&eacute; nos llevamos, pr&oacute;ximos pasos</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- CHECKLIST -->
+    <section>
+      <h2>&#9888;&#65039; Antes de empezar &mdash; Checklist</h2>
+      <div class="check-grid">
+        <label class="check-item"><input type="checkbox"> <span><b>Copilot 365 Chat abierto</b> &mdash; <a href="https://copilot.microsoft.com" target="_blank">copilot.microsoft.com</a>. Ser&aacute; nuestro motor de trabajo.</span></label>
+        <label class="check-item"><input type="checkbox"> <span><b>Archivos Excel del ejercicio</b> &mdash; El instructor compartir&aacute; 5 archivos .xlsx con columnas distintas (simulan reportes de diferentes &aacute;reas).</span></label>
+        <label class="check-item"><input type="checkbox"> <span><b>Notepad o VS Code</b> &mdash; Para pegar y guardar los scripts que genere Copilot.</span></label>
+        <label class="check-item"><input type="checkbox"> <span><b>Python instalado (opcional)</b> &mdash; Si quieren ejecutar los scripts localmente. Si no, los ejecutamos v&iacute;a Copilot.</span></label>
+        <label class="check-item"><input type="checkbox"> <span><b>Mentalidad de &ldquo;verificador&rdquo;</b> &mdash; Hoy NO vamos a confiar ciegamente. Vamos a PROBAR cada paso.</span></label>
+        <label class="check-item"><input type="checkbox"> <span><b>HTMLs de las sesiones anteriores</b> &mdash; Sus reportes y dashboards. Al final los alimentar&aacute;n con datos reales consolidados.</span></label>
+      </div>
+    </section>
+
+    <!-- RECAP -->
+    <section>
+      <h2>&#x1F504; Recap r&aacute;pido: ya son expertos en esto</h2>
+      <div class="grid-2">
+        <div class="box" style="border-left:4px solid #22c55e">
+          <h3>&#10004;&#65039; Sesi&oacute;n 1 &mdash; Lo que dominan</h3>
+          <ul>
+            <li>An&aacute;lisis de datos con Copilot en Excel</li>
+            <li>F&oacute;rmulas, tablas din&aacute;micas, gr&aacute;ficos con prompts</li>
+            <li>Pipeline Excel &rarr; Power BI &rarr; Dashboard</li>
+            <li>Prompt engineering: un prompt = una tarea</li>
+          </ul>
+        </div>
+        <div class="box" style="border-left:4px solid #22c55e">
+          <h3>&#10004;&#65039; Sesi&oacute;n 2 &mdash; Lo que dominan</h3>
+          <ul>
+            <li>Generar HTMLs completos con Copilot Chat</li>
+            <li>Reportes, presentaciones y dashboards en HTML</li>
+            <li>Iterar sobre un resultado (no empezar de cero)</li>
+            <li>Adjuntar Excel a Copilot para usar datos reales</li>
+          </ul>
+        </div>
+      </div>
+      <div class="limitation-card" style="margin-top:16px">
+        <b>&#x1F3AF; Sesi&oacute;n 3 &mdash; Lo nuevo:</b> Hasta ahora trabaj&aacute;bamos con <b>1 archivo</b>. En la vida real llegan <b>10, 15, 20 archivos de distintas &aacute;reas</b>, cada uno con nombres de columnas diferentes. Hoy aprender&aacute;n a pedirle a Copilot que los <b>homologue y consolide</b>, y lo m&aacute;s importante: a <b>verificar cada paso</b> antes de seguir adelante.
+      </div>
+    </section>
+
+    <!-- BLOQUE 1 -->
+    <div class="block-header">&#x1F393; Bloque 1 &mdash; El problema real y la habilidad clave (40 min)</div>
+    <div class="block-body">
+
+      <section style="border:none;padding:20px 0">
+        <h2>&#x1F4A5; El problema: 10 Excels, cada uno habla diferente</h2>
+        <p>En cualquier empresa, los reportes de cada &aacute;rea usan <b>nombres de columnas diferentes</b> para lo mismo:</p>
+
+        <table style="font-size:13px">
+          <thead><tr><th>&Aacute;rea</th><th>Columna de fecha</th><th>Columna de monto</th><th>Columna de categor&iacute;a</th></tr></thead>
+          <tbody>
+            <tr><td>Banca Comercial</td><td><code>fecha_registro</code></td><td><code>monto_MXN</code></td><td><code>tipo_movimiento</code></td></tr>
+            <tr><td>Banca Corporativa</td><td><code>date</code></td><td><code>amount_MXN</code></td><td><code>type</code></td></tr>
+            <tr><td>Seguros</td><td><code>fecha</code></td><td><code>importe</code></td><td><code>naturaleza</code></td></tr>
+            <tr><td>Tesorer&iacute;a</td><td><code>value_date</code></td><td><code>amount_MXN</code></td><td><code>pnl_type</code></td></tr>
+            <tr><td>Tarjetas</td><td><code>fecha_movimiento</code></td><td><code>monto_pesos</code></td><td><code>clasificacion</code></td></tr>
+            <tr><td>Proveedor TI</td><td><code>invoice_date</code></td><td><code>total_MXN</code></td><td><code>expense_type</code></td></tr>
+          </tbody>
+        </table>
+
+        <p style="margin-top:16px">&iquest;Les suena? Es el <b>dolor #1</b> de cualquier proceso de consolidaci&oacute;n financiera. Hacer esto manualmente con 10+ archivos toma <b>horas</b> y es propenso a errores.</p>
+
+        <div class="grid-2" style="margin-top:16px">
+          <div class="box" style="border-left:4px solid #ef4444">
+            <h3>&#10060; Lo que hacemos normalmente</h3>
+            <ol>
+              <li>Abrir cada Excel</li>
+              <li>Copiar-pegar columna por columna</li>
+              <li>Renombrar manualmente</li>
+              <li>Rezar que no se haya perdido nada</li>
+              <li>Repetir el mes siguiente &#x1F629;</li>
+            </ol>
+            <p style="font-size:13px;color:#ef4444;font-weight:700">&#9201;&#65039; 4-8 horas por mes &middot; Alto riesgo de error</p>
+          </div>
+          <div class="box" style="border-left:4px solid #22c55e">
+            <h3>&#10004;&#65039; Lo que haremos hoy</h3>
+            <ol>
+              <li>Subir los Excels a Copilot</li>
+              <li>Pedirle que los explore y entienda</li>
+              <li>Pedirle un script para homologar</li>
+              <li><b>Pedirle PRUEBAS para verificar cada paso</b></li>
+              <li>Consolidar con confianza y repetir</li>
+            </ol>
+            <p style="font-size:13px;color:#22c55e;font-weight:700">&#9201;&#65039; 20 min la primera vez &middot; 2 min las siguientes &middot; Verificable</p>
+          </div>
+        </div>
+      </section>
+
+      <section style="border:none;padding:20px 0">
+        <h2>&#x1F504; El patr&oacute;n que aprender&aacute;n hoy</h2>
+        <p style="font-size:18px;font-weight:700;text-align:center;margin:16px 0">Script &rarr; Prueba &rarr; Verifico &rarr; Siguiente paso</p>
+
+        <div class="flow-diagram">
+          <div class="flow-box input">&#x1F4C1; Subir<br>archivos</div>
+          <div class="flow-arrow">&rarr;</div>
+          <div class="flow-box process">&#x1F50D; Explorar<br>columnas</div>
+          <div class="flow-arrow">&rarr;</div>
+          <div class="flow-box process">&#x1F4DD; Pedir<br>script</div>
+          <div class="flow-arrow">&rarr;</div>
+          <div class="flow-box verify">&#x1F9EA; Pedir<br>PRUEBA</div>
+          <div class="flow-arrow">&rarr;</div>
+          <div class="flow-box verify">&#10004;&#65039; Verificar<br>resultado</div>
+          <div class="flow-arrow">&rarr;</div>
+          <div class="flow-box output">&#x1F4CA; Siguiente<br>paso</div>
+        </div>
+
+        <div style="background:linear-gradient(135deg,#1565c0 0%,#42a5f5 100%);border-radius:16px;padding:28px;color:#fff;margin:20px 0;text-align:center">
+          <h3 style="margin:0 0 12px;color:#fff;font-size:22px">&#x1F9EA; LA HABILIDAD CLAVE DE ESTA SESI&Oacute;N</h3>
+          <p style="margin:0;font-size:17px;opacity:.95;max-width:700px;display:inline-block">
+            No es generar scripts. Es <b>saber pedir PRUEBAS</b> para verificar<br>que lo que hizo la IA est&aacute; correcto <b>ANTES</b> de seguir adelante.
+          </p>
+        </div>
+      </section>
+
+      <section style="border:none;padding:20px 0">
+        <h2>&#x1F9EA; C&oacute;mo pedir pruebas paso a paso &mdash; El superpoder que otros no tienen</h2>
+        <p>La mayor&iacute;a de la gente acepta lo que la IA genera sin verificar. Eso es peligroso. Un profesional que <b>sabe pedir pruebas</b> tiene una enorme ventaja:</p>
+
+        <div class="grid-2">
+          <div class="danger-card">
+            <b>&#x1F6AB; Lo que hace la mayor&iacute;a</b>
+            <ol style="margin-top:8px">
+              <li>&ldquo;Copilot, genera un script para consolidar estos 10 Excels&rdquo;</li>
+              <li>Copilot genera 100 l&iacute;neas de Python</li>
+              <li>&ldquo;Se ve bien&rdquo; &rarr; lo ejecutan</li>
+              <li>3 d&iacute;as despu&eacute;s descubren que perdieron 500 registros &#x1F631;</li>
+            </ol>
+            <p style="font-size:13px;color:#c62828;margin-top:8px;font-weight:600">Sin verificaci&oacute;n = riesgo oculto</p>
+          </div>
+          <div class="verify-card">
+            <b>&#10004;&#65039; Lo que haremos nosotros</b>
+            <ol style="margin-top:8px">
+              <li>&ldquo;Copilot, lee estos 5 archivos y dime cu&aacute;ntas filas tiene cada uno&rdquo;</li>
+              <li>Verifico: &iquest;coincide con lo que yo s&eacute;?</li>
+              <li>&ldquo;Ahora homologa las columnas. Mu&eacute;strame las primeras 5 filas de ANTES y DESPU&Eacute;S&rdquo;</li>
+              <li>Verifico: &iquest;se mape&oacute; bien?</li>
+              <li>&ldquo;Consolida todo. Dime el total de filas y la suma del monto por &aacute;rea&rdquo;</li>
+              <li>Verifico: &iquest;la suma de las partes = el total?</li>
+            </ol>
+            <p style="font-size:13px;color:#1565c0;margin-top:8px;font-weight:600">Cada paso tiene una PRUEBA. As&iacute; se trabaja con IA profesionalmente.</p>
+          </div>
+        </div>
+
+        <h3 style="margin-top:20px">&#x1F9EA; Los 5 tipos de pruebas que van a pedir</h3>
+        <table>
+          <thead><tr><th style="width:40px">#</th><th>Tipo de prueba</th><th>Ejemplo de prompt</th><th>&iquest;Qu&eacute; se verifica?</th></tr></thead>
+          <tbody>
+            <tr><td><b>1</b></td><td><b>Conteo de registros</b></td><td><code>&ldquo;&iquest;Cu&aacute;ntas filas tiene cada archivo? Dame una tabla con archivo + filas&rdquo;</code></td><td>No se perdieron ni duplicaron filas</td></tr>
+            <tr><td><b>2</b></td><td><b>Antes/Despu&eacute;s</b></td><td><code>&ldquo;Mu&eacute;strame las primeras 5 filas del archivo X ANTES de homologar y DESPU&Eacute;S. Side by side.&rdquo;</code></td><td>Las columnas se renombraron correctamente</td></tr>
+            <tr><td><b>3</b></td><td><b>Cuadre de totales</b></td><td><code>&ldquo;Suma el monto total por archivo ANTES de consolidar, y despu&eacute;s suma el total consolidado. &iquest;Coinciden?&rdquo;</code></td><td>No se perdi&oacute; dinero en el proceso</td></tr>
+            <tr><td><b>4</b></td><td><b>Valores &uacute;nicos</b></td><td><code>&ldquo;Mu&eacute;strame los valores &uacute;nicos de la columna 'tipo' en el consolidado. &iquest;Hay valores inesperados o vac&iacute;os?&rdquo;</code></td><td>La clasificaci&oacute;n es correcta y completa</td></tr>
+            <tr><td><b>5</b></td><td><b>Excepciones / outliers</b></td><td><code>&ldquo;&iquest;Hay filas con monto vac&iacute;o, negativo o &gt; $10M? Mu&eacute;stramelas.&rdquo;</code></td><td>Detectar datos an&oacute;malos antes de reportar</td></tr>
+          </tbody>
+        </table>
+
+        <div class="limitation-card" style="margin-top:16px">
+          <b>&#x1F4A1; Regla de oro:</b> Nunca pasen al siguiente paso sin haber pedido <b>al menos 1 prueba</b> del paso actual. Pi&eacute;nsenlo como firmar un check-list antes de avanzar.
+        </div>
+      </section>
+
+      <section style="border:none;padding:20px 0">
+        <h2>&#x1F3AC; Demo en vivo: el ciclo completo en 10 minutos</h2>
+        <p>El instructor muestra el ciclo con 3 archivos de ejemplo. Observen <b>cu&aacute;ntas veces pide verificaci&oacute;n</b> antes de avanzar.</p>
+
+        <div class="activity">
+          <b>Paso 1 &mdash; Explorar (30 seg)</b>
+          <div class="prompt-example">&#x1F916; "Tengo 3 archivos Excel: banca_comercial.xlsx, seguros.xlsx y tarjetas.xlsx.
+Quiero entender qu&eacute; tiene cada uno.
+
+Para cada archivo, dime:
+- Cu&aacute;ntas filas y columnas tiene
+- Los nombres exactos de las columnas
+- Las primeras 3 filas de ejemplo
+
+Pres&eacute;ntalo en una tabla comparativa."</div>
+          <div class="verify-card" style="margin-top:8px">
+            <h4>&#x1F9EA; Verificaci&oacute;n del Paso 1</h4>
+            <p style="margin:0;font-size:13px">Antes de seguir, reviso: &iquest;el conteo de filas coincide con lo que yo veo al abrir cada Excel? Si banca_comercial tiene 150 filas y Copilot dice 147, hay un problema.</p>
+          </div>
+        </div>
+
+        <div class="activity">
+          <b>Paso 2 &mdash; Homologar (30 seg)</b>
+          <div class="prompt-example">&#x1F916; "Muy bien. Ahora necesito que todas las columnas se llamen igual.
+
+Quiero que generes un script en Python que:
+1. Lea los 3 archivos
+2. Renombre las columnas as&iacute;:
+   - Todas las columnas de fecha &rarr; 'fecha'
+   - Todas las de monto &rarr; 'monto'
+   - Todas las de tipo/clasificaci&oacute;n &rarr; 'tipo'
+   - Todas las de &aacute;rea/producto &rarr; 'linea_negocio'
+3. Agregue una columna 'archivo_origen' para saber de d&oacute;nde viene cada fila
+
+IMPORTANTE: despu&eacute;s de homologar, MU&Eacute;STRAME las primeras 3 filas de cada archivo
+ANTES y DESPU&Eacute;S del renombrado, para que yo pueda verificar que est&aacute; bien."</div>
+          <div class="verify-card" style="margin-top:8px">
+            <h4>&#x1F9EA; Verificaci&oacute;n del Paso 2</h4>
+            <p style="margin:0;font-size:13px">Reviso la tabla ANTES/DESPU&Eacute;S: &iquest;<code>monto_MXN</code> de banca_comercial ahora dice <code>monto</code>? &iquest;<code>importe</code> de seguros ahora dice <code>monto</code>? &iquest;Los valores son los mismos? Si todo cuadra, avanzo.</p>
+          </div>
+        </div>
+
+        <div class="activity">
+          <b>Paso 3 &mdash; Consolidar y verificar totales (30 seg)</b>
+          <div class="prompt-example">&#x1F916; "Perfecto. Ahora agrega al script un paso que:
+1. Concatene los 3 DataFrames en uno solo
+2. Me muestre:
+   - Total de filas del consolidado (debe ser = suma de filas originales)
+   - Suma de 'monto' por 'archivo_origen' (para que yo cuadre contra los originales)
+   - Cuenta de filas con monto vac&iacute;o o NaN
+   - Valores &uacute;nicos en la columna 'tipo'
+
+Dame el script completo actualizado."</div>
+          <div class="verify-card" style="margin-top:8px">
+            <h4>&#x1F9EA; Verificaci&oacute;n del Paso 3</h4>
+            <p style="margin:0;font-size:13px">Verifico: 150 + 100 + 130 = 380 filas &rarr; &iquest;el consolidado dice 380? La suma de banca_comercial en el original era $X &rarr; &iquest;en el consolidado la suma filtrada por archivo_origen = banca_comercial tambi&eacute;n es $X? Cuadro y avanzo.</p>
+          </div>
+        </div>
+
+        <div style="background:#e8f5e9;border:2px solid #66bb6a;border-radius:12px;padding:20px;margin-top:16px;text-align:center">
+          <p style="margin:0;font-size:16px;font-weight:700;color:#2e7d32">&iquest;Vieron? 3 pasos, 3 verificaciones. Nunca avanc&eacute; sin confirmar. <br>Eso es lo que separa a un usuario amateur de un profesional.</p>
+        </div>
+      </section>
+    </div>
+
+    <!-- BLOQUE 2 -->
+    <div class="block-header">&#x1F52C; Bloque 2 &mdash; Lab pr&aacute;ctico: de 5 Excels a 1 consolidado verificado (80 min)</div>
+    <div class="block-body">
+
+      <div class="limitation-card">
+        <b>&#9888;&#65039; Archivos del ejercicio:</b> El instructor compartir&aacute; 5 archivos Excel (cada uno simula un reporte de diferente &aacute;rea). Desc&aacute;rguenlos a una carpeta llamada <code>datos_sesion3</code> en su escritorio.
+        <div style="margin-top:8px">
+          <table style="font-size:12px">
+            <thead><tr><th>Archivo</th><th>Filas</th><th>Columna fecha</th><th>Columna monto</th><th>Columna tipo</th></tr></thead>
+            <tbody>
+              <tr><td>banca_comercial.xlsx</td><td>150</td><td>fecha_registro</td><td>monto_MXN</td><td>tipo_movimiento</td></tr>
+              <tr><td>banca_corporativa.xlsx</td><td>120</td><td>date</td><td>amount_MXN</td><td>type</td></tr>
+              <tr><td>seguros.xlsx</td><td>100</td><td>fecha</td><td>importe</td><td>naturaleza</td></tr>
+              <tr><td>tarjetas.xlsx</td><td>130</td><td>fecha_movimiento</td><td>monto_pesos</td><td>clasificacion</td></tr>
+              <tr><td>tesoreria.xlsx</td><td>90</td><td>value_date</td><td>amount_MXN</td><td>pnl_type</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- LAB 1 -->
+      <section style="border:none;padding:20px 0">
+        <h2>&#x1F50D; Lab 1 &mdash; Explorar las fuentes (20 min)</h2>
+        <p>Objetivo: entender qu&eacute; tiene cada archivo <b>antes</b> de tocar nada.</p>
+
+        <div class="activity">
+          <b>Paso 1 &mdash; Adjuntar y preguntar (5 min)</b>
+          <p>Abrir <a href="https://copilot.microsoft.com" target="_blank"><b>copilot.microsoft.com</b></a>. Adjuntar los 5 archivos (&#x1F4CE;) y escribir:</p>
+          <div class="prompt-example">&#x1F916; "Tengo estos 5 archivos Excel de distintas &aacute;reas de un banco.
+Cada uno tiene columnas con nombres diferentes para lo mismo.
+
+Para cada archivo, dame una tabla con:
+1. Nombre del archivo
+2. N&uacute;mero de filas
+3. N&uacute;mero de columnas
+4. Lista completa de nombres de columnas
+5. Las primeras 2 filas de ejemplo
+
+Quiero entender la estructura de cada uno antes de hacer nada."</div>
+          <div class="plan-b">&#x1F504; <b>Plan B:</b> Si Copilot no puede leer todos a la vez, adjuntar de a 2-3 archivos por conversaci&oacute;n.</div>
+        </div>
+
+        <div class="activity">
+          <b>Paso 2 &mdash; Primera verificaci&oacute;n: &iquest;Copilot ley&oacute; bien? (5 min)</b>
+          <div class="prompt-example">&#x1F916; "Ahora dame un RESUMEN para que yo pueda verificar:
+- Tabla con: Archivo | Filas | Columnas | Suma del monto (usa la que se llame monto, importe, amount, etc.)
+- &iquest;Hay alg&uacute;n archivo con filas vac&iacute;as o con datos faltantes?
+- &iquest;Hay alg&uacute;n archivo que tenga menos de las columnas esperadas?"</div>
+
+          <div class="verify-card">
+            <h4>&#x1F9EA; VERIFICACI&Oacute;N &mdash; H&aacute;ganla ustedes</h4>
+            <ol style="margin:4px 0 0;font-size:13px">
+              <li>Abran cada Excel manualmente &rarr; miren cu&aacute;ntas filas tiene (selecciona todo &rarr; ver en barra inferior de Excel)</li>
+              <li>Comparen con lo que dijo Copilot</li>
+              <li>Si un n&uacute;mero no coincide: pregunten a Copilot <b>&ldquo;El archivo X deber&iacute;a tener Y filas, t&uacute; dices Z. &iquest;Por qu&eacute;?&rdquo;</b></li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="activity">
+          <b>Paso 3 &mdash; Mapa de equivalencias (10 min)</b>
+          <p>Ahora le pedimos a Copilot que <b>proponga</b> c&oacute;mo mapear las columnas:</p>
+          <div class="prompt-example">&#x1F916; "Bas&aacute;ndote en los 5 archivos que analizaste, haz un MAPA DE EQUIVALENCIAS.
+
+Quiero una tabla con estas columnas:
+- Columna est&aacute;ndar (el nombre final que deben tener)
+- Para cada archivo: qu&eacute; columna actual corresponde
+
+Ejemplo:
+| Est&aacute;ndar     | banca_comercial    | banca_corporativa | seguros   | tarjetas          | tesoreria      |
+|--------------|--------------------|-------------------|-----------|-------------------|----------------|
+| fecha        | fecha_registro     | date              | fecha     | fecha_movimiento  | value_date     |
+| monto        | monto_MXN          | amount_MXN        | importe   | monto_pesos       | amount_MXN     |
+
+Hazlo para TODAS las columnas que se puedan mapear."</div>
+
+          <div class="verify-card">
+            <h4>&#x1F9EA; VERIFICACI&Oacute;N &mdash; Revisar el mapa</h4>
+            <p style="margin:4px 0 0;font-size:13px">Lean el mapa con cuidado. &iquest;La IA mape&oacute; bien? &iquest;<code>fecha_registro</code> realmente es equivalente a <code>date</code>? &iquest;<code>monto_pesos</code> est&aacute; en la misma moneda que <code>amount_MXN</code>? Si algo no tiene sentido, corr&iacute;janlo AHORA.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- LAB 2 -->
+      <section style="border:none;padding:20px 0">
+        <h2>&#x1F4DD; Lab 2 &mdash; Pedir script de homologaci&oacute;n + pruebas (25 min)</h2>
+        <p>Ahora le pedimos a Copilot que genere el c&oacute;digo... <b>pero con pruebas incluidas</b>.</p>
+
+        <div class="activity">
+          <b>Paso 1 &mdash; Pedir el script CON verificaci&oacute;n integrada (8 min)</b>
+          <div class="prompt-example">&#x1F916; "Genera un script en Python que homologue los 5 archivos.
+
+Usa el mapa de equivalencias que creaste. El script debe:
+
+1. Leer cada archivo
+2. Renombrar las columnas seg&uacute;n el mapa
+3. Agregar columna 'archivo_origen'
+4. PARA CADA ARCHIVO &mdash; imprimir:
+   - Nombre del archivo
+   - Filas ANTES y DESPU&Eacute;S (deben ser iguales)
+   - Columnas ANTES y DESPU&Eacute;S (para verificar el renombrado)
+   - Las primeras 3 filas DESPU&Eacute;S del renombrado
+5. Al final: una tabla resumen con Archivo | Filas | Monto Total
+   para que yo pueda cuadrar visualmente contra los originales
+
+El script debe ser PASO A PASO con prints claros entre cada paso,
+para que yo pueda verificar qu&eacute; est&aacute; pasando en cada momento.
+
+IMPORTANTE: si alguna columna no existe en un archivo, NO lo tires &mdash;
+pon NaN y agr&eacute;galo a un log de excepciones."</div>
+        </div>
+
+        <div class="activity">
+          <b>Paso 2 &mdash; Revisar el script ANTES de ejecutar (7 min)</b>
+          <p>No lo ejecuten todav&iacute;a. Primero pidan que lo explique:</p>
+          <div class="prompt-example">&#x1F916; "Antes de ejecutar, EXPL&Iacute;CAME paso a paso qu&eacute; hace este script.
+Para cada bloque de c&oacute;digo, dime:
+- Qu&eacute; hace
+- Qu&eacute; podr&iacute;a salir mal
+- C&oacute;mo lo verifico
+
+Quiero entenderlo antes de correrlo."</div>
+
+          <div class="limitation-card">
+            <b>&#x1F4A1; &iquest;Por qu&eacute; esto importa?</b> No necesitan ser programadores para ENTENDER lo que hace un script. Si Copilot les dice &ldquo;en la l&iacute;nea 15 renombro <code>monto_MXN</code> a <code>monto</code>&rdquo;, ustedes pueden verificar que eso tiene sentido. Eso es <b>supervisi&oacute;n inteligente</b>.
+          </div>
+        </div>
+
+        <div class="activity">
+          <b>Paso 3 &mdash; Ejecutar y verificar las pruebas (10 min)</b>
+          <p>Ahora s&iacute;. Copien el script, ejec&uacute;tenlo (en Python local o p&iacute;danle a Copilot que lo ejecute), y revisen los prints:</p>
+
+          <div class="verify-card">
+            <h4>&#x1F9EA; CHECKLIST DE VERIFICACI&Oacute;N &mdash; Lab 2</h4>
+            <div style="margin-top:8px">
+              <label style="display:block;padding:4px 0;font-size:13px"><input type="checkbox"> Las filas ANTES = filas DESPU&Eacute;S para cada archivo (no se perdieron registros)</label>
+              <label style="display:block;padding:4px 0;font-size:13px"><input type="checkbox"> Las columnas renombradas hacen sentido (fecha &rarr; fecha, monto &rarr; monto, etc.)</label>
+              <label style="display:block;padding:4px 0;font-size:13px"><input type="checkbox"> Las primeras 3 filas se ven correctas (los datos no se corrieron de columna)</label>
+              <label style="display:block;padding:4px 0;font-size:13px"><input type="checkbox"> La tabla resumen tiene los 5 archivos con filas y montos</label>
+              <label style="display:block;padding:4px 0;font-size:13px"><input type="checkbox"> Si hay excepciones, Copilot las report&oacute; (no las ignor&oacute; en silencio)</label>
+            </div>
+          </div>
+
+          <p style="margin-top:12px">Si algo no cuadra:</p>
+          <div class="prompt-example">&#x1F916; "El archivo 'seguros.xlsx' deber&iacute;a tener $45,230,000 en total de importe,
+pero despu&eacute;s de la homologaci&oacute;n dice $43,100,000. &iquest;Qu&eacute; pas&oacute;?
+&iquest;Se perdieron filas? &iquest;Hay NaN? Mu&eacute;strame las filas que no se consolidaron."</div>
+        </div>
+      </section>
+
+      <!-- LAB 3 -->
+      <section style="border:none;padding:20px 0">
+        <h2>&#x1F4CA; Lab 3 &mdash; Consolidar todo + verificar cuadre final (20 min)</h2>
+
+        <div class="activity">
+          <b>Paso 1 &mdash; Pedir la consolidaci&oacute;n CON prueba de cuadre (8 min)</b>
+          <div class="prompt-example">&#x1F916; "Ahora agrega al script un paso que:
+
+1. Concatene los 5 DataFrames homologados en uno solo llamado 'consolidado'
+2. Imprima PRUEBAS DE CUADRE:
+   a) Total filas consolidado vs suma de filas individuales
+   b) Suma de 'monto' en consolidado vs suma por archivo_origen
+   c) &iquest;Cu&aacute;ntas filas tienen monto vac&iacute;o/NaN?
+   d) &iquest;Cu&aacute;ntas filas tienen fecha vac&iacute;a?
+   e) Valores &uacute;nicos en 'archivo_origen' (deben ser exactamente 5)
+   f) Valores &uacute;nicos en 'tipo' (para ver si la clasificaci&oacute;n es consistente)
+
+3. Guarde el consolidado como 'consolidado_final.xlsx'
+
+QUIERO VER TODAS LAS PRUEBAS EN LA CONSOLA ANTES DE GUARDAR."</div>
+        </div>
+
+        <div class="activity">
+          <b>Paso 2 &mdash; La prueba m&aacute;s importante: el cuadre cruzado (7 min)</b>
+          <div class="prompt-example">&#x1F916; "Genera una tabla de cuadre cruzado con este formato:
+
+| Archivo              | Filas original | Filas consolidado | &iquest;Cuadra? | Monto original    | Monto consolidado | &iquest;Cuadra? |
+|----------------------|----------------|-------------------|----------|-------------------|--------------------|----------|
+| banca_comercial.xlsx | 150            | 150               | &#10004;        | $123,456,789      | $123,456,789       | &#10004;        |
+| seguros.xlsx         | 100            | 100               | &#10004;        | $45,230,000       | $43,100,000        | &#10060;        |
+| ...                  | ...            | ...               | ...      | ...               | ...                | ...      |
+| TOTAL                | 590            | 590               | &#10004;        | $XXX              | $XXX               | &#10004;        |
+
+Si algo tiene &#10060;, EXPL&Iacute;CAME por qu&eacute; no cuadra."</div>
+
+          <div class="verify-card">
+            <h4>&#x1F9EA; ESTE es el momento de la verdad</h4>
+            <p style="margin:4px 0 0;font-size:13px">Si todos los &#10004; est&aacute;n verdes, pueden confiar en el consolidado. Si hay un &#10060;, <b>NO AVANCEN</b>. Pidan a Copilot que investigue y corrija. Siempre es mejor 5 minutos m&aacute;s de verificaci&oacute;n que rehacer todo.</p>
+          </div>
+        </div>
+
+        <div class="activity">
+          <b>Paso 3 &mdash; Clasificar y generar el Excel final (5 min)</b>
+          <div class="prompt-example">&#x1F916; "Con el consolidado verificado, agrega al script:
+
+1. Clasifica cada fila como 'Ingreso', 'Gasto' o 'Provisi&oacute;n' seg&uacute;n la columna 'tipo'
+   (si no es claro, pon 'Sin clasificar')
+
+2. Genera 3 archivos Excel:
+   - ingresos.xlsx (solo los clasificados como Ingreso)
+   - gastos.xlsx (solo los clasificados como Gasto)
+   - provisiones.xlsx (solo los clasificados como Provisi&oacute;n)
+
+3. PRUEBA: Imprime cu&aacute;ntas filas tiene cada archivo de salida.
+   La suma debe ser = total del consolidado.
+   Si hay 'Sin clasificar', mu&eacute;stramelos aparte."</div>
+        </div>
+      </section>
+
+      <!-- LAB 4 -->
+      <section style="border:none;padding:20px 0">
+        <h2>&#x1F310; Lab 4 &mdash; Generar HTML del resultado (10 min)</h2>
+        <p>Ahora conectamos con lo que aprendieron en la Sesi&oacute;n 2: crear un HTML con los resultados REALES.</p>
+
+        <div class="activity">
+          <b>Paso 1 &mdash; Dashboard de consolidaci&oacute;n (5 min)</b>
+          <div class="prompt-example">&#x1F916; "Con los resultados del consolidado, genera un HTML tipo dashboard que muestre:
+
+1. HEADER: 'Consolidaci&oacute;n Financiera &mdash; [Fecha de hoy]'
+2. KPIs en tarjetas: Total Archivos procesados (5), Total Registros (590),
+   Total Monto Consolidado ($XXX), Registros sin clasificar (XX)
+3. Tabla de cuadre cruzado (la que generamos antes) &mdash; con &#10004; y &#10060; visibles
+4. Gr&aacute;fico de barras CSS: monto por &aacute;rea/archivo_origen
+5. Tabla de excepciones: filas sin clasificar o con monto vac&iacute;o
+
+Estilo EY corporativo, azul #0F62FE y amarillo #FFCD00.
+Todo en un solo archivo HTML."</div>
+        </div>
+
+        <div class="activity">
+          <b>Paso 2 &mdash; Conectar con su presentaci&oacute;n HTML (5 min)</b>
+          <div class="prompt-example">&#x1F916; "Agrega al slide de 'M&eacute;tricas de &eacute;xito' de mi presentaci&oacute;n HTML
+de la Sesi&oacute;n 2 estos datos REALES del consolidado:
+- Archivos procesados: 5
+- Registros consolidados: 590
+- Tiempo manual estimado: 6 horas
+- Tiempo con IA + verificaci&oacute;n: 25 minutos
+- Cuadre: 100% verificado
+
+Dame el slide actualizado con los datos reales."</div>
+        </div>
+      </section>
+
+      <!-- RESUMEN BLOQUE 2 -->
+      <section style="border:none;padding:20px 0">
+        <h2>&#x1F4CA; Lo que lograron en el Lab</h2>
+        <div style="background:#f0f4ff;border:1px solid #c8d6f0;border-radius:12px;padding:18px;margin:16px 0">
+          <table>
+            <thead><tr><th>Paso</th><th>Acci&oacute;n</th><th>Verificaci&oacute;n</th><th>Tiempo</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td>Explorar 5 archivos + mapear columnas</td><td>Conteo de filas vs Excel original</td><td>~15 min</td></tr>
+              <tr><td>2</td><td>Script de homologaci&oacute;n</td><td>ANTES/DESPU&Eacute;S de cada archivo</td><td>~15 min</td></tr>
+              <tr><td>3</td><td>Consolidar en 1 archivo</td><td>Tabla de cuadre cruzado completa</td><td>~12 min</td></tr>
+              <tr><td>4</td><td>Clasificar + 3 Excels</td><td>Suma de partes = total</td><td>~5 min</td></tr>
+              <tr><td>5</td><td>Dashboard HTML</td><td>Visual con cuadre y excepciones</td><td>~8 min</td></tr>
+              <tr style="font-weight:700;background:#e8f5e9"><td colspan="3">TOTAL &mdash; con verificaci&oacute;n en cada paso</td><td>~55 min</td></tr>
+            </tbody>
+          </table>
+          <p style="text-align:center;margin:12px 0 0;font-weight:700;color:#2e7d32">Manual: 6+ horas sin garant&iacute;a &middot; Con Copilot + verificaci&oacute;n: &lt; 1 hora con cuadre completo</p>
+        </div>
+      </section>
+    </div>
+
+    <!-- BLOQUE 3 -->
+    <div class="block-header">&#x1F3D7;&#65039; Bloque 3 &mdash; Tu caso real: practica el ciclo completo (60 min)</div>
+    <div class="block-body">
+
+      <section style="border:none;padding:20px 0">
+        <h2>&#9881;&#65039; Ejercicio &mdash; Scripts + pruebas con archivos de tu equipo</h2>
+        <p>Cada equipo usa sus propios archivos (o los del ejercicio, ampliados a 8-10 fuentes) para practicar el ciclo completo.</p>
+
+        <div class="activity">
+          <b>Parte A (25 min) &mdash; Ciclo completo con tus archivos</b>
+          <ol>
+            <li><b>Subir</b> sus archivos Excel a Copilot Chat (los de su POC real o los del ejercicio)</li>
+            <li><b>Explorar:</b> &iquest;cu&aacute;ntas filas? &iquest;qu&eacute; columnas tiene cada uno?</li>
+            <li><b>Mapear:</b> Crear tabla de equivalencias de columnas</li>
+            <li><b>Script:</b> Pedir script de homologaci&oacute;n CON prints de verificaci&oacute;n</li>
+            <li><b>Verificar:</b> Cuadre cruzado de filas y montos</li>
+            <li><b>Consolidar:</b> Un solo archivo Excel verificado</li>
+          </ol>
+          <div class="limitation-card">
+            <b>&#x1F9EA; REQUISITO:</b> Cada equipo debe completar al menos <b>3 verificaciones documentadas</b>:
+            <ol style="margin:4px 0 0;font-size:13px">
+              <li>Verificaci&oacute;n de conteo de filas (archivo por archivo)</li>
+              <li>Verificaci&oacute;n de cuadre de montos</li>
+              <li>Una verificaci&oacute;n extra de su elecci&oacute;n (clasificaci&oacute;n, fechas, excepciones, etc.)</li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="activity">
+          <b>Parte B (10 min) &mdash; El script del mes siguiente</b>
+          <p>El verdadero poder: que el mismo proceso se pueda repetir el mes que viene.</p>
+          <div class="prompt-example">&#x1F916; "Ahora toma todo el script que generaste y hazlo REUTILIZABLE:
+
+1. Que lea AUTOM&Aacute;TICAMENTE todos los .xlsx de una carpeta (sin hardcodear nombres)
+2. Que detecte autom&aacute;ticamente qu&eacute; columna se parece a 'fecha', 'monto', 'tipo'
+   usando el mapa de equivalencias que definimos
+3. Que genere el log de cuadre cada vez que se corre
+4. Que guarde el consolidado con la fecha de hoy en el nombre
+5. Agrega COMENTARIOS en espa&ntilde;ol explicando qu&eacute; hace cada parte
+
+El mes que viene solo pongo los archivos nuevos en la carpeta y corro el script."</div>
+        </div>
+
+        <div class="activity">
+          <b>Parte C (10 min) &mdash; Show &amp; Tell</b>
+          <p>Cada equipo presenta en <b>2 minutos</b>:</p>
+          <ol>
+            <li>&iquest;Cu&aacute;ntos archivos consolidaron?</li>
+            <li><b>Muestren 1 verificaci&oacute;n que evit&oacute; un error</b> (la m&aacute;s interesante)</li>
+            <li>&iquest;El cuadre dio 100%? Si no, &iquest;qu&eacute; encontraron?</li>
+          </ol>
+          <p style="margin-top:8px;font-size:13px;color:var(--ey-gray)">El objetivo del Show &amp; Tell no es lucirse &mdash; es <b>compartir aprendizajes de verificaci&oacute;n</b>.</p>
+        </div>
+
+        <div class="activity">
+          <b>Parte D (15 min) &mdash; Cierre y lecciones aprendidas</b>
+          <div class="grid-2">
+            <div class="box">
+              <h3>&#x1F4CB; Qu&eacute; nos llevamos</h3>
+              <ul>
+                <li>Script reutilizable de consolidaci&oacute;n</li>
+                <li>Mapa de equivalencias documentado</li>
+                <li>Excel consolidado y verificado</li>
+                <li>Dashboard HTML con datos reales</li>
+                <li>La disciplina de verificar cada paso</li>
+              </ul>
+            </div>
+            <div class="box">
+              <h3>&#x1F9E0; La mentalidad correcta</h3>
+              <ul>
+                <li>La IA genera &rarr; yo <b>verifico</b></li>
+                <li>Un paso a la vez &rarr; una prueba a la vez</li>
+                <li>Nunca avanzar sin cuadre</li>
+                <li>Guardar el script para reusar</li>
+                <li>Documentar las excepciones</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- CHEATSHEET -->
+    <section>
+      <h2>&#x1F9EA; Cheatsheet: Prompts de verificaci&oacute;n (rec&oacute;rtenlo y p&eacute;guenlo en la pared)</h2>
+      <p>Estos son los prompts m&aacute;s &uacute;tiles para pedir pruebas. &Uacute;senlos en <b>cualquier</b> tarea con Copilot, no solo para consolidar Excels.</p>
+
+      <h3>&#x1F522; Conteo y cuadre</h3>
+      <div class="prompt-example" style="font-size:12px">"&iquest;Cu&aacute;ntas filas tiene el resultado? Compara con el original. &iquest;Coincide?"</div>
+      <div class="prompt-example" style="font-size:12px">"Suma la columna [X] en el resultado y en el original. &iquest;Las sumas son iguales?"</div>
+      <div class="prompt-example" style="font-size:12px">"Dame una tabla de cuadre: archivo | filas original | filas resultado | &iquest;cuadra?"</div>
+
+      <h3>&#x1F440; Antes / Despu&eacute;s</h3>
+      <div class="prompt-example" style="font-size:12px">"Mu&eacute;strame las primeras 5 filas ANTES de la transformaci&oacute;n y DESPU&Eacute;S. Side by side."</div>
+      <div class="prompt-example" style="font-size:12px">"Mu&eacute;strame los nombres de columnas ANTES y DESPU&Eacute;S del renombrado."</div>
+
+      <h3>&#x1F6A8; Excepciones y anomal&iacute;as</h3>
+      <div class="prompt-example" style="font-size:12px">"&iquest;Hay filas con valores vac&iacute;os en [columna]? &iquest;Cu&aacute;ntas? Mu&eacute;strame 5 ejemplos."</div>
+      <div class="prompt-example" style="font-size:12px">"&iquest;Hay montos negativos? &iquest;Hay montos extremadamente altos (&gt; $10M)? Mu&eacute;stralos."</div>
+      <div class="prompt-example" style="font-size:12px">"&iquest;Hay filas que no se consolidaron? &iquest;D&oacute;nde est&aacute;n? &iquest;Por qu&eacute; se descartaron?"</div>
+
+      <h3>&#x1F4CA; Distribuci&oacute;n y clasificaci&oacute;n</h3>
+      <div class="prompt-example" style="font-size:12px">"&iquest;Cu&aacute;les son los valores &uacute;nicos en [columna]? &iquest;Hay valores inesperados?"</div>
+      <div class="prompt-example" style="font-size:12px">"&iquest;Cu&aacute;ntos registros quedaron en cada categor&iacute;a? &iquest;Hay alguna con 0?"</div>
+
+      <h3>&#x1F501; Reproducibilidad</h3>
+      <div class="prompt-example" style="font-size:12px">"Si corro este script el mes que viene con archivos nuevos, &iquest;qu&eacute; podr&iacute;a fallar?"</div>
+      <div class="prompt-example" style="font-size:12px">"Agrega al script un try/except que no pare la ejecuci&oacute;n sino que guarde los errores en un log."</div>
+
+      <h3>&#x1F9E0; Entender antes de ejecutar</h3>
+      <div class="prompt-example" style="font-size:12px">"Expl&iacute;came paso a paso qu&eacute; hace este script. &iquest;Qu&eacute; podr&iacute;a salir mal en cada paso?"</div>
+      <div class="prompt-example" style="font-size:12px">"&iquest;Qu&eacute; supuestos est&aacute;s haciendo? &iquest;Qu&eacute; pasa si uno de los archivos no tiene la columna X?"</div>
+    </section>
+
+    <!-- PIPELINE -->
+    <section>
+      <h2>&#x1F517; Pipeline completo del curso: Sesi&oacute;n 1 + 2 + 3</h2>
+      <div style="margin:16px 0;text-align:center">
+        <div style="display:flex;justify-content:center;align-items:stretch;gap:4px;flex-wrap:wrap">
+          <div style="flex:1;min-width:100px;max-width:140px;background:#217346;color:#fff;padding:14px 8px;border-radius:12px;text-align:center">
+            <div style="font-size:11px;font-weight:800">Sesi&oacute;n 1</div>
+            <div style="font-size:24px;margin:4px 0">&#x1F4CA;</div>
+            <div style="font-size:10px">Excel + Copilot<br>An&aacute;lisis 1 archivo</div>
+          </div>
+          <div style="display:flex;align-items:center;color:var(--ey-accent);font-size:20px;font-weight:bold">&rarr;</div>
+          <div style="flex:1;min-width:100px;max-width:140px;background:#F2C811;color:#333;padding:14px 8px;border-radius:12px;text-align:center">
+            <div style="font-size:11px;font-weight:800">Sesi&oacute;n 1</div>
+            <div style="font-size:24px;margin:4px 0">&#x1F4C8;</div>
+            <div style="font-size:10px">Power BI Q&amp;A<br>Dashboard</div>
+          </div>
+          <div style="display:flex;align-items:center;color:var(--ey-accent);font-size:20px;font-weight:bold">&rarr;</div>
+          <div style="flex:1;min-width:100px;max-width:140px;background:#0F62FE;color:#fff;padding:14px 8px;border-radius:12px;text-align:center">
+            <div style="font-size:11px;font-weight:800">Sesi&oacute;n 2</div>
+            <div style="font-size:24px;margin:4px 0">&#x1F310;</div>
+            <div style="font-size:10px">HTMLs con Copilot<br>Reportes + Slides</div>
+          </div>
+          <div style="display:flex;align-items:center;color:var(--ey-accent);font-size:20px;font-weight:bold">&rarr;</div>
+          <div style="flex:1;min-width:100px;max-width:140px;background:#1565c0;color:#fff;padding:14px 8px;border-radius:12px;text-align:center">
+            <div style="font-size:11px;font-weight:800">Sesi&oacute;n 3</div>
+            <div style="font-size:24px;margin:4px 0">&#x1F4C1;&#x1F4C1;&#x1F4C1;</div>
+            <div style="font-size:10px">M&uacute;ltiples Excels<br>Homologaci&oacute;n</div>
+          </div>
+          <div style="display:flex;align-items:center;color:var(--ey-accent);font-size:20px;font-weight:bold">&rarr;</div>
+          <div style="flex:1;min-width:100px;max-width:140px;background:#1565c0;color:#fff;padding:14px 8px;border-radius:12px;text-align:center">
+            <div style="font-size:11px;font-weight:800">Sesi&oacute;n 3</div>
+            <div style="font-size:24px;margin:4px 0">&#x1F9EA;</div>
+            <div style="font-size:10px">Verificaci&oacute;n<br>paso a paso</div>
+          </div>
+          <div style="display:flex;align-items:center;color:var(--ey-accent);font-size:20px;font-weight:bold">&rarr;</div>
+          <div style="flex:1;min-width:100px;max-width:140px;background:linear-gradient(135deg,var(--ey-yellow),#ffe77a);color:#333;padding:14px 8px;border-radius:12px;text-align:center">
+            <div style="font-size:11px;font-weight:800">Resultado</div>
+            <div style="font-size:24px;margin:4px 0">&#10004;&#65039;</div>
+            <div style="font-size:10px">Consolidado<br>verificado</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="box">
+          <h3>&#x1F4C8; Evoluci&oacute;n del alumno</h3>
+          <table style="font-size:13px">
+            <thead><tr><th>Sesi&oacute;n</th><th>Skill</th><th>Nivel</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td>Prompt para 1 archivo</td><td>&#11036;&#11036; B&aacute;sico</td></tr>
+              <tr><td>2</td><td>Generar documentos complejos</td><td>&#11036;&#11036;&#11036; Intermedio</td></tr>
+              <tr><td>3</td><td>Orquestar m&uacute;ltiples fuentes + verificar</td><td>&#11036;&#11036;&#11036;&#11036; Avanzado</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="box">
+          <h3>&#x1F9EA; La diferencia clave</h3>
+          <p>La mayor&iacute;a de usuarios de IA se quedan en &ldquo;genero y conf&iacute;o&rdquo;.</p>
+          <p>Ustedes ahora saben hacer <b>&ldquo;genero, verifico y documento&rdquo;</b>.</p>
+          <p>Eso es lo que hace que un profesional sea <b>confiable</b> usando IA.</p>
+          <p style="font-weight:700;color:var(--ey-accent)">Esa es la diferencia entre un usuario y un profesional.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- TROUBLESHOOTING -->
+    <section>
+      <h2>&#x1F6A8; Troubleshooting &mdash; Problemas comunes</h2>
+      <table style="font-size:13px">
+        <thead><tr><th>Problema</th><th>Soluci&oacute;n</th></tr></thead>
+        <tbody>
+          <tr><td>Copilot no puede leer los 5 archivos a la vez</td><td>Adjuntar de a 2-3 por conversaci&oacute;n. O copiar/pegar las primeras 20 filas de cada uno directamente en el chat.</td></tr>
+          <tr><td>El script tiene errores de sintaxis Python</td><td>Pegar el error en Copilot: <code>&ldquo;Al ejecutar tu script me sale este error: [pegar error]. Corr&iacute;gelo y dame el script completo.&rdquo;</code></td></tr>
+          <tr><td>Las filas no cuadran despu&eacute;s de homologar</td><td>Pedirle: <code>&ldquo;&iquest;Hubo filas que se descartaron? &iquest;Por qu&eacute;? Mu&eacute;strame las filas que se perdieron.&rdquo;</code></td></tr>
+          <tr><td>Copilot inventa datos en vez de leer los reales</td><td>Adjuntar el archivo SIEMPRE. Si no lo adjuntan, Copilot inventa. Verificar: <code>&ldquo;Confirma que est&aacute;s usando los datos del archivo adjunto, no generando datos nuevos.&rdquo;</code></td></tr>
+          <tr><td>No tengo Python instalado</td><td>Opci&oacute;n A: Pedir a Copilot que haga todo internamente y solo muestre resultados. Opci&oacute;n B: Usar <a href="https://colab.research.google.com/" target="_blank">Google Colab</a> (gratis, sin instalar nada).</td></tr>
+          <tr><td>El monto no cuadra entre original y consolidado</td><td>Posibles causas: 1) Filas filtradas por error, 2) NaN descartados, 3) Tipos de dato mixtos (texto vs n&uacute;mero). Pedir a Copilot que diagnostique.</td></tr>
+          <tr><td>Mi archivo tiene m&aacute;s de 5,000 filas</td><td>Copilot 365 tiene l&iacute;mite. Pedir que genere el script y ejecutarlo localmente en Python. El script no tiene l&iacute;mite de filas.</td></tr>
+          <tr><td>Copilot genera script pero no lo ejecuta</td><td>Normal &mdash; Copilot Chat genera c&oacute;digo, no lo ejecuta. Copiar &rarr; pegar en Python/VS Code/Colab &rarr; ejecutar ah&iacute;.</td></tr>
+          <tr><td>&iquest;C&oacute;mo s&eacute; que el cuadre est&aacute; bien si no conozco el total real?</td><td>Antes de todo: abrir cada Excel &rarr; seleccionar la columna de monto &rarr; ver la suma en la barra inferior de Excel. Anotar esos n&uacute;meros. Son tu &ldquo;verdad&rdquo;.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ENTREGABLE -->
+    <section>
+      <h2>&#x1F4E6; Entregable de la Sesi&oacute;n 3</h2>
+      <div class="box" style="background:#f9fafb;border-left:4px solid var(--ey-yellow)">
+        <ol>
+          <li><b>Mapa de equivalencias:</b> tabla que muestra c&oacute;mo se llama cada columna en cada archivo fuente.</li>
+          <li><b>Script de homologaci&oacute;n/consolidaci&oacute;n:</b> guardado como <code>.py</code> con comentarios en espa&ntilde;ol y prints de verificaci&oacute;n.</li>
+          <li><b>Tabla de cuadre cruzado:</b> evidencia de que filas y montos cuadran entre originales y consolidado.</li>
+          <li><b>Excel consolidado:</b> <code>consolidado_final.xlsx</code> listo para usar.</li>
+          <li><b>(Bonus) Dashboard HTML:</b> con datos reales del consolidado y tabla de cuadre visible.</li>
+        </ol>
+        <div style="margin-top:12px;padding:12px;background:#e3f2fd;border-radius:8px;font-size:14px">
+          &#x1F9EA; <b>Lo m&aacute;s valioso no es el Excel final &mdash; es la disciplina de verificaci&oacute;n.</b> Un script que cuadra al 100% es un script que pueden presentar con confianza a cualquier directivo.
+        </div>
+      </div>
+    </section>
+
+    <!-- CIERRE -->
+    <section>
+      <h2>&#x1F3AF; Cierre del programa &mdash; Las 3 habilidades que se llevan</h2>
+      <div class="grid-3">
+        <div class="box" style="text-align:center;border-top:4px solid #217346">
+          <div style="font-size:36px">&#x1F4CA;</div>
+          <h3>Sesi&oacute;n 1</h3>
+          <p><b>Analizar datos con IA</b></p>
+          <p style="font-size:12px;color:var(--ey-gray)">Copilot en Excel + Power BI. Un archivo, an&aacute;lisis profundo.</p>
+        </div>
+        <div class="box" style="text-align:center;border-top:4px solid #0F62FE">
+          <div style="font-size:36px">&#x1F310;</div>
+          <h3>Sesi&oacute;n 2</h3>
+          <p><b>Documentar y presentar con IA</b></p>
+          <p style="font-size:12px;color:var(--ey-gray)">HTMLs profesionales. Reportes, slides, dashboards.</p>
+        </div>
+        <div class="box" style="text-align:center;border-top:4px solid #1565c0">
+          <div style="font-size:36px">&#x1F9EA;</div>
+          <h3>Sesi&oacute;n 3</h3>
+          <p><b>Orquestar y verificar con IA</b></p>
+          <p style="font-size:12px;color:var(--ey-gray)">M&uacute;ltiples fuentes, scripts, cuadre paso a paso.</p>
+        </div>
+      </div>
+
+      <div style="background:linear-gradient(135deg,#242424 0%,#444 100%);border-radius:16px;padding:32px;color:#fff;margin:24px 0;text-align:center">
+        <h3 style="margin:0 0 12px;color:var(--ey-yellow);font-size:22px">El mensaje final</h3>
+        <p style="margin:0;font-size:17px;opacity:.95;max-width:700px;display:inline-block">
+          La IA no reemplaza al profesional que <b>verifica</b>.<br>
+          La IA reemplaza al profesional que <b>no verifica</b>.
+        </p>
+        <p style="margin:16px 0 0;font-size:14px;opacity:.7">Ustedes ahora saben pedirle a la IA que genere, pero m&aacute;s importante: saben pedirle que <b>demuestre que hizo bien su trabajo</b>.<br>Eso es una ventaja profesional enorme.</p>
+      </div>
+    </section>
+
+    <footer>
+      <a href="sesion2.html">&larr; Sesi&oacute;n 2</a> &nbsp;|&nbsp;
+      <a href="sesion1.html">Sesi&oacute;n 1</a> &nbsp;|&nbsp;
+      <a href="prompts_cheatsheet.html">Cheatsheet de Prompts</a> &nbsp;|&nbsp;
+      <a href="intro.html">Brochure</a> &nbsp;|&nbsp;
+      POC Thinking con Microsoft 365 Copilot &mdash; EY
+    </footer>
+
+  </main>
+</body>
+</html>

@@ -1,204 +1,216 @@
-# 🧠 Cheatsheet de Prompts — Sesión 3: Python + pandas con GitHub Copilot
+# 🧠 Cheatsheet de Prompts — Sesión 3: Pipeline mensual con Copilot 365
 
-> Guía rápida de prompts para escribir como comentarios en Python.
-> GitHub Copilot genera el código a partir de estos comentarios.
-
----
-
-## 📥 Lectura de archivos
-
-### Leer todos los xlsx de una carpeta
-```python
-# Lee todos los archivos .xlsx de la carpeta "datos_entrada/"
-# Para cada archivo, guarda el DataFrame en un diccionario con el nombre del archivo como llave
-# Muestra nombre, filas y columnas de cada archivo
-```
-
-### Leer CSVs con encoding correcto
-```python
-# Lee catalogo_cuentas.csv con encoding utf-8-sig
-# Lee saldos_contables.csv con encoding utf-8-sig
-# Muestra las primeras 5 filas de cada uno
-```
-
-### Agregar columna de origen
-```python
-# Para cada DataFrame, agrega una columna "archivo_origen" con el nombre del archivo
-# Esto permite rastrear de dónde viene cada registro después de concatenar
-```
+> Guía rápida de prompts para usar en **copilot.microsoft.com**.
+> Adjunta tus archivos Excel y usa estos prompts como base. Ajústalos a tu caso.
 
 ---
 
-## 🔀 Homologación de columnas
+## 📥 Exploración de archivos
 
-### Mapeo por archivo
-```python
-# Diccionario de mapeo de columnas por archivo:
-# banca_comercial.xlsx: {"fecha_registro": "fecha", "concepto_operacion": "concepto", "monto_MXN": "monto", "tipo_movimiento": "tipo", "linea_negocio": "linea_negocio", "subcuenta_contable": "subcuenta"}
-# banca_corporativa.xlsx: {"date": "fecha", "concept": "concepto", "amount_MXN": "monto", "type": "tipo", "business_line": "linea_negocio", "sub_account": "subcuenta"}
-# seguros.xlsx: {"fecha": "fecha", "tipo_operacion": "concepto", "importe": "monto", "naturaleza": "tipo", "area": "linea_negocio", "cta_subcuenta": "subcuenta"}
-# inversiones.xlsx: {"trade_date": "fecha", "description": "concepto", "amount": "monto", "category": "tipo", "desk": "linea_negocio", "gl_account": "subcuenta"}
-# tarjetas.xlsx: {"fecha_movimiento": "fecha", "concepto": "concepto", "monto_pesos": "monto", "clasificacion": "tipo", "producto": "linea_negocio", "num_cuenta": "subcuenta"}
+### Pedir resumen de estructura
+```
+Tengo estos [N] archivos Excel. Para cada uno dame:
+- Nombre del archivo
+- Número de filas y columnas
+- Lista completa de columnas
+- Las primeras 2 filas de ejemplo
 ```
 
-### Aplicar mapeo y concatenar
-```python
-# Aplica el diccionario de mapeo a cada DataFrame usando df.rename(columns=mapeo)
-# Selecciona solo las columnas estándar: fecha, linea_negocio, concepto, subcuenta, monto, tipo, periodo, responsable, archivo_origen
-# Concatena todos los DataFrames en uno solo con pd.concat()
+### Verificar que Copilot leyó bien
+```
+Dame un resumen para verificar:
+- Tabla: Archivo | Filas | Columnas | Suma de monto
+- ¿Hay archivos con filas vacías?
+- ¿Hay archivos con menos columnas de lo esperado?
+```
+
+### Crear mapa de equivalencias
+```
+Haz un MAPA DE EQUIVALENCIAS de columnas.
+Tabla: Columna estándar | Archivo1 | Archivo2 | Archivo3 | ...
+Hazlo para TODAS las columnas que se puedan mapear.
 ```
 
 ---
 
-## 🏷️ Clasificación
+## 🔀 Homologación con verificación
 
-### Por concepto (regex)
-```python
-# Clasifica cada registro usando str.contains con regex:
-# - Ingreso: concepto contiene "comisión|spread|prima|rendimiento|interés|asesoría|anualidad"
-# - Gasto: concepto contiene "gasto|nómina|personal|servicio|licencia|renta|mantenimiento|multa|publicidad|seguridad"
-# - Provisión: concepto contiene "reserva|pérdida|provisión|valuación"
-# - Si no coincide con ninguna regla: "Sin clasificar"
+### Script con prints de verificación
+```
+Genera un script Python que homologue los [N] archivos usando el mapa.
+Para CADA archivo imprimir: filas antes/después, columnas antes/después,
+primeras 3 filas del resultado. Tabla resumen al final.
+Si alguna columna no existe, pon NaN y agrégalo a un log de excepciones.
 ```
 
-### Con función personalizada
-```python
-# Crea una función clasificar(concepto, tipo) que devuelva "Ingreso", "Gasto", "Provisión" o "Sin clasificar"
-# Aplica la función con df["clasificacion"] = df.apply(lambda row: clasificar(row["concepto"], row["tipo"]), axis=1)
+### Revisar antes de ejecutar
+```
+EXPLÍCAME paso a paso qué hace este script.
+Para cada bloque: qué hace, qué podría salir mal, cómo lo verifico.
 ```
 
----
-
-## 📊 Consolidados (3 Excels)
-
-### Filtrar y guardar con dos hojas
-```python
-# Para cada clasificación (Ingreso, Gasto, Provisión):
-# 1. Filtra el DataFrame por clasificacion
-# 2. Crea una hoja "Detalle" con todas las filas
-# 3. Crea una hoja "Resumen" con pivot_table: index=["linea_negocio", "concepto"], values="monto", aggfunc="sum"
-# 4. Guarda como consolidado_ingresos.xlsx, consolidado_gastos.xlsx, consolidado_provisiones.xlsx
+### Cuando algo no cuadra
 ```
-
-### ExcelWriter con múltiples hojas
-```python
-# Usa pd.ExcelWriter con engine="openpyxl" para escribir múltiples hojas:
-with pd.ExcelWriter("consolidado_ingresos.xlsx", engine="openpyxl") as writer:
-    df_detalle.to_excel(writer, sheet_name="Detalle", index=False)
-    df_resumen.to_excel(writer, sheet_name="Resumen")
+El archivo '[nombre]' debería tener $[monto] en total,
+pero después de la homologación dice $[otro monto]. ¿Qué pasó?
+¿Se perdieron filas? ¿Hay NaN? Muéstrame las filas que no se consolidaron.
 ```
 
 ---
 
-## 📋 Formato Global (pivot)
+## 🔢 Conteo y cuadre
 
-### Pivot table con subtotales
-```python
-# Genera un pivot_table:
-# - index="concepto" (cada concepto único)
-# - columns="linea_negocio" (Banca Comercial, Banca Corporativa, Seguros, Inversiones, Tarjetas, Corporativo)
-# - values="monto"
-# - aggfunc="sum"
-# - fill_value=0
-# Agrega columna "TOTAL" con la suma horizontal
+### Pruebas de cuadre
+```
+Imprime PRUEBAS DE CUADRE:
+- Total filas consolidado vs suma de filas individuales
+- Suma de 'monto' en consolidado vs suma por archivo_origen
+- Cuántas filas tienen monto vacío/NaN
+- Valores únicos en 'archivo_origen' (deben ser exactamente [N])
 ```
 
-### Agregar filas de subtotal y resultado neto
-```python
-# Separa el pivot en 3 secciones: ingresos, gastos, provisiones
-# Para cada sección, calcula una fila de subtotal (suma por columna)
-# Concatena: ingresos + subtotal_ingresos + gastos + subtotal_gastos + provisiones + subtotal_provisiones
-# Agrega fila final: "RESULTADO NETO" = subtotal_ingresos - subtotal_gastos - subtotal_provisiones
+### Tabla de cuadre cruzado
+```
+Genera tabla de cuadre cruzado:
+| Archivo | Filas original | Filas consolidado | ¿Cuadra? | Monto original | Monto consolidado | ¿Cuadra? |
+Si algo tiene ✘, EXPLÍCAME por qué.
 ```
 
----
-
-## ✅ Validaciones
-
-### Cuadre de totales
-```python
-# Valida que:
-# total_registros_entrada == total_ingresos + total_gastos + total_provisiones + total_sin_clasificar
-# Imprime "✅ Cuadre OK" o "❌ Diferencia de X registros"
+### Cuadre de clasificación
 ```
-
-### Montos anómalos
-```python
-# Identifica:
-# 1. Registros con monto nulo (NaN)
-# 2. Ingresos con monto negativo
-# 3. Gastos con monto negativo (podrían ser reversiones válidas)
-# 4. Montos extremos (> 3 desviaciones estándar del promedio por concepto)
-```
-
-### Cruce con saldos contables
-```python
-# Para cada subcuenta, compara:
-# - Suma de montos del consolidado
-# - Saldo_final del archivo saldos_contables.csv
-# Calcula la diferencia y marca como alerta si diferencia > 1%
+¿Cuántos registros quedaron en cada categoría (Ingreso/Gasto/Provisión/Sin clasificar)?
+La suma de todas las categorías debe ser = total del consolidado. ¿Cuadra?
 ```
 
 ---
 
-## 📝 Formato Excel profesional
+## 👀 Antes / Después
 
-### Con openpyxl
-```python
-# Aplica formato al Excel de salida:
-# 1. Encabezados: fondo azul (#0F62FE), texto blanco, negrita, centrado
-# 2. Montos: formato de moneda "$#,##0.00"
-# 3. Bordes delgados en todas las celdas
-# 4. Filas de subtotal: fondo gris (#E0E0E0), negrita
-# 5. Fila resultado neto: fondo amarillo (#FFCD00), negrita
-# 6. Auto-ajustar ancho de columnas
+### Comparar transformaciones
+```
+Muéstrame las primeras 5 filas ANTES de la transformación y DESPUÉS. Side by side.
 ```
 
-### Con xlsxwriter (alternativa)
-```python
-# Usa xlsxwriter como engine de ExcelWriter para más control:
-# writer = pd.ExcelWriter("formato_global.xlsx", engine="xlsxwriter")
-# workbook = writer.book
-# header_format = workbook.add_format({"bold": True, "bg_color": "#0F62FE", "font_color": "white"})
-# money_format = workbook.add_format({"num_format": "$#,##0.00"})
+```
+Muéstrame los nombres de columnas ANTES y DESPUÉS del renombrado.
 ```
 
 ---
 
-## 🔧 Debugging con Copilot Chat
+## 🚨 Excepciones y anomalías
 
-### Cuando hay un error
+### Detectar problemas
 ```
-"Tengo este error al ejecutar mi script Python:
-[pegar el traceback completo]
-¿Qué está mal y cómo lo corrijo?"
+¿Hay filas con valores vacíos en [columna]? ¿Cuántas? Muéstrame 5 ejemplos.
 ```
 
-### Cuando el resultado no es el esperado
 ```
-"Mi pivot_table genera este resultado:
-[pegar las primeras filas]
-Pero esperaba que las líneas de negocio fueran columnas, no filas.
-¿Cómo ajusto el código?"
+¿Hay montos negativos? ¿Hay montos extremadamente altos (> $10M)? Muéstralos.
 ```
 
-### Para optimizar
 ```
-"Este script tarda mucho porque lee archivos en un loop.
-¿Puedes optimizarlo usando list comprehension y pd.concat?"
+¿Hay filas que no se consolidaron? ¿Dónde están? ¿Por qué se descartaron?
 ```
 
 ---
 
-## ⚡ One-liners útiles
+## 🔁 Pipeline reutilizable
 
-| Tarea | Código |
-|-------|--------|
-| Contar filas por archivo | `df.groupby("archivo_origen").size()` |
-| Ver columnas únicas | `df.columns.tolist()` |
-| Valores únicos de concepto | `df["concepto"].unique()` |
-| Suma por línea de negocio | `df.groupby("linea_negocio")["monto"].sum()` |
-| Filtrar nulos | `df[df["monto"].isna()]` |
-| Quitar duplicados | `df.drop_duplicates()` |
-| Exportar a CSV | `df.to_csv("salida.csv", index=False)` |
-| Descripción estadística | `df["monto"].describe()` |
+### Hacer el script reutilizable
+```
+Haz el script REUTILIZABLE:
+1. Leer TODOS los .xlsx de una carpeta (sin hardcodear nombres)
+2. Leer config desde un JSON (mapa de equivalencias + reglas)
+3. Carpeta del mes como PARÁMETRO
+4. Guardar consolidado con fecha en el nombre
+5. Generar log de cuadre automático
+El mes que viene solo pongo archivos nuevos en la carpeta y corro el script.
+```
+
+### Estructura de carpetas
+```
+Crea estructura de carpetas para un pipeline mensual:
+pipeline_consolidacion/
+├── config/ (mapa + reglas en JSON)
+├── datos/ (subcarpeta por mes)
+├── salida/ (consolidados por mes)
+├── logs/ (logs de ejecución)
+├── pipeline.py
+└── comparar_meses.py
+```
+
+### Manejar errores sin parar
+```
+Agrega try/except que no pare la ejecución sino que guarde los errores en un log.
+Si un archivo falla, que los demás sigan procesándose.
+```
+
+---
+
+## 🔍 Detección de cambios entre periodos
+
+### Comparar 2 meses
+```
+Compara el consolidado de [mes1] vs [mes2]:
+- ¿Qué archivos son nuevos? ¿Cuáles faltan?
+- Para cada archivo: filas y montos de ambos meses. 🚨 si cambio > ±20%.
+- ¿Columnas nuevas o eliminadas en algún archivo?
+- ¿Categorías nuevas en 'tipo' que no existían el mes pasado?
+```
+
+### Resumen ejecutivo de cambios
+```
+Genera un resumen ejecutivo:
+- Total de alertas
+- Las 3 alertas más críticas
+- Recomendación: ¿Se puede confiar en el consolidado o hay que investigar?
+```
+
+### Simular cambios para probar
+```
+Crea versiones modificadas de los archivos con estos cambios:
+1. [archivo1]: agregar 50 filas más
+2. [archivo2]: agregar columna nueva
+3. [archivo3]: NO incluir (simular que no llegó)
+4. [archivo4]: reducir montos ~15%
+Para probar que el script de comparación detecta TODO.
+```
+
+---
+
+## 📊 Dashboard HTML
+
+### Generar dashboard con datos reales
+```
+Con los resultados del consolidado, genera un HTML tipo dashboard:
+- KPIs: archivos procesados, registros totales, monto consolidado
+- Tabla de cuadre cruzado con ✔ y ✘
+- Gráfico CSS de barras por archivo_origen
+- Tabla de excepciones
+Estilo corporativo, azul #0F62FE y amarillo #FFCD00.
+```
+
+---
+
+## 🧠 Entender antes de ejecutar
+
+### Pedir explicación
+```
+Explícame paso a paso qué hace este script. ¿Qué podría salir mal en cada paso?
+```
+
+```
+¿Qué supuestos estás haciendo? ¿Qué pasa si uno de los archivos no tiene la columna X?
+```
+
+### Si hay error al ejecutar
+```
+Al ejecutar tu script me sale este error: [pegar error].
+Corrígelo y dame el script completo corregido.
+```
+
+### Preguntar por robustez
+```
+Si corro este script el mes que viene con archivos nuevos, ¿qué podría fallar?
+¿Cómo lo hago más robusto?
+```

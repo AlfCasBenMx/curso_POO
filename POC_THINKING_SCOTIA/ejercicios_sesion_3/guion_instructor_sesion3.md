@@ -1,10 +1,10 @@
 # 🎬 Guión del Instructor — Sesión 3
-## "Automatización Python: Múltiples fuentes → Formato Global"
+## "Pipeline mensual: de 5 Excels a consolidado verificado + detección de cambios"
 
-> **Duración total:** 3 horas (180 min)  
-> **Formato:** Presencial o virtual (Teams)  
-> **Audiencia:** PMs y profesionales financieros (sin experiencia previa en Python)  
-> **Herramientas:** VS Code + GitHub Copilot + Python 3.9+ + pandas
+> **Duración total:** 3 horas (180 min)
+> **Formato:** Presencial o virtual (Teams)
+> **Audiencia:** PMs y profesionales financieros (sin experiencia en programación)
+> **Herramientas:** Microsoft 365 Copilot (copilot.microsoft.com), Python (solo para ejecutar scripts generados por Copilot)
 
 ---
 
@@ -12,25 +12,23 @@
 
 | # | Material | Acción requerida | Verificado |
 |---|----------|-------------------|:---:|
-| 1 | 12 archivos de entrada generados | Ejecutar `python generate_datasets_sesion3.py` en la carpeta ejercicios_sesion_3 | ☐ |
-| 2 | Carpeta `datos_entrada/` compartida | Subir a OneDrive/SharePoint o distribuir ZIP por Teams | ☐ |
+| 1 | 5 archivos Excel del ejercicio | Copiar de `datos_entrada/`: banca_comercial, banca_corporativa, seguros, tarjetas, tesoreria | ☐ |
+| 2 | Carpeta compartida | Subir los 5 .xlsx a OneDrive/SharePoint o distribuir ZIP por Teams | ☐ |
 | 3 | `sesion3.html` abierto en navegador | Para mostrar agenda, flujo, prompts y ejemplos | ☐ |
-| 4 | VS Code con GitHub Copilot funcionando | Verificar extensión activa, sesión de GitHub iniciada | ☐ |
-| 5 | Python instalado con pandas y openpyxl | `pip install pandas openpyxl xlsxwriter` | ☐ |
-| 6 | Script de solución `consolidar_solucion.py` | Tener listo como Plan B si algo falla en los labs | ☐ |
+| 4 | Copilot 365 funcionando | Verificar en copilot.microsoft.com que puede recibir archivos adjuntos | ☐ |
+| 5 | Python instalado (para ejecutar scripts) | `pip install pandas openpyxl` — solo para ejecutar, NO para programar | ☐ |
+| 6 | Resultados pre-generados | Tener consolidado + logs listos como Plan B | ☐ |
 | 7 | Timer visible | Para respetar tiempos de cada actividad | ☐ |
-| 8 | Excels de salida pre-generados | Tener los 3 consolidados + formato global listos como backup | ☐ |
 
 ### 🔒 Verificaciones técnicas (30 min antes)
 
-- [ ] VS Code abre correctamente en tu máquina
-- [ ] GitHub Copilot sugiere código al escribir un comentario
-- [ ] `python --version` muestra 3.9 o superior
-- [ ] `pip list` muestra pandas, openpyxl, xlsxwriter instalados
-- [ ] Los 12 archivos de datos_entrada/ se leen sin error
+- [ ] copilot.microsoft.com abre y acepta archivos adjuntos
+- [ ] Los 5 archivos Excel se pueden adjuntar sin error
+- [ ] Python funciona: `python --version` muestra 3.9+
+- [ ] pandas instalado: `python -c "import pandas; print(pandas.__version__)"`
 - [ ] Internet estable (Copilot necesita conexión)
 - [ ] Compartir pantalla funciona (si virtual)
-- [ ] Tener **resultados pre-generados** como Plan B
+- [ ] Tener **resultados pre-generados** como Plan B por si Copilot falla
 
 ---
 
@@ -38,19 +36,20 @@
 
 | Minuto | Bloque | Actividad |
 |--------|--------|-----------|
-| 0:00–0:05 | **Apertura** | Bienvenida, recap Sesión 2, objetivos |
-| 0:05–0:20 | **Bloque 1** | El problema de las múltiples fuentes |
-| 0:20–0:35 | **Bloque 1** | Mapa de datos: 12 fuentes → 3 consolidados → 1 formato |
-| 0:35–0:50 | **Bloque 1** | Intro a Python + pandas (5 conceptos clave) |
-| 0:50–0:55 | **Transición** | Pausa + abrir VS Code |
-| 0:55–1:15 | **Bloque 2** | Lab 1: Leer las 12 fuentes (20 min) |
-| 1:15–1:40 | **Bloque 2** | Lab 2: Limpiar, homologar, consolidar (25 min) |
-| 1:40–2:05 | **Bloque 2** | Lab 3: Formato Global (25 min) |
-| 2:05–2:15 | **Bloque 2** | Lab 4: Validaciones y log (10 min) |
-| 2:15–2:20 | **Transición** | Pausa + distribución de datasets personalizados |
-| 2:20–2:45 | **Bloque 3** | Trabajo en célula (25 min) |
-| 2:45–2:55 | **Bloque 3** | Revisión cruzada y demos (10 min) |
-| 2:55–3:00 | **Cierre** | Retrospectiva del programa + entregables |
+| 0:00–0:05 | **Apertura** | Bienvenida, recap Sesiones 1+2, objetivos de hoy |
+| 0:05–0:20 | **Bloque 1** | El problema: 10 archivos, columnas distintas. ¿Cómo homologar? |
+| 0:20–0:30 | **Bloque 1** | LA HABILIDAD CLAVE: pedir pruebas paso a paso a la IA |
+| 0:30–0:40 | **Bloque 1** | Demo en vivo: "pido script → pido prueba → verifico → siguiente paso" |
+| 0:40–0:45 | **Transición** | Pausa + abrir Copilot Chat + carpeta de Excels |
+| 0:45–1:05 | **Bloque 2** | Lab 1: Subir archivos y explorar estructura (20 min) |
+| 1:05–1:30 | **Bloque 2** | Lab 2: Pedir script de homologación + pruebas (25 min) |
+| 1:30–1:50 | **Bloque 2** | Lab 3: Consolidar todo + verificar totales (20 min) |
+| 1:50–2:00 | **Bloque 2** | Lab 4: Generar reporte HTML del resultado (10 min) |
+| 2:00–2:05 | **Transición** | Pausa |
+| 2:05–2:20 | **Bloque 3** | Pipeline mensual: convertir script en pipeline reutilizable |
+| 2:20–2:40 | **Bloque 3** | Detección de cambios: comparar mes actual vs anterior |
+| 2:40–2:50 | **Bloque 3** | Show & Tell: cada equipo muestra su pipeline + 1 cambio detectado |
+| 2:50–3:00 | **Bloque 3** | Cierre: "ya tienen su pipeline" — próximos pasos |
 
 ---
 
@@ -58,249 +57,190 @@
 
 ## Qué decir:
 
-> _"Bienvenidos a la última sesión del programa POC Thinking. En la Sesión 1 trabajamos con Excel y Power BI. En la Sesión 2 generamos HTMLs interactivos. Hoy vamos a dar el salto a Python — pero tranquilos, NO necesitan saber programar. GitHub Copilot va a programar por ustedes."_
+> _"Bienvenidos a la última sesión. En la Sesión 1 trabajamos con datos en Excel y Power BI. En la Sesión 2 generamos HTMLs profesionales. Hoy cerramos el ciclo con algo que van a usar CADA MES: un pipeline que consolida automáticamente los Excels que les llegan por correo."_
 
-> _"El problema de hoy es uno que seguro conocen: recibir información de 10, 12, 15 fuentes diferentes, cada una en su propio formato, y tener que consolidar todo en un solo entregable. Hoy vamos a automatizar eso."_
+> _"La promesa de hoy: van a salir con un pipeline listo. La próxima vez que les lleguen esos 5+ correos con Excels, solo depositan los archivos en una carpeta, ejecutan un comando, y en 5 minutos tienen su consolidado verificado + un reporte de qué cambió respecto al mes pasado."_
 
 ### Preguntas rompe-hielo:
-- "¿Quién ha tenido que consolidar más de 5 archivos Excel en uno?" (manos arriba)
-- "¿Cuánto tiempo les toma ese proceso? ¿Horas? ¿Días?"
-- "¿Alguna vez un error de copiar-pegar les causó un problema serio?"
+- "¿Quién recibe más de 3 Excels por mes que tiene que consolidar?" (manos arriba)
+- "¿Cuánto tiempo les toma ese proceso? ¿Horas? ¿Todo un día?"
+- "¿Alguna vez descubrieron un error DESPUÉS de entregar el consolidado?"
 
 ### Expectativas:
-> _"Al terminar esta sesión, van a tener un script que hace en 30 segundos lo que hoy les toma 2-3 días. Y lo mejor: van a poder reproducirlo cada mes con solo ejecutar un comando."_
+> _"Hoy NO necesitan programar. Copilot genera el código por ustedes. Lo que SÍ necesitan es VERIFICAR que lo que genera está bien. Esa es la habilidad clave de esta sesión."_
 
 ---
 
-# 🎓 BLOQUE 1 — TEORÍA (0:05 – 0:50)
+# 🎓 BLOQUE 1 — TEORÍA + HABILIDAD CLAVE (0:05 – 0:40)
 
----
-
-## 1.1 El problema de las múltiples fuentes (0:05 – 0:20) — 15 min
+## 1.1 El problema (0:05 – 0:20) — 15 min
 
 ### Qué mostrar:
-- Abrir `sesion3.html` en el navegador
-- Mostrar la sección "El problema: Tengo 12 archivos y debo entregar 1 formato"
-- Comparar proceso manual vs automatizado
+- `sesion3.html` → sección del problema con la tabla de 5 archivos
+- Las tarjetas de comparación (❌ manual vs ✅ con Copilot)
 
 ### Qué decir:
+> _"Imaginen: cada mes les llegan 5 Excels. Banca Comercial llama a la fecha 'fecha_registro'. Corporativa la llama 'date'. Seguros la llama 'fecha'. ¡Mismo dato, 3 nombres! Y así con TODAS las columnas."_
 
-> _"Imaginen esto: cada mes, les llegan 12 archivos de diferentes áreas. Banca Comercial manda un Excel con columnas que se llaman 'monto_MXN' y 'concepto_operacion'. Pero Banca Corporativa manda otro Excel donde las mismas columnas se llaman 'amount_MXN' y 'concept'. Y Seguros manda un tercero donde es 'importe' y 'tipo_operacion'."_
+> _"El proceso manual: abren cada archivo, buscan las columnas, renombran, copian, pegan... 6 horas después tienen algo que CREEN que está bien, pero no tienen forma de verificar."_
 
-> _"Mismo dato, diferente nombre. ¿Les suena? Este es el problema #1 de la consolidación financiera."_
+### Actividad (2 min):
+> _"¿Cuántas fuentes diferentes consolidan en su trabajo? Escriban el número en el chat."_
 
-### Actividad interactiva (3 min):
-> _"Levanten la mano — ¿cuántas fuentes de datos tienen que consolidar en su proceso actual?"_
-> Anotar en el chat o pizarra las respuestas. Resaltar que el promedio suele ser 8-15.
-
----
-
-## 1.2 Mapa de datos (0:20 – 0:35) — 15 min
-
-### Qué mostrar:
-- Sección del mapa de datos en sesion3.html
-- Las 12 tarjetas de fuentes
-- El diagrama de flujo: Fuentes → Python → 3 Consolidados → Formato Global
+## 1.2 La habilidad clave: pedir PRUEBAS (0:20 – 0:30)
 
 ### Qué decir:
+> _"Hoy les voy a enseñar UNA habilidad que vale más que todas las fórmulas de Excel: PEDIRLE A LA IA QUE DEMUESTRE QUE HIZO BIEN SU TRABAJO."_
 
-> _"Este es nuestro mapa. 12 fuentes entran: 10 son Excel, 2 son CSVs que vienen de queries a la base de datos SQL. El script de Python las lee todas, homologa los nombres, las clasifica en 3 categorías — Ingresos, Gastos y Provisiones — y genera los 3 Excels consolidados. Finalmente, genera el Formato Global que es el entregable final que va a la dirección."_
+### Mostrar la comparación de sesion3.html:
+- ❌ "Hazme un script" → ejecuto → confío ciegamente
+- ✅ "Hazme un script Y muéstrame las pruebas" → verifico → avanzo
 
-> _"El Formato Global tiene una estructura fija: conceptos en filas, líneas de negocio en columnas. Es lo que normalmente se llena celda por celda. Hoy lo vamos a generar automáticamente."_
+### Los 5 tipos de pruebas (tabla en sesion3.html):
+1. Conteo de filas
+2. Cuadre de montos
+3. Antes/Después
+4. Excepciones
+5. Distribución
 
----
+> _"Cada vez que le pidan algo a Copilot, agreguen al final: 'Y MUÉSTRAME CÓMO VERIFICO QUE ESTÁ BIEN'. Ese es el hábito que los va a separar del resto."_
 
-## 1.3 Intro a Python + pandas (0:35 – 0:50) — 15 min
+## 1.3 Demo en vivo (0:30 – 0:40)
 
-### 📌 IMPORTANTE — Postura del instructor:
+### Preparación:
+- Copilot 365 abierto
+- 3 de los 5 archivos adjuntados (banca_comercial, seguros, tarjetas)
 
-> _"NO estamos aquí para aprender Python. Estamos aquí para entender lo suficiente como para DIRIGIR a GitHub Copilot. Piensen en ustedes como el director de orquesta — Copilot es el que toca los instrumentos."_
+### Demo paso a paso:
+1. **Paso 1 — Explorar** (30 seg): Adjuntar 3 archivos → pedir resumen de estructura
+2. **Paso 2 — Homologar** (30 seg): Pedir mapa de equivalencias → pedir script con prints de verificación
+3. **Paso 3 — Verificar** (30 seg): Mostrar que el script imprime filas antes/después, tabla de cuadre
 
-### Qué mostrar:
-- Los 5 conceptos clave en sesion3.html (DataFrame, leer, filtrar, concatenar, pivot)
-- Para cada uno, mostrar el código y explicar QUÉ hace (no CÓMO funciona)
-
-### Guión para cada concepto:
-
-**1. DataFrame:**
-> _"Un DataFrame es una tabla. Idéntico a una hoja de Excel pero en memoria. Tiene filas y columnas."_
-
-**2. Leer archivos:**
-> _"Con una línea de código, Python lee un Excel completo. `pd.read_excel('archivo.xlsx')`. Eso es todo."_
-
-**3. Filtrar:**
-> _"Igual que poner un filtro en Excel. `df[df['tipo'] == 'Ingreso']` — me quedo solo con los ingresos."_
-
-**4. Concatenar:**
-> _"Es como copiar y pegar tablas una debajo de otra. `pd.concat([df1, df2, df3])`. Listo."_
-
-**5. Pivot:**
-> _"Tabla dinámica. Conceptos en filas, líneas de negocio en columnas, montos como valores."_
-
-### Cierre de la teoría:
-> _"Estos 5 conceptos son todo lo que necesitan. No memoricen el código — Copilot lo escribe por ustedes. Ustedes solo necesitan saber QUÉ pedirle."_
+> _"¿Vieron? 3 pasos, 3 verificaciones. Nunca avancé sin confirmar. Eso es lo que separa a un usuario amateur de un profesional."_
 
 ---
 
-# 🔬 BLOQUE 2 — LABS (0:55 – 2:15)
+# 🔬 BLOQUE 2 — LABS (0:45 – 2:00)
 
----
+## Setup (0:40 – 0:45)
 
-## 2.1 Lab 1: Leer las 12 fuentes (0:55 – 1:15) — 20 min
+> _"Abran copilot.microsoft.com. Abran la carpeta donde descargaron los 5 Excels. Vamos a trabajar paso a paso, JUNTOS."_
 
-### Setup (primeros 3 min):
-1. Asegurar que todos tengan VS Code abierto
-2. Verificar que la carpeta `datos_entrada/` está accesible
-3. Crear un archivo nuevo: `paso1_leer.py`
+## Lab 1: Explorar (0:45 – 1:05) — 20 min
 
-### Demo en vivo (5 min):
-Abrir VS Code, crear archivo, escribir este comentario:
+Seguir los pasos de `ejercicios_instrucciones.md` - Lab 1.
 
-```python
-# Leer todos los archivos .xlsx de la carpeta datos_entrada/
-# Mostrar nombre, número de filas y columnas de cada uno
-```
-
-Dejar que Copilot genere el código. Ejecutar. Mostrar la salida.
-
-> _"Ven? Un comentario. Enter. Copilot escribe. Tab para aceptar. Ya está."_
-
-### Trabajo individual (12 min):
-Los participantes replican lo mismo en su máquina. Circular por las mesas (o monitorear chats).
-
-### Errores comunes en este lab:
-- Python no instalado → `pip` no reconocido → Instalar Python
-- pandas no instalado → `pip install pandas openpyxl`
-- Ruta incorrecta → Verificar que `datos_entrada/` esté en la misma carpeta que el script
-- Copilot no sugiere → Verificar extensión activa, internet funcionando
+### Errores comunes:
+- Copilot no puede leer los 5 a la vez → adjuntar de a 2-3
+- Copilot dice un número de filas diferente al real → verificar en Excel manualmente
+- Copilot inventa datos → asegurar que se adjuntaron los archivos
 
 ### Validación grupal (2 min):
-> _"¿Cuántos archivos leyeron? Deben ser 12. ¿Quién tiene 12? Perfecto. ¿Quién tuvo errores?"_
+> _"¿Quién tiene los 5 archivos explorados? ¿Las filas coinciden con la tabla de la sesión? banca_comercial=150, corporativa=120, seguros=100, tarjetas=130, tesorería=90."_
+
+## Lab 2: Homologación (1:05 – 1:30) — 25 min
+
+Seguir Lab 2 de instrucciones.
+
+### Momento clave — Revisar ANTES de ejecutar:
+> _"ALTO. Antes de ejecutar, lean el script. No necesitan entender cada línea. Pero sí entiendan QUÉ hace. Pídanle a Copilot que se los explique."_
+
+### Tip:
+- Si el script tiene errores: pegar el error en Copilot y pedir corrección
+- Si Python no está instalado: usar Google Colab (gratis, sin instalar)
+
+## Lab 3: Consolidar (1:30 – 1:50) — 20 min
+
+Seguir Lab 3 de instrucciones.
+
+### El momento de la verdad:
+> _"La tabla de cuadre cruzado. Todos los ✔ verdes? Perfecto. ¿Hay un ✘? NO AVANCEN. Investiguen por qué no cuadra. Siempre es mejor 5 minutos más de verificación que rehacer todo."_
+
+## Lab 4: Dashboard HTML (1:50 – 2:00) — 10 min
+
+Seguir Lab 4.
+
+> _"Esto conecta con lo que aprendieron en Sesión 2. Mismo estilo, pero ahora con datos REALES de su consolidación."_
 
 ---
 
-## 2.2 Lab 2: Homologar y consolidar (1:15 – 1:40) — 25 min
+# 🏗️ BLOQUE 3 — PIPELINE MENSUAL (2:05 – 3:00)
 
-### Demo (5 min):
-Mostrar el problema: abrir 2-3 archivos y señalar que las columnas se llaman diferente.
+## 3.1 Estructura del pipeline (2:05 – 2:20) — 15 min
 
-```python
-# banca_comercial tiene: "monto_MXN"
-# seguros tiene: "importe"
-# inversiones tiene: "amount"
-# ¡Son el mismo dato!
+### Qué decir:
+> _"Todo lo que hicieron en los Labs fue para UN mes. Pero el mes que viene les llegan los mismos correos. La pregunta es: ¿van a repetir todo desde cero... o van a tener un pipeline listo?"_
+
+### Demo:
+- Mostrar la estructura de carpetas en sesion3.html
+- Explicar: "Solo crean una carpeta nueva, ponen ahí los Excels, y corren pipeline.py"
+
+### Trabajo individual (10 min):
+Los participantes piden a Copilot que convierta su script en pipeline.py reutilizable.
+
+## 3.2 Detección de cambios (2:20 – 2:40) — 20 min
+
+### Qué decir:
+> _"El pipeline ya funciona. Ahora la parte que ahorra HORAS: detectar qué cambió entre el mes pasado y el actual. ¿Un área mandó más datos? ¿Otra cambió el formato? ¿Alguien se atrasó y no mandó su archivo? El script lo detecta automáticamente."_
+
+### Mostrar la tabla de escenarios en sesion3.html:
+| Escenario | Sin detección | Con detección automática |
+|-----------|---------------|--------------------------|
+| +50 filas | No te enteras | 🚨 ALERTA: +33% filas |
+| Columna nueva | Se ignora | 🚨 ALERTA: columna nueva |
+| Archivo faltante | Consolidas incompleto | 🚨 ALERTA: falta archivo |
+| Monto bajó 40% | Presentas cifras mal | 🚨 ALERTA: -40% monto |
+
+### Trabajo (15 min):
+Los participantes crean comparar_meses.py y lo prueban con datos simulados.
+
+## 3.3 Show & Tell (2:40 – 2:50) — 10 min
+
+Cada equipo presenta en 2 minutos:
+1. ¿Su pipeline corre sin modificar código?
+2. 1 alerta de cambio que detectó
+3. ¿Cuadre al 100%?
+
+## 3.4 Cierre (2:50 – 3:00) — 10 min
+
+### Qué decir:
+> _"Antes de hoy: recibían Excels → 6 horas de trabajo manual → sin garantía."_
+> _"Después de hoy: reciben Excels → 5 minutos → consolidado verificado + reporte de cambios."_
+> _"Ya tienen su pipeline listo. La próxima vez que lleguen esos correos, solo depositan archivos, ejecutan, y listo."_
+
+### Mensaje final:
+> _"La IA no reemplaza al profesional que verifica. La IA reemplaza al profesional que NO verifica. Ustedes ahora saben generar, verificar, automatizar y detectar cambios. Eso es una ventaja profesional enorme."_
+
+### Entregables a solicitar:
+1. pipeline.py funcional
+2. comparar_meses.py funcional
+3. Tabla de cuadre cruzado (evidencia)
+4. Reporte de cambios entre meses
+5. (Bonus) Dashboard HTML con datos reales
+
+---
+
+## 🛟 Plan B — Si algo falla
+
+| Problema | Solución |
+|----------|----------|
+| Copilot no puede leer los 5 archivos a la vez | Adjuntar de a 2-3 por conversación |
+| El script tiene errores de Python | Pegar el error en Copilot: "me sale este error: [error]. Corrígelo." |
+| Las filas no cuadran | "¿Se descartaron filas? ¿Por qué? Muéstrame cuáles." |
+| Copilot inventa datos | Adjuntar SIEMPRE los archivos. Si no se adjuntan, inventa. |
+| No tengo Python | Opción A: Google Colab (gratis). Opción B: pedir a Copilot que haga todo internamente. |
+| El monto no cuadra | Causas: filas filtradas, NaN descartados, tipos mixtos. Pedir diagnóstico a Copilot. |
+| Mi archivo tiene >5,000 filas | Pedir que genere el script y ejecutarlo localmente. El script no tiene límite. |
+| comparar_meses no detecta un cambio | Revisar los umbrales (±20% filas, ±15% montos). Ajustar si es necesario. |
+
+---
+
+## 📋 Resumen del flujo completo
+
 ```
-
-Escribir el prompt de mapeo y dejar que Copilot genere el diccionario.
-
-### Trabajo individual (15 min):
-Los participantes crean `paso2_homologar.py` y `paso3_consolidar.py`.
-
-### Tips para el instructor:
-- Si alguien se atora con el mapeo: darles el diccionario completo del cheatsheet
-- Si Copilot genera un mapeo incompleto: pedirle "agrega el mapeo para los archivos que faltan"
-- Recordar: "Si el prompt no funciona, hazlo más específico. Dile EXACTAMENTE qué columnas tiene cada archivo."
-
-### Validación:
-> _"¿Cuántas filas tiene su DataFrame consolidado? Debe ser la suma de todas las fuentes (~876 filas). ¿Las columnas son uniformes?"_
-
----
-
-## 2.3 Lab 3: Formato Global (1:40 – 2:05) — 25 min
-
-### Demo (5 min):
-Mostrar el prompt del Formato Global. Copilot debe generar el pivot_table.
-
-> _"Este es el momento estrella. Un pivot_table en Python hace lo mismo que pasar 3 días armando la tabla manualmente."_
-
-### Trabajo individual (15 min):
-Crear `paso4_formato_global.py`. El reto es que el formato del Excel sea profesional.
-
-### Tips:
-- Si el pivot sale vacío → Verificar que la columna de clasificación esté correcta
-- Si faltan líneas de negocio → Verificar el mapeo de homologación
-- Para formato → Usar el prompt del cheatsheet sobre formato Excel profesional
-
-### Validación:
-> _"Abran el formato_global.xlsx en Excel. ¿Tiene 6 líneas de negocio como columnas? ¿Tiene filas de subtotal? ¿La fila de Resultado Neto está al final?"_
-
----
-
-## 2.4 Lab 4: Validaciones (2:05 – 2:15) — 10 min
-
-### Demo rápida (3 min):
-Mostrar cómo agregar una validación simple: contar nulos.
-
-### Trabajo (7 min):
-Los participantes crean `paso5_validaciones.py` con al menos 2 validaciones.
-
----
-
-# 👥 BLOQUE 3 — TRABAJO EN CÉLULA (2:20 – 2:55)
-
----
-
-## 3.1 Trabajo en célula (2:20 – 2:45) — 25 min
-
-### Qué decir:
-> _"Ahora es su turno. Cada célula toma su Ficha de Problema de la Sesión 1 y adapta este pipeline a su caso real. No necesitan 12 fuentes — empiecen con 2 o 3. Lo importante es que el flujo funcione: leer → homologar → clasificar → consolidar → formato de salida."_
-
-### Circular entre equipos:
-- Ayudar con mapeo de columnas (el 80% de los problemas)
-- Si un equipo no tiene datos reales: usar los datos de ejemplo pero cambiar las reglas de clasificación
-- Recordar: "Copilot es su programador. Escriban qué quieren como comentario."
-
----
-
-## 3.2 Revisión cruzada (2:45 – 2:55) — 10 min
-
-### Dinámica:
-Cada célula le muestra su script y resultado a la célula de al lado. Usan el checklist de `sesion3.html`.
-
----
-
-# 🏁 CIERRE (2:55 – 3:00)
-
-### Qué decir:
-
-> _"Felicidades. En 3 sesiones pasaron de no saber qué era un POC... a tener un script de Python que automatiza un proceso que les tomaba días. Piensen en lo que pueden hacer con esto."_
-
-> _"Sesión 1: aprendieron a analizar datos con Copilot. Sesión 2: aprendieron a presentar resultados sin PowerPoint. Sesión 3: aprendieron a automatizar consolidación de múltiples fuentes."_
-
-> _"Esto es POC Thinking: demostrar que una idea es viable con las herramientas que existen HOY."_
-
-### Entregables finales:
-1. Los 3 Excels consolidados
-2. El Formato Global
-3. El script de consolidación
-4. El log de excepciones
-
-### Próximos pasos sugeridos:
-- Aplicar el script a datos reales del mes actual
-- Agregar más fuentes incrementalmente
-- Programar ejecución automática (Task Scheduler o cron)
-- Versionar el script con Git
-
----
-
-## 🆘 Plan B — Si algo falla
-
-| Escenario | Plan B |
-|-----------|--------|
-| Python no se instala | Usar Google Colab (notebook en navegador, cero instalación) |
-| GitHub Copilot no funciona | Usar Copilot Chat web (copilot.microsoft.com) para generar código, copiar a VS Code |
-| Los archivos no se leen | Tener los Excels de salida pre-generados y hacer la demo desde ahí |
-| Internet se cae | Tener el script de solución listo localmente, ejecutar sin Copilot |
-| Un participante se atora | Darle el script de solución de un paso específico |
-
----
-
-## 📊 Métricas de éxito de la sesión
-
-| Indicador | Meta |
-|-----------|------|
-| Participantes que leyeron los 12 archivos | > 80% |
-| Participantes que generaron al menos 1 consolidado | > 70% |
-| Participantes que generaron el Formato Global | > 60% |
-| Equipos que adaptaron su propio caso | > 50% |
-| Satisfacción general (encuesta post) | > 4.0 / 5.0 |
+Correos con Excels → Guardar en datos/[mes]/ → python pipeline.py [mes]
+→ Consolidado verificado + Log de cuadre
+→ python comparar_meses.py [mes_anterior] [mes_actual]
+→ Reporte de cambios con alertas 🚨
+→ Todo en 5 minutos ✔
+```

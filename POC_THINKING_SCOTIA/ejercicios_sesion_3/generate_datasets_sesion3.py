@@ -4,9 +4,15 @@ Generador de datasets para Sesión 3 — POC Thinking: Múltiples fuentes → Fo
 Genera 12 archivos de entrada (10 .xlsx + 2 .csv) que simulan el flujo real
 de consolidación financiera de una institución bancaria.
 
-Fuentes:
-  1-5  Líneas de negocio:  banca_comercial, banca_corporativa, seguros, inversiones, tarjetas
-  6-8  Áreas de soporte:   tesoreria, cumplimiento, riesgos
+⚠️  EL EJERCICIO DE LA SESIÓN USA SOLO 5 DE ESTOS ARCHIVOS:
+     banca_comercial (150), banca_corporativa (120), seguros (100),
+     tarjetas (130), tesoreria (90).  Total = 590 filas.
+     Los 7 archivos restantes están disponibles como extensión opcional.
+
+Fuentes generadas:
+  1-5  Para el ejercicio:  banca_comercial, banca_corporativa, seguros, tarjetas, tesoreria
+  6-7  Líneas extra:       inversiones, riesgos
+  8    Soporte:            cumplimiento
   9-10 Proveedores ext.:   proveedor_ti, proveedor_servicios
   11   SQL CSV:            catalogo_cuentas.csv
   12   SQL CSV:            saldos_contables.csv

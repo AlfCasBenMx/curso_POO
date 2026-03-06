@@ -1,7 +1,7 @@
 """
 Generador de datasets financieros para Sesión 1 — POC Thinking con Copilot
 Genera:
-  1. gastos_departamentales.xlsx  (~120 filas) — presupuesto vs gasto real por departamento
+  1. gastos_departamentales.xlsx  (~315 filas) — presupuesto vs gasto real por departamento
   2. cartera_clientes.xlsx        (~80 filas)  — cuentas por cobrar con aging
 
 Ambos datasets están diseñados para:

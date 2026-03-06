@@ -1,8 +1,14 @@
 """
 Solución completa — Sesión 3: Consolidación de múltiples fuentes → Formato Global
 
+NOTA: Este script es la solución COMPLETA que procesa las 12 fuentes de
+datos_entrada/ (10 xlsx + 2 csv). El ejercicio de la sesión se enfoca
+en las 5 fuentes principales: banca_comercial, banca_corporativa, seguros,
+tarjetas, tesoreria (590 filas total). Los participantes generan su propia
+solución con Copilot 365 usando solo esas 5 fuentes.
+
 Este script:
-1. Lee las 12 fuentes de datos (10 xlsx + 2 csv)
+1. Lee TODAS las fuentes de datos_entrada/ (xlsx + csv)
 2. Homologa nombres de columnas
 3. Clasifica registros (Ingreso / Gasto / Provisión)
 4. Genera 3 Excels consolidados

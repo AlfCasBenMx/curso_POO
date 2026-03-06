@@ -77,7 +77,7 @@
         <tbody>
           <tr><td><b>Bloque 1</b></td><td>El problema real: recibir 10+ Excels con columnas distintas &middot; El patr&oacute;n &ldquo;Mapear &rarr; Homologar &rarr; Verificar&rdquo; &middot; La habilidad clave: pedir PRUEBAS a la IA</td><td style="text-align:center"><b>40 min</b></td></tr>
           <tr><td><b>Bloque 2</b></td><td>Lab pr&aacute;ctico: subir Excels a Copilot &rarr; pedir scripts de homologaci&oacute;n &rarr; pedir pruebas paso a paso &rarr; ejecutar y verificar &rarr; consolidar</td><td style="text-align:center"><b>80 min</b></td></tr>
-          <tr><td><b>Bloque 3</b></td><td>Tu caso real: cada equipo sube sus propios archivos y practica el ciclo completo &ldquo;Script &rarr; Prueba &rarr; Verifico &rarr; Siguiente paso&rdquo;</td><td style="text-align:center"><b>60 min</b></td></tr>
+          <tr><td><b>Bloque 3</b></td><td>Pipeline mensual: convertir el script en un pipeline reutilizable + detecci&oacute;n de cambios entre periodos &middot; Show &amp; Tell</td><td style="text-align:center"><b>60 min</b></td></tr>
         </tbody>
       </table>
 
@@ -95,9 +95,10 @@
           <tr><td>1:30 &ndash; 1:50</td><td>Lab 3: Consolidar todo en un solo archivo + verificar totales (20 min)</td></tr>
           <tr><td>1:50 &ndash; 2:00</td><td>Lab 4: Generar reporte HTML del resultado (10 min)</td></tr>
           <tr><td>2:00 &ndash; 2:05</td><td>Pausa</td></tr>
-          <tr><td>2:05 &ndash; 2:40</td><td>Trabajo en c&eacute;lula: ciclo completo con archivos propios del equipo</td></tr>
-          <tr><td>2:40 &ndash; 2:55</td><td>Show &amp; Tell: cada equipo muestra 1 verificaci&oacute;n que evit&oacute; un error</td></tr>
-          <tr><td>2:55 &ndash; 3:00</td><td>Cierre: qu&eacute; aprendimos, qu&eacute; nos llevamos, pr&oacute;ximos pasos</td></tr>
+          <tr><td>2:05 &ndash; 2:20</td><td>Pipeline mensual: convertir script en pipeline reutilizable (estructura de carpetas, auto-detecci&oacute;n)</td></tr>
+          <tr><td>2:20 &ndash; 2:40</td><td>Detecci&oacute;n de cambios: comparar mes actual vs mes anterior, alertas autom&aacute;ticas</td></tr>
+          <tr><td>2:40 &ndash; 2:50</td><td>Show &amp; Tell: cada equipo muestra su pipeline + 1 cambio detectado</td></tr>
+          <tr><td>2:50 &ndash; 3:00</td><td>Cierre: &ldquo;ya tienen su pipeline&rdquo; &mdash; pr&oacute;ximos pasos y mensaje final</td></tr>
         </tbody>
       </table>
     </section>
@@ -592,83 +593,245 @@ Dame el slide actualizado con los datos reales."</div>
     </div>
 
     <!-- BLOQUE 3 -->
-    <div class="block-header">&#x1F3D7;&#65039; Bloque 3 &mdash; Tu caso real: practica el ciclo completo (60 min)</div>
+    <div class="block-header">&#x1F3D7;&#65039; Bloque 3 &mdash; Pipeline mensual: que la pr&oacute;xima vez solo sea &ldquo;correr y verificar&rdquo; (60 min)</div>
     <div class="block-body">
 
+      <div style="background:linear-gradient(135deg,#e3f2fd,#f3e5f5);border:2px solid #1565c0;border-radius:14px;padding:20px;margin-bottom:20px">
+        <h3 style="margin:0 0 8px;color:#1565c0;font-size:18px">&#x1F3AF; La idea central de este bloque</h3>
+        <p style="margin:0;font-size:15px">El mes que viene les llegar&aacute;n <b>los mismos correos</b> con los mismos 5+ Excels. La pregunta es: &iquest;van a repetir todo desde cero... o van a tener un <b>pipeline listo</b> que solo necesita los archivos nuevos?</p>
+        <p style="margin:10px 0 0;font-size:15px;font-weight:700;color:#1565c0">La meta: salir de aqu&iacute; con un pipeline que procese autom&aacute;ticamente Y detecte qu&eacute; cambi&oacute; respecto al mes anterior.</p>
+      </div>
+
+      <!-- PARTE A: ESTRUCTURA DE CARPETAS -->
       <section style="border:none;padding:20px 0">
-        <h2>&#9881;&#65039; Ejercicio &mdash; Scripts + pruebas con archivos de tu equipo</h2>
-        <p>Cada equipo usa sus propios archivos (o los del ejercicio, ampliados a 8-10 fuentes) para practicar el ciclo completo.</p>
+        <h2>&#x1F4C1; Parte A (15 min) &mdash; Armar la estructura del pipeline mensual</h2>
+        <p>Primero, organizar la &ldquo;f&aacute;brica&rdquo; para que funcione mes a mes.</p>
 
         <div class="activity">
-          <b>Parte A (25 min) &mdash; Ciclo completo con tus archivos</b>
-          <ol>
-            <li><b>Subir</b> sus archivos Excel a Copilot Chat (los de su POC real o los del ejercicio)</li>
-            <li><b>Explorar:</b> &iquest;cu&aacute;ntas filas? &iquest;qu&eacute; columnas tiene cada uno?</li>
-            <li><b>Mapear:</b> Crear tabla de equivalencias de columnas</li>
-            <li><b>Script:</b> Pedir script de homologaci&oacute;n CON prints de verificaci&oacute;n</li>
-            <li><b>Verificar:</b> Cuadre cruzado de filas y montos</li>
-            <li><b>Consolidar:</b> Un solo archivo Excel verificado</li>
-          </ol>
+          <b>Paso 1 &mdash; Crear la estructura de carpetas (3 min)</b>
+          <div class="prompt-example">&#x1F916; "Necesito organizar un pipeline mensual de consolidaci&oacute;n financiera.
+Crea una estructura de carpetas as&iacute;:
+
+pipeline_consolidacion/
+&boxur;&boxh;&boxh; config/
+&boxv;   &boxur;&boxh;&boxh; mapa_equivalencias.json    &larr; el mapa que creamos en el Lab 1
+&boxv;   &boxur;&boxh;&boxh; reglas_clasificacion.json   &larr; las reglas Ingreso/Gasto/Provisi&oacute;n
+&boxur;&boxh;&boxh; datos/
+&boxv;   &boxur;&boxh;&boxh; 2025_01_enero/             &larr; archivos del mes pasado (YA procesados)
+&boxv;   &boxur;&boxh;&boxh; 2025_02_febrero/           &larr; archivos del mes ACTUAL (nuevos)
+&boxur;&boxh;&boxh; salida/
+&boxv;   &boxur;&boxh;&boxh; 2025_01_enero/             &larr; consolidados anteriores
+&boxv;   &boxur;&boxh;&boxh; 2025_02_febrero/           &larr; consolidados de este mes
+&boxur;&boxh;&boxh; logs/
+&boxv;   &boxur;&boxh;&boxh; log_2025_02.txt            &larr; log de ejecuci&oacute;n + alertas
+&boxur;&boxh;&boxh; pipeline.py                         &larr; EL script maestro
+&boxur;&boxh;&boxh; comparar_meses.py                   &larr; script de detecci&oacute;n de cambios
+
+Genera los comandos para crear esta estructura (funcionar&iacute;a en Windows o Mac)."</div>
+
+          <div class="verify-card">
+            <h4>&#x1F9EA; &iquest;Por qu&eacute; esta estructura?</h4>
+            <p style="margin:4px 0 0;font-size:13px">Cada mes simplemente crean una carpeta nueva, ponen ah&iacute; los Excels que llegaron por correo, y corren <code>pipeline.py</code>. No tocan el script. No reconfiguran nada. Solo depositan archivos y ejecutan.</p>
+          </div>
+        </div>
+
+        <div class="activity">
+          <b>Paso 2 &mdash; Convertir el script del Lab en pipeline.py (7 min)</b>
+          <div class="prompt-example">&#x1F916; "Toma el script de homologaci&oacute;n y consolidaci&oacute;n que generamos en el Lab y conv&iacute;ertelo en un PIPELINE REUTILIZABLE:
+
+REGLAS:
+1. NO hardcodear nombres de archivos &mdash; leer TODOS los .xlsx de la carpeta del mes actual
+2. Leer el mapa de equivalencias desde config/mapa_equivalencias.json
+3. Leer las reglas de clasificaci&oacute;n desde config/reglas_clasificacion.json
+4. La carpeta del mes se pasa como PAR&Aacute;METRO (ej: python pipeline.py 2025_02_febrero)
+5. Guardar el consolidado en salida/[mes]/consolidado_[fecha].xlsx
+6. Guardar un LOG completo en logs/log_[mes].txt con:
+   - Hora de inicio y fin
+   - Archivos procesados (nombre, filas, monto total)
+   - Tabla de cuadre cruzado
+   - Excepciones encontradas
+   - RESUMEN: &iquest;cuadr&oacute; todo? S&Iacute; / NO
+
+IMPORTANTE: El script debe funcionar SIN que el usuario cambie UNA SOLA l&iacute;nea de c&oacute;digo.
+Solo deposita archivos en la carpeta y ejecuta."</div>
+        </div>
+
+        <div class="activity">
+          <b>Paso 3 &mdash; Probar el pipeline con los datos del Lab (5 min)</b>
+          <p>Copien los 5 archivos del Lab a la carpeta <code>datos/2025_02_febrero/</code> y ejecuten:</p>
+          <div class="prompt-example" style="background:#1a1a2e;color:#e0e0e0;font-family:monospace;font-size:13px">python pipeline.py 2025_02_febrero</div>
+
+          <div class="verify-card">
+            <h4>&#x1F9EA; Verificaci&oacute;n del pipeline</h4>
+            <div style="margin-top:8px">
+              <label style="display:block;padding:4px 0;font-size:13px"><input type="checkbox"> &iquest;Se cre&oacute; el consolidado en salida/2025_02_febrero/?</label>
+              <label style="display:block;padding:4px 0;font-size:13px"><input type="checkbox"> &iquest;Se cre&oacute; el log en logs/log_2025_02.txt?</label>
+              <label style="display:block;padding:4px 0;font-size:13px"><input type="checkbox"> &iquest;El log dice &ldquo;CUADRE: S&Iacute;&rdquo;?</label>
+              <label style="display:block;padding:4px 0;font-size:13px"><input type="checkbox"> &iquest;Los totales coinciden con los del Lab?</label>
+              <label style="display:block;padding:4px 0;font-size:13px"><input type="checkbox"> &iquest;No tuve que modificar el script para que corriera? (solo puse archivos y ejecut&eacute;)</label>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PARTE B: DETECCI&Oacute;N DE CAMBIOS -->
+      <section style="border:none;padding:20px 0">
+        <h2>&#x1F50D; Parte B (20 min) &mdash; Detecci&oacute;n de cambios entre periodos</h2>
+        <p>El pipeline ya funciona. Ahora la parte que ahorra HORAS de trabajo manual: <b>detectar autom&aacute;ticamente qu&eacute; cambi&oacute; entre el mes pasado y el actual</b>.</p>
+
+        <div style="background:#fff3e0;border:2px solid #ff9800;border-radius:12px;padding:18px;margin-bottom:16px">
+          <h4 style="margin:0 0 8px;color:#e65100">&#x1F4A1; &iquest;Por qu&eacute; importa detectar cambios?</h4>
+          <table style="font-size:13px;margin:0">
+            <thead><tr><th>Escenario</th><th>Sin detecci&oacute;n</th><th>Con detecci&oacute;n autom&aacute;tica</th></tr></thead>
+            <tbody>
+              <tr><td>Un &aacute;rea mand&oacute; 200 filas en vez de 150</td><td>No te enteras hasta que alguien reclama</td><td>&#x1F6A8; ALERTA: banca_comercial +33% filas</td></tr>
+              <tr><td>Seguros agreg&oacute; una columna nueva</td><td>El script la ignora silenciosamente</td><td>&#x1F6A8; ALERTA: columna nueva &lsquo;canal_venta&rsquo; en seguros</td></tr>
+              <tr><td>Tesorer&iacute;a no mand&oacute; su archivo</td><td>Consolidas sin ese archivo y nadie nota</td><td>&#x1F6A8; ALERTA: falta archivo de tesorer&iacute;a</td></tr>
+              <tr><td>El monto total baj&oacute; 40%</td><td>Presentas cifras equivocadas al director</td><td>&#x1F6A8; ALERTA: monto total -40% vs mes anterior</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="activity">
+          <b>Paso 1 &mdash; Pedir el script de comparaci&oacute;n entre meses (8 min)</b>
+          <div class="prompt-example">&#x1F916; "Genera un script llamado comparar_meses.py que reciba 2 par&aacute;metros:
+el mes anterior y el mes actual (ej: python comparar_meses.py 2025_01_enero 2025_02_febrero)
+
+El script debe comparar los consolidados de ambos meses y generar un REPORTE DE CAMBIOS:
+
+1. ARCHIVOS:
+   - &iquest;Hay archivos nuevos que no exist&iacute;an el mes pasado?
+   - &iquest;Falta alg&uacute;n archivo que s&iacute; estaba el mes pasado?
+   - Lista: Archivo | Mes anterior | Mes actual | Status (Nuevo / Igual / Faltante)
+
+2. ESTRUCTURA:
+   - &iquest;Alg&uacute;n archivo cambi&oacute; sus columnas?
+   - &iquest;Hay columnas nuevas o eliminadas?
+   - Lista: Archivo | Columnas nuevas | Columnas eliminadas
+
+3. VOLUMEN:
+   - Tabla: Archivo | Filas mes anterior | Filas mes actual | Diferencia | % Cambio
+   - Flagear con &#x1F6A8; si el cambio es mayor a &plusmn;20%
+
+4. MONTOS:
+   - Tabla: Archivo | Monto mes anterior | Monto mes actual | Diferencia | % Cambio
+   - Flagear con &#x1F6A8; si el cambio es mayor a &plusmn;15%
+
+5. CLASIFICACI&Oacute;N:
+   - &iquest;Aparecieron categor&iacute;as nuevas en 'tipo'?
+   - &iquest;Desaparecieron categor&iacute;as que exist&iacute;an?
+
+6. RESUMEN EJECUTIVO:
+   - Total de alertas
+   - Las 3 alertas m&aacute;s cr&iacute;ticas
+   - Recomendaci&oacute;n: &iquest;Se puede confiar en el consolidado o hay que investigar?
+
+Guarda el reporte como logs/cambios_[mes_anterior]_vs_[mes_actual].txt
+Y tambi&eacute;n genera una versi&oacute;n HTML del reporte con estilo corporativo."</div>
+        </div>
+
+        <div class="activity">
+          <b>Paso 2 &mdash; Simular cambios para probar la detecci&oacute;n (7 min)</b>
+          <p>Para probar, necesitamos 2 meses de datos. Vamos a simular que enero es el &ldquo;mes anterior&rdquo;:</p>
+          <div class="prompt-example">&#x1F916; "Toma los 5 archivos originales del Lab y gu&aacute;rdalos en datos/2025_01_enero/.
+Ahora crea versiones &ldquo;febrero&rdquo; con estos cambios REALES que podr&iacute;an pasar:
+
+1. banca_comercial.xlsx: agrega 50 filas m&aacute;s (200 filas total)
+2. seguros.xlsx: agrega una columna nueva llamada 'canal_venta'
+3. tesoreria.xlsx: NO lo incluyas (simula que tesorer&iacute;a no mand&oacute; su archivo)
+4. tarjetas.xlsx: cambia algunos montos para que el total sea ~15% menor
+5. banca_corporativa.xlsx: d&eacute;jalo igual (sin cambios)
+
+Guarda estas versiones en datos/2025_02_febrero/.
+El objetivo es probar que el script de comparaci&oacute;n detecte TODOS estos cambios."</div>
+
           <div class="limitation-card">
-            <b>&#x1F9EA; REQUISITO:</b> Cada equipo debe completar al menos <b>3 verificaciones documentadas</b>:
-            <ol style="margin:4px 0 0;font-size:13px">
-              <li>Verificaci&oacute;n de conteo de filas (archivo por archivo)</li>
-              <li>Verificaci&oacute;n de cuadre de montos</li>
-              <li>Una verificaci&oacute;n extra de su elecci&oacute;n (clasificaci&oacute;n, fechas, excepciones, etc.)</li>
-            </ol>
+            <b>&#x1F4A1; Nota:</b> En la vida real estos cambios llegan solos &mdash; un &aacute;rea manda m&aacute;s datos, otra cambia formato, otra se atrasa. El script los detecta autom&aacute;ticamente en vez de que t&uacute; los descubras 3 d&iacute;as despu&eacute;s.
           </div>
         </div>
 
         <div class="activity">
-          <b>Parte B (10 min) &mdash; El script del mes siguiente</b>
-          <p>El verdadero poder: que el mismo proceso se pueda repetir el mes que viene.</p>
-          <div class="prompt-example">&#x1F916; "Ahora toma todo el script que generaste y hazlo REUTILIZABLE:
+          <b>Paso 3 &mdash; Ejecutar y revisar las alertas (5 min)</b>
+          <div class="prompt-example" style="background:#1a1a2e;color:#e0e0e0;font-family:monospace;font-size:13px">python comparar_meses.py 2025_01_enero 2025_02_febrero</div>
 
-1. Que lea AUTOM&Aacute;TICAMENTE todos los .xlsx de una carpeta (sin hardcodear nombres)
-2. Que detecte autom&aacute;ticamente qu&eacute; columna se parece a 'fecha', 'monto', 'tipo'
-   usando el mapa de equivalencias que definimos
-3. Que genere el log de cuadre cada vez que se corre
-4. Que guarde el consolidado con la fecha de hoy en el nombre
-5. Agrega COMENTARIOS en espa&ntilde;ol explicando qu&eacute; hace cada parte
-
-El mes que viene solo pongo los archivos nuevos en la carpeta y corro el script."</div>
+          <div class="verify-card">
+            <h4>&#x1F9EA; &iquest;El script detect&oacute; los 4 cambios simulados?</h4>
+            <div style="margin-top:8px">
+              <label style="display:block;padding:4px 0;font-size:13px"><input type="checkbox"> &#x1F6A8; banca_comercial: +33% filas (de 150 a 200)</label>
+              <label style="display:block;padding:4px 0;font-size:13px"><input type="checkbox"> &#x1F6A8; seguros: columna nueva &lsquo;canal_venta&rsquo;</label>
+              <label style="display:block;padding:4px 0;font-size:13px"><input type="checkbox"> &#x1F6A8; tesorer&iacute;a: ARCHIVO FALTANTE</label>
+              <label style="display:block;padding:4px 0;font-size:13px"><input type="checkbox"> &#x1F6A8; tarjetas: monto ~15% menor</label>
+              <label style="display:block;padding:4px 0;font-size:13px"><input type="checkbox"> &#10004; banca_corporativa: sin cambios significativos</label>
+            </div>
+            <p style="margin:8px 0 0;font-size:13px;font-weight:600">Si detect&oacute; los 4: su pipeline est&aacute; listo. Si no detect&oacute; alguno, p&iacute;danle a Copilot que corrija la l&oacute;gica de detecci&oacute;n.</p>
+          </div>
         </div>
 
+        <!-- FLUJO VISUAL DEL PIPELINE MENSUAL -->
+        <div style="background:#f5f5f5;border-radius:14px;padding:20px;margin-top:16px">
+          <h4 style="margin:0 0 12px;text-align:center;color:#1565c0">&#x1F504; As&iacute; se ve tu proceso CADA MES a partir de ahora</h4>
+          <div class="flow-diagram">
+            <div class="flow-box" style="background:#ef5350;color:#fff">&#x1F4E7; Llegan correos<br>con Excels</div>
+            <div style="text-align:center;font-size:28px;color:var(--ey-accent)">&darr;</div>
+            <div class="flow-box" style="background:#42a5f5;color:#fff">&#x1F4C1; Guardar en<br>datos/2025_03_marzo/</div>
+            <div style="text-align:center;font-size:28px;color:var(--ey-accent)">&darr;</div>
+            <div class="flow-box" style="background:#66bb6a;color:#fff">&#x25B6; python pipeline.py<br>2025_03_marzo</div>
+            <div style="text-align:center;font-size:28px;color:var(--ey-accent)">&darr;</div>
+            <div class="flow-box" style="background:#ff9800;color:#fff">&#x1F50D; python comparar_meses.py<br>2025_02_febrero 2025_03_marzo</div>
+            <div style="text-align:center;font-size:28px;color:var(--ey-accent)">&darr;</div>
+            <div class="flow-box" style="background:linear-gradient(135deg,var(--ey-yellow),#ffe77a);color:#333">&#10004; Consolidado + Reporte<br>de cambios + Log de cuadre</div>
+          </div>
+          <p style="text-align:center;margin:12px 0 0;font-size:14px;font-weight:700;color:#2e7d32">Tiempo total: ~5 minutos. Sin tocar c&oacute;digo. Solo depositar archivos y ejecutar.</p>
+        </div>
+      </section>
+
+      <!-- PARTE C: SHOW & TELL -->
+      <section style="border:none;padding:20px 0">
+        <h2>&#x1F3A4; Parte C (10 min) &mdash; Show &amp; Tell</h2>
+        <p>Cada equipo presenta en <b>2 minutos</b>:</p>
         <div class="activity">
-          <b>Parte C (10 min) &mdash; Show &amp; Tell</b>
-          <p>Cada equipo presenta en <b>2 minutos</b>:</p>
           <ol>
-            <li>&iquest;Cu&aacute;ntos archivos consolidaron?</li>
-            <li><b>Muestren 1 verificaci&oacute;n que evit&oacute; un error</b> (la m&aacute;s interesante)</li>
+            <li>&iquest;Lograron que su pipeline corra sin modificar c&oacute;digo?</li>
+            <li><b>Muestren 1 alerta de cambio</b> que detect&oacute; su script (la m&aacute;s &uacute;til)</li>
             <li>&iquest;El cuadre dio 100%? Si no, &iquest;qu&eacute; encontraron?</li>
+            <li>&iquest;Qu&eacute; pasar&iacute;a si el mes que viene llegan 7 archivos en vez de 5? &iquest;Su pipeline lo maneja?</li>
           </ol>
-          <p style="margin-top:8px;font-size:13px;color:var(--ey-gray)">El objetivo del Show &amp; Tell no es lucirse &mdash; es <b>compartir aprendizajes de verificaci&oacute;n</b>.</p>
+          <p style="margin-top:8px;font-size:13px;color:var(--ey-gray)">El objetivo del Show &amp; Tell es validar que <b>cada equipo tiene un pipeline funcional</b> que pueden usar el lunes.</p>
+        </div>
+      </section>
+
+      <!-- PARTE D: CIERRE -->
+      <section style="border:none;padding:20px 0">
+        <h2>&#x1F3AF; Parte D (10 min) &mdash; Ya tienen su pipeline</h2>
+        <div class="grid-2">
+          <div class="box">
+            <h3>&#x1F4E6; Lo que se llevan HOY</h3>
+            <ul>
+              <li><b>pipeline.py</b> &mdash; script que consolida autom&aacute;ticamente</li>
+              <li><b>comparar_meses.py</b> &mdash; script que detecta cambios</li>
+              <li><b>config/</b> &mdash; mapa de equivalencias + reglas de clasificaci&oacute;n</li>
+              <li><b>Estructura de carpetas</b> &mdash; lista para recibir datos cada mes</li>
+              <li><b>La disciplina</b> &mdash; verificar cada paso, nunca confiar ciegamente</li>
+            </ul>
+          </div>
+          <div class="box">
+            <h3>&#x1F4C5; Lo que pasa el lunes</h3>
+            <ul>
+              <li>Llega correo con Excels del mes &rarr; <b>guardan en carpeta</b></li>
+              <li>Ejecutan <code>pipeline.py</code> &rarr; <b>consolidado listo</b></li>
+              <li>Ejecutan <code>comparar_meses.py</code> &rarr; <b>alertas de cambios</b></li>
+              <li>Revisan el log &rarr; <b>cuadre verificado</b></li>
+              <li>Si hay alerta &#x1F6A8; &rarr; investigan antes de entregar</li>
+              <li>5 minutos en vez de 6 horas &#x1F389;</li>
+            </ul>
+          </div>
         </div>
 
-        <div class="activity">
-          <b>Parte D (15 min) &mdash; Cierre y lecciones aprendidas</b>
-          <div class="grid-2">
-            <div class="box">
-              <h3>&#x1F4CB; Qu&eacute; nos llevamos</h3>
-              <ul>
-                <li>Script reutilizable de consolidaci&oacute;n</li>
-                <li>Mapa de equivalencias documentado</li>
-                <li>Excel consolidado y verificado</li>
-                <li>Dashboard HTML con datos reales</li>
-                <li>La disciplina de verificar cada paso</li>
-              </ul>
-            </div>
-            <div class="box">
-              <h3>&#x1F9E0; La mentalidad correcta</h3>
-              <ul>
-                <li>La IA genera &rarr; yo <b>verifico</b></li>
-                <li>Un paso a la vez &rarr; una prueba a la vez</li>
-                <li>Nunca avanzar sin cuadre</li>
-                <li>Guardar el script para reusar</li>
-                <li>Documentar las excepciones</li>
-              </ul>
-            </div>
-          </div>
+        <div style="background:#e8f5e9;border:2px solid #66bb6a;border-radius:12px;padding:18px;margin-top:16px;text-align:center">
+          <p style="margin:0;font-size:16px;font-weight:700;color:#2e7d32">
+            Antes de hoy: recib&iacute;an Excels &rarr; 6 horas de trabajo manual &rarr; sin garant&iacute;a.<br>
+            Despu&eacute;s de hoy: reciben Excels &rarr; 5 minutos &rarr; consolidado verificado + reporte de cambios.
+          </p>
         </div>
       </section>
     </div>
@@ -696,9 +859,18 @@ El mes que viene solo pongo los archivos nuevos en la carpeta y corro el script.
       <div class="prompt-example" style="font-size:12px">"&iquest;Cu&aacute;les son los valores &uacute;nicos en [columna]? &iquest;Hay valores inesperados?"</div>
       <div class="prompt-example" style="font-size:12px">"&iquest;Cu&aacute;ntos registros quedaron en cada categor&iacute;a? &iquest;Hay alguna con 0?"</div>
 
-      <h3>&#x1F501; Reproducibilidad</h3>
+      <h3>&#x1F501; Reproducibilidad y pipeline</h3>
       <div class="prompt-example" style="font-size:12px">"Si corro este script el mes que viene con archivos nuevos, &iquest;qu&eacute; podr&iacute;a fallar?"</div>
       <div class="prompt-example" style="font-size:12px">"Agrega al script un try/except que no pare la ejecuci&oacute;n sino que guarde los errores en un log."</div>
+      <div class="prompt-example" style="font-size:12px">"Haz que el script lea TODOS los .xlsx de una carpeta sin hardcodear nombres de archivo."</div>
+      <div class="prompt-example" style="font-size:12px">"Que el script reciba la carpeta del mes como par&aacute;metro y genere el consolidado con la fecha de hoy en el nombre."</div>
+
+      <h3>&#x1F50D; Detecci&oacute;n de cambios entre periodos</h3>
+      <div class="prompt-example" style="font-size:12px">"Compara el consolidado de enero vs febrero: &iquest;qu&eacute; archivos son nuevos? &iquest;Cu&aacute;les faltan?"</div>
+      <div class="prompt-example" style="font-size:12px">"Para cada archivo, compara filas y montos entre ambos meses. Marca con &#x1F6A8; si el cambio es mayor a 20%."</div>
+      <div class="prompt-example" style="font-size:12px">"&iquest;Aparecieron columnas nuevas en alg&uacute;n archivo este mes? &iquest;Desapareci&oacute; alguna columna?"</div>
+      <div class="prompt-example" style="font-size:12px">"&iquest;Hay categor&iacute;as nuevas en la columna 'tipo' que no exist&iacute;an el mes pasado?"</div>
+      <div class="prompt-example" style="font-size:12px">"Genera un resumen ejecutivo: total alertas, las 3 m&aacute;s cr&iacute;ticas, y si se puede confiar en el consolidado."</div>
 
       <h3>&#x1F9E0; Entender antes de ejecutar</h3>
       <div class="prompt-example" style="font-size:12px">"Expl&iacute;came paso a paso qu&eacute; hace este script. &iquest;Qu&eacute; podr&iacute;a salir mal en cada paso?"</div>
@@ -736,14 +908,14 @@ El mes que viene solo pongo los archivos nuevos en la carpeta y corro el script.
           <div style="display:flex;align-items:center;color:var(--ey-accent);font-size:20px;font-weight:bold">&rarr;</div>
           <div style="flex:1;min-width:100px;max-width:140px;background:#1565c0;color:#fff;padding:14px 8px;border-radius:12px;text-align:center">
             <div style="font-size:11px;font-weight:800">Sesi&oacute;n 3</div>
-            <div style="font-size:24px;margin:4px 0">&#x1F9EA;</div>
-            <div style="font-size:10px">Verificaci&oacute;n<br>paso a paso</div>
+            <div style="font-size:24px;margin:4px 0">&#x1F504;</div>
+            <div style="font-size:10px">Pipeline mensual<br>+ Detectar cambios</div>
           </div>
           <div style="display:flex;align-items:center;color:var(--ey-accent);font-size:20px;font-weight:bold">&rarr;</div>
           <div style="flex:1;min-width:100px;max-width:140px;background:linear-gradient(135deg,var(--ey-yellow),#ffe77a);color:#333;padding:14px 8px;border-radius:12px;text-align:center">
             <div style="font-size:11px;font-weight:800">Resultado</div>
             <div style="font-size:24px;margin:4px 0">&#10004;&#65039;</div>
-            <div style="font-size:10px">Consolidado<br>verificado</div>
+            <div style="font-size:10px">Pipeline listo<br>para cada mes</div>
           </div>
         </div>
       </div>
@@ -756,16 +928,21 @@ El mes que viene solo pongo los archivos nuevos en la carpeta y corro el script.
             <tbody>
               <tr><td>1</td><td>Prompt para 1 archivo</td><td>&#11036;&#11036; B&aacute;sico</td></tr>
               <tr><td>2</td><td>Generar documentos complejos</td><td>&#11036;&#11036;&#11036; Intermedio</td></tr>
-              <tr><td>3</td><td>Orquestar m&uacute;ltiples fuentes + verificar</td><td>&#11036;&#11036;&#11036;&#11036; Avanzado</td></tr>
+              <tr><td>3</td><td>Pipeline reutilizable + detecci&oacute;n de cambios</td><td>&#11036;&#11036;&#11036;&#11036; Avanzado</td></tr>
             </tbody>
           </table>
         </div>
         <div class="box">
-          <h3>&#x1F9EA; La diferencia clave</h3>
-          <p>La mayor&iacute;a de usuarios de IA se quedan en &ldquo;genero y conf&iacute;o&rdquo;.</p>
-          <p>Ustedes ahora saben hacer <b>&ldquo;genero, verifico y documento&rdquo;</b>.</p>
-          <p>Eso es lo que hace que un profesional sea <b>confiable</b> usando IA.</p>
-          <p style="font-weight:700;color:var(--ey-accent)">Esa es la diferencia entre un usuario y un profesional.</p>
+          <h3>&#x1F504; El ciclo mensual</h3>
+          <p>Cada mes se repite este ciclo de <b>5 minutos</b>:</p>
+          <ol style="font-size:13px">
+            <li>Llegan los correos con Excels</li>
+            <li>Guardan en la carpeta del mes</li>
+            <li>Ejecutan <code>pipeline.py</code></li>
+            <li>Ejecutan <code>comparar_meses.py</code></li>
+            <li>Revisan alertas &rarr; entregan con confianza</li>
+          </ol>
+          <p style="font-weight:700;color:var(--ey-accent)">El pipeline ya est&aacute; listo. Solo faltan los archivos del mes.</p>
         </div>
       </div>
     </section>
@@ -794,14 +971,16 @@ El mes que viene solo pongo los archivos nuevos en la carpeta y corro el script.
       <h2>&#x1F4E6; Entregable de la Sesi&oacute;n 3</h2>
       <div class="box" style="background:#f9fafb;border-left:4px solid var(--ey-yellow)">
         <ol>
-          <li><b>Mapa de equivalencias:</b> tabla que muestra c&oacute;mo se llama cada columna en cada archivo fuente.</li>
-          <li><b>Script de homologaci&oacute;n/consolidaci&oacute;n:</b> guardado como <code>.py</code> con comentarios en espa&ntilde;ol y prints de verificaci&oacute;n.</li>
+          <li><b>Mapa de equivalencias:</b> tabla que muestra c&oacute;mo se llama cada columna en cada archivo fuente (guardado en <code>config/</code>).</li>
+          <li><b>pipeline.py:</b> script reutilizable que lee autom&aacute;ticamente todos los .xlsx de una carpeta, homologa, consolida y genera log de cuadre. <b>Funciona sin tocar c&oacute;digo.</b></li>
+          <li><b>comparar_meses.py:</b> script que compara consolidados de 2 meses y genera reporte de cambios con alertas &#x1F6A8;.</li>
           <li><b>Tabla de cuadre cruzado:</b> evidencia de que filas y montos cuadran entre originales y consolidado.</li>
+          <li><b>Reporte de cambios:</b> comparaci&oacute;n mes a mes con alertas de archivos faltantes, columnas nuevas, variaciones de volumen.</li>
           <li><b>Excel consolidado:</b> <code>consolidado_final.xlsx</code> listo para usar.</li>
           <li><b>(Bonus) Dashboard HTML:</b> con datos reales del consolidado y tabla de cuadre visible.</li>
         </ol>
         <div style="margin-top:12px;padding:12px;background:#e3f2fd;border-radius:8px;font-size:14px">
-          &#x1F9EA; <b>Lo m&aacute;s valioso no es el Excel final &mdash; es la disciplina de verificaci&oacute;n.</b> Un script que cuadra al 100% es un script que pueden presentar con confianza a cualquier directivo.
+          &#x1F3AF; <b>Lo m&aacute;s valioso no es el consolidado de hoy &mdash; es tener el pipeline listo para el mes que viene.</b> La pr&oacute;xima vez que lleguen los correos, solo depositan archivos, ejecutan, y en 5 minutos tienen todo consolidado Y saben qu&eacute; cambi&oacute;.
         </div>
       </div>
     </section>
@@ -823,20 +1002,24 @@ El mes que viene solo pongo los archivos nuevos en la carpeta y corro el script.
           <p style="font-size:12px;color:var(--ey-gray)">HTMLs profesionales. Reportes, slides, dashboards.</p>
         </div>
         <div class="box" style="text-align:center;border-top:4px solid #1565c0">
-          <div style="font-size:36px">&#x1F9EA;</div>
+          <div style="font-size:36px">&#x1F504;</div>
           <h3>Sesi&oacute;n 3</h3>
-          <p><b>Orquestar y verificar con IA</b></p>
-          <p style="font-size:12px;color:var(--ey-gray)">M&uacute;ltiples fuentes, scripts, cuadre paso a paso.</p>
+          <p><b>Pipeline reutilizable + detecci&oacute;n de cambios</b></p>
+          <p style="font-size:12px;color:var(--ey-gray)">M&uacute;ltiples fuentes, consolidaci&oacute;n mensual automatizada, alertas entre periodos.</p>
         </div>
       </div>
 
       <div style="background:linear-gradient(135deg,#242424 0%,#444 100%);border-radius:16px;padding:32px;color:#fff;margin:24px 0;text-align:center">
         <h3 style="margin:0 0 12px;color:var(--ey-yellow);font-size:22px">El mensaje final</h3>
         <p style="margin:0;font-size:17px;opacity:.95;max-width:700px;display:inline-block">
-          La IA no reemplaza al profesional que <b>verifica</b>.<br>
-          La IA reemplaza al profesional que <b>no verifica</b>.
+          La pr&oacute;xima vez que lleguen esos correos con 5+ Excels,<br>
+          <b>ya tienen su pipeline listo</b>.
         </p>
-        <p style="margin:16px 0 0;font-size:14px;opacity:.7">Ustedes ahora saben pedirle a la IA que genere, pero m&aacute;s importante: saben pedirle que <b>demuestre que hizo bien su trabajo</b>.<br>Eso es una ventaja profesional enorme.</p>
+        <p style="margin:16px 0 0;font-size:15px;opacity:.85;max-width:700px;display:inline-block">
+          Depositar archivos &rarr; Ejecutar &rarr; Consolidado verificado + Reporte de cambios.<br>
+          <b>5 minutos, no 6 horas.</b>
+        </p>
+        <p style="margin:16px 0 0;font-size:14px;opacity:.7">La IA no reemplaza al profesional que <b>verifica</b>. La IA reemplaza al profesional que <b>no verifica</b>.<br>Ustedes ahora saben generar, verificar, automatizar y detectar cambios. Eso es una ventaja profesional enorme.</p>
       </div>
     </section>
 

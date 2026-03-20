@@ -1,14 +1,12 @@
 """
 Solución completa — Sesión 3: Consolidación de múltiples fuentes → Formato Global
 
-NOTA: Este script es la solución COMPLETA que procesa las 12 fuentes de
-datos_entrada/ (10 xlsx + 2 csv). El ejercicio de la sesión se enfoca
-en las 5 fuentes principales: banca_comercial, banca_corporativa, seguros,
-tarjetas, tesoreria (590 filas total). Los participantes generan su propia
-solución con Copilot 365 usando solo esas 5 fuentes.
+Procesa las 5 fuentes de datos_entrada/:
+  banca_comercial (150), banca_corporativa (120), seguros (100),
+  tarjetas (130), tesoreria (90).  Total = 590 filas.
 
 Este script:
-1. Lee TODAS las fuentes de datos_entrada/ (xlsx + csv)
+1. Lee las 5 fuentes Excel de datos_entrada/
 2. Homologa nombres de columnas
 3. Clasifica registros (Ingreso / Gasto / Provisión)
 4. Genera 3 Excels consolidados
@@ -51,15 +49,6 @@ for archivo in sorted(archivos_xlsx):
     dataframes[nombre] = df
     print(f"  📁 {nombre} — {len(df)} filas × {len(df.columns)} columnas")
     print(f"     Columnas: {', '.join(df.columns[:6])}...")
-
-# Leer archivos csv
-archivos_csv = glob.glob(os.path.join(INPUT_DIR, "*.csv"))
-for archivo in sorted(archivos_csv):
-    nombre = os.path.basename(archivo)
-    df = pd.read_csv(archivo, encoding="utf-8-sig")
-    df["archivo_origen"] = nombre
-    dataframes[nombre] = df
-    print(f"  📁 {nombre} — {len(df)} filas × {len(df.columns)} columnas")
 
 total_archivos = len(dataframes)
 total_registros_raw = sum(len(df) for df in dataframes.values())
@@ -105,16 +94,6 @@ MAPEO_COLUMNAS = {
         "mes": "periodo",
         "responsable_area": "responsable",
     },
-    "inversiones.xlsx": {
-        "trade_date": "fecha",
-        "desk": "linea_negocio",
-        "description": "concepto",
-        "gl_account": "subcuenta",
-        "amount": "monto",
-        "category": "tipo",
-        "reporting_period": "periodo",
-        "trader": "responsable",
-    },
     "tarjetas.xlsx": {
         "fecha_movimiento": "fecha",
         "producto": "linea_negocio",
@@ -135,46 +114,6 @@ MAPEO_COLUMNAS = {
         "month": "periodo",
         "dealer": "responsable",
     },
-    "cumplimiento.xlsx": {
-        "fecha_evento": "fecha",
-        "area_responsable": "linea_negocio",
-        "concepto_regulatorio": "concepto",
-        "cuenta_contable": "subcuenta",
-        "monto_MXN": "monto",
-        "tipo_impacto": "tipo",
-        "periodo": "periodo",
-        "oficial_cumplimiento": "responsable",
-    },
-    "riesgos.xlsx": {
-        "reporting_date": "fecha",
-        "portfolio": "linea_negocio",
-        "risk_concept": "concepto",
-        "gl_code": "subcuenta",
-        "provision_amount": "monto",
-        "provision_type": "tipo",
-        "period": "periodo",
-        "risk_analyst": "responsable",
-    },
-    "proveedor_ti.xlsx": {
-        "invoice_date": "fecha",
-        "cost_center": "linea_negocio",
-        "service_description": "concepto",
-        "account": "subcuenta",
-        "total_MXN": "monto",
-        "expense_type": "tipo",
-        "billing_period": "periodo",
-        "account_manager": "responsable",
-    },
-    "proveedor_servicios.xlsx": {
-        "fecha_factura": "fecha",
-        "centro_costo": "linea_negocio",
-        "descripcion_servicio": "concepto",
-        "cuenta_gasto": "subcuenta",
-        "importe_total": "monto",
-        "tipo_gasto": "tipo",
-        "mes_facturacion": "periodo",
-        "contacto_proveedor": "responsable",
-    },
 }
 
 COLUMNAS_ESTANDAR = ["fecha", "linea_negocio", "concepto", "subcuenta",
@@ -183,9 +122,6 @@ COLUMNAS_ESTANDAR = ["fecha", "linea_negocio", "concepto", "subcuenta",
 # Aplicar mapeo y concatenar
 dfs_homologados = []
 for nombre_archivo, df in dataframes.items():
-    if nombre_archivo.endswith(".csv"):
-        continue  # Los CSV son catálogos, no se consolidan directamente
-    
     mapeo = MAPEO_COLUMNAS.get(nombre_archivo, {})
     if mapeo:
         df_mapped = df.rename(columns=mapeo)
@@ -200,10 +136,6 @@ for nombre_archivo, df in dataframes.items():
 # Concatenar todos
 df_consolidado = pd.concat(dfs_homologados, ignore_index=True)
 print(f"\n  📊 DataFrame consolidado: {len(df_consolidado)} filas × {len(df_consolidado.columns)} columnas")
-
-# Guardar catálogos como referencia
-df_catalogo = dataframes.get("catalogo_cuentas.csv", pd.DataFrame())
-df_saldos = dataframes.get("saldos_contables.csv", pd.DataFrame())
 
 # ═══════════════════════════════════════════════════════════
 # PASO 3: CLASIFICAR REGISTROS
@@ -311,7 +243,7 @@ df_clasificado = df_consolidado[df_consolidado["clasificacion"] != "Sin clasific
 
 # Orden de líneas de negocio para las columnas
 LINEAS_ORDEN = ["Banca Comercial", "Banca Corporativa", "Seguros",
-                "Inversiones", "Tarjetas", "Corporativo"]
+                "Tarjetas", "Corporativo"]
 
 # Función para generar sección del formato global
 def generar_seccion(df, clasificacion):

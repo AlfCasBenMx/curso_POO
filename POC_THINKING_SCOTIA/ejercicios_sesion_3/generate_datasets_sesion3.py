@@ -1,24 +1,18 @@
 """
 Generador de datasets para Sesión 3 — POC Thinking: Múltiples fuentes → Formato Global
 
-Genera 12 archivos de entrada (10 .xlsx + 2 .csv) que simulan el flujo real
-de consolidación financiera de una institución bancaria.
+Genera 5 archivos Excel de entrada que simulan el flujo real de
+consolidación financiera de una institución bancaria.
 
-⚠️  EL EJERCICIO DE LA SESIÓN USA SOLO 5 DE ESTOS ARCHIVOS:
-     banca_comercial (150), banca_corporativa (120), seguros (100),
-     tarjetas (130), tesoreria (90).  Total = 590 filas.
-     Los 7 archivos restantes están disponibles como extensión opcional.
-
-Fuentes generadas:
-  1-5  Para el ejercicio:  banca_comercial, banca_corporativa, seguros, tarjetas, tesoreria
-  6-7  Líneas extra:       inversiones, riesgos
-  8    Soporte:            cumplimiento
-  9-10 Proveedores ext.:   proveedor_ti, proveedor_servicios
-  11   SQL CSV:            catalogo_cuentas.csv
-  12   SQL CSV:            saldos_contables.csv
+Fuentes generadas (590 filas total):
+  1. banca_comercial.xlsx  — 150 filas (fecha_registro, monto_MXN, tipo_movimiento)
+  2. banca_corporativa.xlsx — 120 filas (date, amount_MXN, type)
+  3. seguros.xlsx          — 100 filas (fecha, importe, naturaleza)
+  4. tarjetas.xlsx         — 130 filas (fecha_movimiento, monto_pesos, clasificacion)
+  5. tesoreria.xlsx        —  90 filas (value_date, amount_MXN, pnl_type)
 
 Cada archivo tiene columnas LIGERAMENTE DIFERENTES (simula realidad)
-para que los participantes practiquen la homologación.
+para que los participantes practiquen la homologación con Copilot 365.
 """
 
 import random
@@ -266,31 +260,7 @@ def gen_seguros():
 
 
 # ═══════════════════════════════════════════════════════════
-# 4. INVERSIONES
-# ═══════════════════════════════════════════════════════════
-
-def gen_inversiones():
-    conceptos = [
-        "Rendimiento de inversiones", "Comisiones por manejo",
-        "Gastos de personal", "Licencias de software",
-        "Ajuste de valuación"
-    ]
-    col_map = {
-        "fecha": "trade_date",
-        "linea_negocio": "desk",
-        "concepto": "description",
-        "subcuenta": "gl_account",
-        "monto": "amount",
-        "tipo": "category",
-        "periodo": "reporting_period",
-        "responsable": "trader"
-    }
-    rows = gen_linea_negocio("Inversiones", conceptos, 80, col_map)
-    write_xlsx("inversiones.xlsx", rows)
-
-
-# ═══════════════════════════════════════════════════════════
-# 5. TARJETAS
+# 4. TARJETAS
 # ═══════════════════════════════════════════════════════════
 
 def gen_tarjetas():
@@ -315,7 +285,7 @@ def gen_tarjetas():
 
 
 # ═══════════════════════════════════════════════════════════
-# 6. TESORERÍA
+# 5. TESORERÍA
 # ═══════════════════════════════════════════════════════════
 
 def gen_tesoreria():
@@ -340,175 +310,6 @@ def gen_tesoreria():
 
 
 # ═══════════════════════════════════════════════════════════
-# 7. CUMPLIMIENTO
-# ═══════════════════════════════════════════════════════════
-
-def gen_cumplimiento():
-    conceptos = [
-        "Multas regulatorias", "Provisión regulatoria",
-        "Gastos de personal", "Servicios profesionales"
-    ]
-    col_map = {
-        "fecha": "fecha_evento",
-        "linea_negocio": "area_responsable",
-        "concepto": "concepto_regulatorio",
-        "subcuenta": "cuenta_contable",
-        "monto": "monto_MXN",
-        "tipo": "tipo_impacto",
-        "periodo": "periodo",
-        "responsable": "oficial_cumplimiento"
-    }
-    # Cumplimiento distribuye por varias líneas
-    rows = []
-    for linea in ["Banca Comercial", "Banca Corporativa", "Tarjetas", "Corporativo"]:
-        n = random.randint(12, 18)
-        rows.extend(gen_linea_negocio(linea, conceptos, n, col_map))
-    random.shuffle(rows)
-    write_xlsx("cumplimiento.xlsx", rows)
-
-
-# ═══════════════════════════════════════════════════════════
-# 8. RIESGOS
-# ═══════════════════════════════════════════════════════════
-
-def gen_riesgos():
-    conceptos = [
-        "Reserva crediticia", "Pérdida esperada",
-        "Ajuste de valuación", "Provisión regulatoria"
-    ]
-    col_map = {
-        "fecha": "reporting_date",
-        "linea_negocio": "portfolio",
-        "concepto": "risk_concept",
-        "subcuenta": "gl_code",
-        "monto": "provision_amount",
-        "tipo": "provision_type",
-        "periodo": "period",
-        "responsable": "risk_analyst"
-    }
-    rows = []
-    for linea in ["Banca Comercial", "Banca Corporativa", "Seguros", "Inversiones", "Tarjetas"]:
-        n = random.randint(10, 18)
-        rows.extend(gen_linea_negocio(linea, conceptos, n, col_map))
-    random.shuffle(rows)
-    write_xlsx("riesgos.xlsx", rows)
-
-
-# ═══════════════════════════════════════════════════════════
-# 9. PROVEEDOR TI
-# ═══════════════════════════════════════════════════════════
-
-def gen_proveedor_ti():
-    conceptos = [
-        "Servicios de TI externos", "Licencias de software"
-    ]
-    col_map = {
-        "fecha": "invoice_date",
-        "linea_negocio": "cost_center",
-        "concepto": "service_description",
-        "subcuenta": "account",
-        "monto": "total_MXN",
-        "tipo": "expense_type",
-        "periodo": "billing_period",
-        "responsable": "account_manager"
-    }
-    rows = []
-    for linea in LINEAS_NEGOCIO:
-        n = random.randint(6, 10)
-        rows.extend(gen_linea_negocio(linea, conceptos, n, col_map))
-    random.shuffle(rows)
-    write_xlsx("proveedor_ti.xlsx", rows)
-
-
-# ═══════════════════════════════════════════════════════════
-# 10. PROVEEDOR SERVICIOS
-# ═══════════════════════════════════════════════════════════
-
-def gen_proveedor_servicios():
-    conceptos = [
-        "Mantenimiento y limpieza", "Servicios de seguridad", "Renta de inmuebles"
-    ]
-    col_map = {
-        "fecha": "fecha_factura",
-        "linea_negocio": "centro_costo",
-        "concepto": "descripcion_servicio",
-        "subcuenta": "cuenta_gasto",
-        "monto": "importe_total",
-        "tipo": "tipo_gasto",
-        "periodo": "mes_facturacion",
-        "responsable": "contacto_proveedor"
-    }
-    rows = []
-    for linea in LINEAS_NEGOCIO:
-        n = random.randint(4, 8)
-        rows.extend(gen_linea_negocio(linea, conceptos, n, col_map))
-    random.shuffle(rows)
-    write_xlsx("proveedor_servicios.xlsx", rows)
-
-
-# ═══════════════════════════════════════════════════════════
-# 11. CATÁLOGO DE CUENTAS (CSV — simula query SQL)
-# ═══════════════════════════════════════════════════════════
-
-def gen_catalogo_cuentas():
-    rows = []
-    for concepto_nombre, info in CONCEPTOS.items():
-        rows.append({
-            "cuenta": info["cuenta"],
-            "subcuenta": info["subcuenta"],
-            "nombre_cuenta": concepto_nombre,
-            "naturaleza": "Deudora" if info["tipo"] == "Gasto" else "Acreedora",
-            "clasificacion": info["tipo"],
-        })
-
-    # Agregar cuentas adicionales no usadas (para hacer el catálogo más realista)
-    extras = [
-        ("7100", "7110", "Impuesto diferido", "Deudora", "Impuesto"),
-        ("7100", "7120", "ISR por pagar", "Acreedora", "Impuesto"),
-        ("7200", "7210", "Participación minoritaria", "Acreedora", "Capital"),
-        ("7300", "7310", "Resultado de ejercicios anteriores", "Acreedora", "Capital"),
-        ("8100", "8110", "Cuentas de orden - garantías", "Deudora", "Memorando"),
-        ("8200", "8210", "Cuentas de orden - compromisos", "Deudora", "Memorando"),
-    ]
-    for cuenta, subcuenta, nombre, naturaleza, clasificacion in extras:
-        rows.append({
-            "cuenta": cuenta,
-            "subcuenta": subcuenta,
-            "nombre_cuenta": nombre,
-            "naturaleza": naturaleza,
-            "clasificacion": clasificacion,
-        })
-
-    random.shuffle(rows)
-    write_csv_file("catalogo_cuentas.csv", rows)
-
-
-# ═══════════════════════════════════════════════════════════
-# 12. SALDOS CONTABLES (CSV — simula query SQL)
-# ═══════════════════════════════════════════════════════════
-
-def gen_saldos_contables():
-    rows = []
-    for concepto_nombre, info in CONCEPTOS.items():
-        for periodo in PERIODOS:
-            saldo_inicial = round(random.uniform(100_000, 10_000_000), 2)
-            movimientos = round(random.uniform(-2_000_000, 5_000_000), 2)
-            saldo_final = round(saldo_inicial + movimientos, 2)
-            rows.append({
-                "cuenta": info["cuenta"],
-                "subcuenta": info["subcuenta"],
-                "nombre_cuenta": concepto_nombre,
-                "periodo": periodo,
-                "saldo_inicial": saldo_inicial,
-                "movimientos": movimientos,
-                "saldo_final": saldo_final,
-            })
-
-    random.shuffle(rows)
-    write_csv_file("saldos_contables.csv", rows)
-
-
-# ═══════════════════════════════════════════════════════════
 # EJECUCIÓN
 # ═══════════════════════════════════════════════════════════
 
@@ -519,25 +320,12 @@ if __name__ == "__main__":
     print("=" * 60)
     print()
 
-    print("📊 Líneas de negocio (XLSX):")
+    print("📊 Generando 5 archivos Excel:")
     gen_banca_comercial()
     gen_banca_corporativa()
     gen_seguros()
-    gen_inversiones()
     gen_tarjetas()
-
-    print("\n📊 Áreas de soporte (XLSX):")
     gen_tesoreria()
-    gen_cumplimiento()
-    gen_riesgos()
-
-    print("\n📊 Proveedores externos (XLSX):")
-    gen_proveedor_ti()
-    gen_proveedor_servicios()
-
-    print("\n📊 Queries SQL (CSV):")
-    gen_catalogo_cuentas()
-    gen_saldos_contables()
 
     print()
     print("=" * 60)
